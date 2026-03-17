@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply font-body text-brand-navy bg-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3.5 bg-brand-orange text-white font-display font-bold text-base rounded-full 
+           hover:bg-brand-orange-hover active:scale-[0.98] transition-all duration-150 shadow-md shadow-brand-orange/20;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-2.5 border-2 border-brand-orange text-brand-orange font-display font-bold text-sm rounded-full 
+           hover:bg-brand-orange hover:text-white transition-all duration-150;
+  }
+  .section-label {
+    @apply text-[10px] font-bold text-brand-orange tracking-widest uppercase;
+  }
+  .section-title {
+    @apply font-display text-xl font-bold text-brand-navy;
+  }
+}
+
+/* Matrix table scroll indicator */
+.matrix-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #E8740C transparent;
+}
+.matrix-scroll::-webkit-scrollbar {
+  height: 3px;
+}
+.matrix-scroll::-webkit-scrollbar-thumb {
+  background: #E8740C;
+  border-radius: 2px;
+}
