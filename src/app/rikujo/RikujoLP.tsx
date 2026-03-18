@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { trackClasses, venues, days } from '@/lib/classes-data'
+import { trackClasses, venues } from '@/lib/classes-data'
 import type { ClassData } from '@/lib/classes-data'
 
 // ============================================================
@@ -25,14 +25,14 @@ function Hero() {
         </h1>
 
         <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
-          市内6会場で毎日開催。お子様のスケジュールに
+          市内5会場で毎日開催。お子様のスケジュールに
           <br className="md:hidden" />合わせて教室を選べます。
         </p>
 
         <div className="flex justify-center gap-8 md:gap-12 mb-8">
           {[
-            { num: '12', label: '教室' },
-            { num: '6', label: '会場' },
+            { num: '17', label: '教室' },
+            { num: '5', label: '会場' },
             { num: '週6', label: '日開催' },
           ].map(({ num, label }) => (
             <div key={label} className="text-center">
@@ -52,64 +52,221 @@ function Hero() {
 }
 
 // ============================================================
-// Map Section
+// Venue Detail Card (shown when a venue is selected)
 // ============================================================
-function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSelect: (id: string | null) => void }) {
-  // 簡易地図: 金沢市内の相対位置にピンを配置
-  const pinPositions: Record<string, { top: string; left: string }> = {
-    seibu:    { top: '32%', left: '14%' },
-    shiei:    { top: '40%', left: '48%' },
-    nakamura: { top: '72%', left: '56%' },
-    inoki:    { top: '18%', left: '74%' },
-    sporec:   { top: '58%', left: '24%' },
-    sogo:     { top: '50%', left: '72%' },
-  }
+function VenueDetail({ venueId, onClassSelect }: { venueId: string; onClassSelect: (cls: ClassData) => void }) {
+  const venue = venues.find(v => v.id === venueId)
+  if (!venue) return null
 
-  const trackVenueIds = ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec']
+  const venueClasses = trackClasses.filter(c => c.venueId === venueId)
+  const childClasses = venueClasses.filter(c => !['中学〜大人'].includes(c.age))
+  const otherClasses = venueClasses.filter(c => ['中学〜大人'].includes(c.age))
 
   return (
-    <div className="relative bg-gradient-to-br from-[#E8F0E4] to-[#D8E6D0] rounded-2xl overflow-hidden h-64 md:h-80 border border-warm-200">
-      {/* Simplified rivers */}
-      <div className="absolute top-[28%] left-0 w-full h-[3px] bg-blue-300/30 -rotate-[12deg]" />
-      <div className="absolute top-[52%] left-[10%] w-[80%] h-[3px] bg-blue-300/25 -rotate-[8deg]" />
+    <div className="mt-4 bg-white border-2 border-brand-orange/30 rounded-xl overflow-hidden animate-fadeIn shadow-lg">
+      <div className="px-4 py-3 bg-brand-orange-light border-b border-brand-orange/20 flex items-center gap-2">
+        <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: venue.color }} />
+        <div>
+          <div className="font-bold text-sm text-brand-navy">{venue.name}</div>
+          <div className="text-[10px] text-gray-400">{venue.address}</div>
+        </div>
+      </div>
+      <div className="p-3 space-y-2">
+        {childClasses.length > 0 && (
+          <>
+            <div className="text-[10px] font-bold text-brand-orange mb-1">子ども向け教室（{childClasses.length}件）</div>
+            {childClasses.map(cls => (
+              <button
+                key={cls.id}
+                onClick={() => onClassSelect(cls)}
+                className="w-full text-left p-3 rounded-lg border border-warm-200 hover:border-brand-orange hover:bg-brand-orange-light transition-all active:scale-[0.98]"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-bold text-xs text-brand-navy">{cls.shortName}</span>
+                      {cls.isPopular && <span className="text-[8px] bg-brand-orange/10 text-brand-orange font-bold px-1 py-px rounded">人気</span>}
+                      {cls.isNew && <span className="text-[8px] bg-blue-50 text-blue-600 font-bold px-1 py-px rounded">NEW</span>}
+                    </div>
+                    <div className="text-[10px] text-gray-400 mt-0.5">{cls.day} {cls.time} ｜ {cls.age} ｜ ¥{cls.price.toLocaleString()}/月</div>
+                  </div>
+                  <span className="text-brand-orange text-sm flex-shrink-0 ml-2">詳細 →</span>
+                </div>
+              </button>
+            ))}
+          </>
+        )}
+        {otherClasses.length > 0 && (
+          <>
+            <div className="text-[10px] font-bold text-gray-400 mt-3 mb-1">その他の教室</div>
+            {otherClasses.map(cls => (
+              <button
+                key={cls.id}
+                onClick={() => onClassSelect(cls)}
+                className="w-full text-left p-2.5 rounded-lg border border-warm-100 hover:border-brand-orange hover:bg-brand-orange-light transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-bold text-xs text-gray-500">{cls.shortName}</span>
+                    <div className="text-[10px] text-gray-400 mt-0.5">{cls.day} {cls.time} ｜ {cls.age} ｜ ¥{cls.price.toLocaleString()}/月</div>
+                  </div>
+                  <span className="text-gray-300 text-sm flex-shrink-0 ml-2">→</span>
+                </div>
+              </button>
+            ))}
+          </>
+        )}
+      </div>
+      <div className="px-3 pb-3">
+        <p className="text-[10px] text-center text-gray-400">教室をタップすると詳細が表示されます</p>
+      </div>
+    </div>
+  )
+}
 
-      {/* Area labels */}
-      <span className="absolute top-[10%] left-[8%] text-[9px] text-black/20 font-medium">西部</span>
-      <span className="absolute top-[14%] left-[60%] text-[9px] text-black/20 font-medium">中心部</span>
-      <span className="absolute top-[78%] left-[18%] text-[9px] text-black/20 font-medium">泉野</span>
-      <span className="absolute top-[82%] left-[62%] text-[9px] text-black/20 font-medium">中村町</span>
-      <span className="absolute top-[6%] right-[10%] text-[9px] text-black/20 font-medium">東部</span>
+// ============================================================
+// Class Detail Modal
+// ============================================================
+function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => void }) {
+  const venue = venues.find(v => v.id === cls.venueId)
 
-      {/* Venue pins */}
-      {venues
-        .filter(v => trackVenueIds.includes(v.id))
-        .map(venue => {
-          const pos = pinPositions[venue.id]
-          const classCount = trackClasses.filter(c => c.venueId === venue.id).length
-          const isActive = activeVenue === venue.id
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
 
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/50" />
+      <div
+        className="relative bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md max-h-[85vh] overflow-y-auto animate-slideUp"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="sticky top-0 bg-white border-b border-warm-200 px-5 py-3 flex items-center justify-between z-10">
+          <h3 className="font-display font-bold text-brand-navy">{cls.name}</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-brand-navy text-2xl leading-none p-1">&times;</button>
+        </div>
+
+        <div className="px-5 py-4 space-y-4">
+          <div className="flex gap-2">
+            {cls.isPopular && (
+              <span className="inline-block text-xs bg-brand-orange/10 text-brand-orange font-bold px-2 py-1 rounded">人気No.1 教室</span>
+            )}
+            {cls.isNew && (
+              <span className="inline-block text-xs bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded">NEW</span>
+            )}
+          </div>
+
+          {cls.description && (
+            <p className="text-sm text-gray-600 leading-relaxed">{cls.description}</p>
+          )}
+
+          <div className="bg-warm-50 rounded-xl p-4 space-y-2.5 text-sm">
+            <div className="flex justify-between">
+              <span className="text-gray-400">会場</span>
+              <span className="font-bold text-brand-navy text-right">{venue?.name}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">住所</span>
+              <span className="text-xs text-gray-500 text-right">{venue?.address}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">曜日・時間</span>
+              <span className="font-bold text-brand-navy">{cls.day} {cls.time}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">対象</span>
+              <span className="font-bold text-brand-navy">{cls.age}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">月会費</span>
+              <span className="font-display font-bold text-brand-orange text-lg">¥{cls.price.toLocaleString()}<span className="text-xs text-gray-400 font-normal">/月</span></span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">指導者</span>
+              <span className="text-brand-navy text-right">{cls.instructor}</span>
+            </div>
+          </div>
+
+          {/* Google Maps link for venue */}
+          {venue && (
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${venue.lat},${venue.lng}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center text-sm text-brand-orange border border-brand-orange/30 rounded-xl py-2.5 hover:bg-brand-orange-light transition-colors"
+            >
+              Google Mapで会場を見る
+            </a>
+          )}
+
+          <Link
+            href="/taiken"
+            className="btn-primary w-full text-center"
+          >
+            この教室の無料体験に申し込む
+          </Link>
+          <p className="text-[10px] text-gray-400 text-center">体験当日のご入会で入会金(¥5,500)が無料</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ============================================================
+// Map Section (Google Maps with markers)
+// ============================================================
+function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSelect: (id: string | null) => void }) {
+  const trackVenueIds = ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec']
+  const trackVenues = venues.filter(v => trackVenueIds.includes(v.id))
+
+  // Build Google Maps Static API URL with markers
+  const center = activeVenue
+    ? venues.find(v => v.id === activeVenue)
+    : null
+
+  const mapLat = center?.lat ?? 36.565
+  const mapLng = center?.lng ?? 136.650
+  const mapZoom = activeVenue ? 15 : 12
+
+  // Use Google Maps Embed with place mode for selected venue
+  const mapSrc = activeVenue && center
+    ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(center.name + ' ' + center.address)}&center=${center.lat},${center.lng}&zoom=${mapZoom}&language=ja`
+    : `https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=${mapLat},${mapLng}&zoom=${mapZoom}&language=ja`
+
+  return (
+    <div className="relative rounded-2xl overflow-hidden border border-warm-200">
+      <iframe
+        title="会場マップ"
+        className="w-full h-64 md:h-80"
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        src={mapSrc}
+      />
+
+      {/* Venue quick-select chips overlay */}
+      <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 justify-center">
+        {trackVenues.map(v => {
+          const classCount = trackClasses.filter(c => c.venueId === v.id).length
+          const isActive = activeVenue === v.id
           return (
             <button
-              key={venue.id}
-              className={`absolute transition-transform duration-150 z-10 group ${isActive ? 'scale-110' : 'hover:scale-105'}`}
-              style={{ top: pos.top, left: pos.left, transform: 'translate(-50%, -50%)' }}
-              onClick={() => onSelect(isActive ? null : venue.id)}
+              key={v.id}
+              onClick={() => onSelect(isActive ? null : v.id)}
+              className={`text-[10px] px-2.5 py-1.5 rounded-full border transition-all flex items-center gap-1 shadow-sm backdrop-blur-sm ${
+                isActive
+                  ? 'bg-brand-orange text-white border-brand-orange font-bold'
+                  : 'bg-white/90 border-white/50 text-brand-navy hover:border-brand-orange'
+              }`}
             >
-              <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold border-[2.5px] border-white shadow-lg ${isActive ? 'ring-4 ring-brand-orange/30' : ''}`}
-                style={{ backgroundColor: venue.color }}
-              >
-                {venue.shortName.charAt(0)}
-              </div>
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-brand-orange text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-white">
-                {classCount}
-              </span>
-              <span className="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-bold text-brand-navy bg-white/90 px-1.5 py-0.5 rounded shadow-sm">
-                {venue.shortName}
-              </span>
+              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: isActive ? '#fff' : v.color }} />
+              {v.shortName}
+              <span className={`text-[8px] ${isActive ? 'text-white/80' : 'text-gray-400'}`}>({classCount})</span>
             </button>
           )
         })}
+      </div>
     </div>
   )
 }
@@ -117,7 +274,7 @@ function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSel
 // ============================================================
 // Matrix Section
 // ============================================================
-function ClassMatrix({ activeVenue }: { activeVenue: string | null }) {
+function ClassMatrix({ activeVenue, onClassSelect }: { activeVenue: string | null; onClassSelect: (cls: ClassData) => void }) {
   const venueOrder = ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec']
   const dayKeys = ['月', '火', '水', '木', '金', '土']
 
@@ -128,6 +285,8 @@ function ClassMatrix({ activeVenue }: { activeVenue: string | null }) {
       return c.day.includes(day) && !c.day.includes('・')
     })
   }
+
+  const filteredVenues = activeVenue ? [activeVenue] : venueOrder
 
   return (
     <div className="matrix-scroll overflow-x-auto -mx-4 px-4">
@@ -145,7 +304,7 @@ function ClassMatrix({ activeVenue }: { activeVenue: string | null }) {
           </tr>
         </thead>
         <tbody>
-          {venueOrder.map(venueId => {
+          {filteredVenues.map(venueId => {
             const venue = venues.find(v => v.id === venueId)!
             const isHighlighted = activeVenue === venueId
 
@@ -169,9 +328,10 @@ function ClassMatrix({ activeVenue }: { activeVenue: string | null }) {
                       ) : (
                         <div className="flex flex-col gap-1">
                           {classes.map(cls => (
-                            <div
+                            <button
                               key={cls.id}
-                              className={`text-left p-1.5 rounded-md border cursor-pointer transition-all hover:border-brand-orange hover:bg-brand-orange-light ${
+                              onClick={() => onClassSelect(cls)}
+                              className={`text-left p-1.5 rounded-md border cursor-pointer transition-all hover:border-brand-orange hover:bg-brand-orange-light active:scale-[0.97] ${
                                 cls.isPopular ? 'border-brand-orange bg-brand-orange-light' : 'border-warm-200 bg-white'
                               }`}
                             >
@@ -183,9 +343,9 @@ function ClassMatrix({ activeVenue }: { activeVenue: string | null }) {
                                 cls.isPopular ? 'bg-brand-orange/10 text-brand-orange' : 'bg-blue-50 text-blue-600'
                               }`}>
                                 {cls.age}
-                                {cls.isPopular && ' 人気No.1'}
+                                {cls.isPopular && ' 人気'}
                               </span>
-                            </div>
+                            </button>
                           ))}
                         </div>
                       )}
@@ -208,20 +368,21 @@ function PriceSection() {
   return (
     <section id="price" className="px-5 py-10 max-w-3xl mx-auto">
       <p className="section-label">料金</p>
-      <h2 className="section-title mb-2">NPO法人だから、安心の価格設定</h2>
-      <p className="text-sm text-gray-500 mb-6">一般的な陸上教室と比べて、手頃な月額で専門的な指導が受けられます。</p>
+      <h2 className="section-title mb-2">わかりやすい月額制</h2>
+      <p className="text-sm text-gray-500 mb-6">月額¥3,300〜。手頃な価格で専門的な指導が受けられます。</p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
-          { label: '中村町・スポレク', price: '¥5,500', note: '/月' },
-          { label: 'かけっこ塾・泉 他', price: '¥6,600', note: '/月' },
-          { label: 'インクルーシブ', price: '¥3,300', note: '/月' },
-          { label: 'るぶげる親子', price: '¥8,800', note: '/月' },
-        ].map(({ label, price, note }) => (
+          { label: '基本教室', price: '¥6,600', note: '/月', sub: 'かけっこ塾・泉・西部・中村町・スポレク' },
+          { label: 'るぶげる親子', price: '¥9,900', note: '/月', sub: '親子で参加の陸上塾' },
+          { label: 'インクルーシブ', price: '¥3,300', note: '/月', sub: '障がいの有無を問わず' },
+          { label: '大人のマラソン', price: '¥3,300', note: '/月', sub: '中学生〜大人対象' },
+        ].map(({ label, price, note, sub }) => (
           <div key={label} className="bg-warm-50 rounded-xl p-4 text-center">
             <div className="text-[10px] text-gray-400 mb-1">{label}</div>
             <div className="font-display font-bold text-xl text-brand-navy">{price}</div>
             <div className="text-[10px] text-gray-400">{note}</div>
+            <div className="text-[9px] text-gray-300 mt-1 leading-tight">{sub}</div>
           </div>
         ))}
       </div>
@@ -294,6 +455,77 @@ function AgeGuide() {
 }
 
 // ============================================================
+// Social Proof / Trust Section
+// ============================================================
+function SocialProof() {
+  return (
+    <section className="px-5 py-10 max-w-3xl mx-auto bg-warm-50">
+      <p className="section-label">選ばれる理由</p>
+      <h2 className="section-title mb-6">保護者が安心して通わせられる理由</h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {[
+          {
+            icon: '🏟️',
+            title: '市内5会場・週6日開催',
+            desc: '家の近くで通いやすい。振替も柔軟に対応できます。',
+          },
+          {
+            icon: '👨‍🏫',
+            title: '教室ごとの専門指導者',
+            desc: '大学陸上部コーチから元選手まで、各教室に専門の指導者が在籍。',
+          },
+          {
+            icon: '💰',
+            title: '安心の価格設定',
+            desc: '月額¥3,300〜¥6,600の明朗会計。兄弟割引あり。',
+          },
+        ].map(({ icon, title, desc }) => (
+          <div key={title} className="bg-white rounded-xl p-5 text-center border border-warm-200">
+            <div className="text-2xl mb-2">{icon}</div>
+            <div className="font-bold text-sm text-brand-navy mb-1">{title}</div>
+            <div className="text-xs text-gray-500 leading-relaxed">{desc}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// FAQ Section
+// ============================================================
+function FAQ() {
+  const faqs = [
+    { q: '運動が苦手でも大丈夫？', a: 'はい。年中〜小1向けのアプローチクラスから始められます。楽しく体を動かすことから始めるので安心です。' },
+    { q: '体験は何回できますか？', a: '各教室1回ずつ無料で体験できます。複数の教室を体験して比較するのもおすすめです。' },
+    { q: '途中で教室を変えられる？', a: 'はい。同じ月額内で別の教室への振替・変更が可能です。曜日やレベルに合わせて柔軟に対応します。' },
+    { q: '雨の日はどうなりますか？', a: '屋外教室は雨天中止です。スポレクプラザは屋内施設なので天候に左右されません。' },
+    { q: '兄弟で通うと割引はある？', a: 'はい。同一世帯2人目以降は入会手数料が半額（¥2,750）になります。' },
+  ]
+
+  return (
+    <section className="px-5 py-10 max-w-3xl mx-auto">
+      <p className="section-label">よくある質問</p>
+      <h2 className="section-title mb-6">Q&A</h2>
+      <div className="space-y-3">
+        {faqs.map(({ q, a }) => (
+          <details key={q} className="group bg-warm-50 rounded-xl overflow-hidden">
+            <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-brand-navy flex items-center justify-between list-none">
+              <span>Q. {q}</span>
+              <span className="text-brand-orange transition-transform group-open:rotate-45 text-lg">+</span>
+            </summary>
+            <div className="px-4 pb-3 text-sm text-gray-500 leading-relaxed">
+              A. {a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
 // Sticky CTA
 // ============================================================
 function StickyCTA() {
@@ -320,7 +552,7 @@ function Footer() {
     <footer className="bg-brand-navy text-center px-5 py-8">
       <div className="font-display text-white font-bold text-sm mb-1">STARTUS sports academy</div>
       <p className="text-white/35 text-[10px] leading-relaxed">
-        NPO法人かなざわ総合スポーツクラブ
+        かなざわ総合スポーツクラブ
         <br />〒921-8022 金沢市中村町26-43 VIDA金沢2階
         <br />TEL 076-287-3789（10:00〜16:00）
       </p>
@@ -333,6 +565,18 @@ function Footer() {
 // ============================================================
 export default function RikujoLP() {
   const [activeVenue, setActiveVenue] = useState<string | null>(null)
+  const [selectedClass, setSelectedClass] = useState<ClassData | null>(null)
+  const venueDetailRef = useRef<HTMLDivElement>(null)
+
+  // Scroll to venue detail when a venue is selected
+  function handleVenueSelect(venueId: string | null) {
+    setActiveVenue(venueId)
+    if (venueId) {
+      setTimeout(() => {
+        venueDetailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }, 100)
+    }
+  }
 
   return (
     <main>
@@ -343,13 +587,13 @@ export default function RikujoLP() {
       <section id="map" className="px-5 py-10 max-w-3xl mx-auto">
         <p className="section-label">step 1</p>
         <h2 className="section-title mb-1">近くの会場をタップ</h2>
-        <p className="text-sm text-gray-500 mb-4">お住まいの地域から一番近い会場を見つけましょう</p>
-        <VenueMap activeVenue={activeVenue} onSelect={setActiveVenue} />
+        <p className="text-sm text-gray-500 mb-4">会場を選ぶと、その会場の教室一覧が表示されます</p>
+        <VenueMap activeVenue={activeVenue} onSelect={handleVenueSelect} />
 
         {/* Venue legend buttons */}
         <div className="flex flex-wrap gap-1.5 mt-3">
           <button
-            onClick={() => setActiveVenue(null)}
+            onClick={() => handleVenueSelect(null)}
             className={`text-[10px] px-2.5 py-1 rounded-full border transition-all ${
               !activeVenue ? 'bg-brand-orange-light border-brand-orange text-brand-navy font-bold' : 'bg-white border-warm-200 text-gray-500 hover:border-brand-orange'
             }`}
@@ -358,18 +602,33 @@ export default function RikujoLP() {
           </button>
           {venues
             .filter(v => ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec'].includes(v.id))
-            .map(v => (
-              <button
-                key={v.id}
-                onClick={() => setActiveVenue(activeVenue === v.id ? null : v.id)}
-                className={`text-[10px] px-2.5 py-1 rounded-full border transition-all flex items-center gap-1 ${
-                  activeVenue === v.id ? 'bg-brand-orange-light border-brand-orange text-brand-navy font-bold' : 'bg-white border-warm-200 text-gray-500 hover:border-brand-orange'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: v.color }} />
-                {v.shortName}
-              </button>
-            ))}
+            .map(v => {
+              const classCount = trackClasses.filter(c => c.venueId === v.id).length
+              return (
+                <button
+                  key={v.id}
+                  onClick={() => handleVenueSelect(activeVenue === v.id ? null : v.id)}
+                  className={`text-[10px] px-2.5 py-1 rounded-full border transition-all flex items-center gap-1 ${
+                    activeVenue === v.id ? 'bg-brand-orange text-white border-brand-orange font-bold' : 'bg-white border-warm-200 text-gray-500 hover:border-brand-orange'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: activeVenue === v.id ? '#fff' : v.color }} />
+                  {v.shortName}
+                  <span className={`text-[8px] ${activeVenue === v.id ? 'text-white/80' : 'text-gray-400'}`}>({classCount})</span>
+                </button>
+              )
+            })}
+        </div>
+
+        {/* Venue detail card */}
+        <div ref={venueDetailRef}>
+          {activeVenue ? (
+            <VenueDetail venueId={activeVenue} onClassSelect={setSelectedClass} />
+          ) : (
+            <div className="mt-4 bg-warm-50 border border-dashed border-warm-200 rounded-xl p-6 text-center animate-fadeIn">
+              <p className="text-sm text-gray-400">上のボタンから会場を選ぶと<br />教室一覧が表示されます</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -377,11 +636,14 @@ export default function RikujoLP() {
       <section id="matrix" className="px-5 py-10 bg-brand-orange-light max-w-3xl mx-auto">
         <p className="section-label">step 2</p>
         <h2 className="section-title mb-1">曜日と教室をくらべる</h2>
-        <p className="text-sm text-gray-500 mb-4">横スクロールで全曜日を確認。教室をタップで詳細表示。</p>
-        <ClassMatrix activeVenue={activeVenue} />
+        <p className="text-sm text-gray-500 mb-4">教室をタップすると詳細情報・指導者が確認できます</p>
+        <ClassMatrix activeVenue={activeVenue} onClassSelect={setSelectedClass} />
       </section>
 
-      {/* 4. Growth / Data Section */}
+      {/* 4. Social Proof */}
+      <SocialProof />
+
+      {/* 5. Growth / Data Section */}
       <section className="px-5 py-10 max-w-3xl mx-auto">
         <p className="section-label">成長の見える化</p>
         <h2 className="section-title mb-2">データで成長が見える指導</h2>
@@ -405,13 +667,16 @@ export default function RikujoLP() {
         </div>
       </section>
 
-      {/* 5. Price */}
+      {/* 6. Price */}
       <PriceSection />
 
-      {/* 6. Age Guide */}
+      {/* 7. Age Guide */}
       <AgeGuide />
 
-      {/* 7. Bottom CTA */}
+      {/* 8. FAQ */}
+      <FAQ />
+
+      {/* 9. Bottom CTA */}
       <section className="bg-brand-navy px-5 py-12 text-center">
         <p className="text-white/80 text-base mb-2">
           まずは気軽に<span className="font-bold text-brand-orange">無料体験</span>から。
@@ -428,6 +693,11 @@ export default function RikujoLP() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Class Detail Modal */}
+      {selectedClass && (
+        <ClassDetailModal cls={selectedClass} onClose={() => setSelectedClass(null)} />
+      )}
     </main>
   )
 }

@@ -1,6 +1,9 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  // Vercel builds with Turbopack by default but the project uses webpack
+  // to avoid potential unicode path issues
+
   // 旧WordPress URLからのリダイレクト
   async redirects() {
     return [
