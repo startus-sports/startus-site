@@ -4,7 +4,7 @@ import RikujoLP from './RikujoLP'
 
 export const metadata: Metadata = {
   title: '金沢の陸上教室・かけっこ教室 | STARTUS sports academy',
-  description: '金沢市内6会場で毎日開催。かけっこから陸上競技まで、12教室から曜日・会場を選べます。月額¥3,300〜。無料体験受付中。NPO法人かなざわ総合スポーツクラブ運営。',
+  description: '金沢市内5会場で毎日開催。かけっこから陸上競技まで、曜日・会場を選べます。月額¥3,300〜。無料体験受付中。',
   openGraph: {
     title: '金沢の陸上教室・かけっこ教室 | STARTUS',
     description: '金沢市内6会場で毎日開催。12教室から曜日・会場を選べる陸上教室。月額¥3,300〜。無料体験受付中。',
@@ -27,7 +27,7 @@ const jsonLd = {
     addressCountry: 'JP',
   },
   telephone: '076-287-3789',
-  priceRange: '¥3,300〜¥8,800',
+  priceRange: '¥3,300〜¥9,900',
 }
 
 export default function RikujoPage() {

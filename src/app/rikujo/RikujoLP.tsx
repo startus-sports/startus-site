@@ -215,28 +215,26 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
 }
 
 // ============================================================
-// Venue Map using Google Maps Embed + venue cards
+// Venue Map using Leaflet (OpenStreetMap) + venue cards
 // ============================================================
+import dynamic from 'next/dynamic'
+
+// Leaflet must be loaded client-side only
+const LeafletMap = dynamic(() => import('./LeafletMap'), { ssr: false })
+
 function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSelect: (id: string | null) => void }) {
   const trackVenueIds = ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec']
   const trackVenues = venues.filter(v => trackVenueIds.includes(v.id))
 
-  // Build map URL: place mode always shows a pin
-  const activeV = activeVenue ? venues.find(v => v.id === activeVenue) : null
-  const mapSrc = activeV
-    ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(activeV.name + ' ' + activeV.address)}&zoom=15&language=ja`
-    : `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent('金沢市営陸上競技場 石川県金沢市弥生3丁目5-1')}&zoom=12&language=ja`
-
   return (
     <div className="space-y-3">
-      {/* Map */}
+      {/* Map with all venue markers */}
       <div className="relative rounded-2xl overflow-hidden border border-warm-200">
-        <iframe
-          title="会場マップ"
-          className="w-full h-56 md:h-72"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          src={mapSrc}
+        <LeafletMap
+          venues={trackVenues}
+          activeVenue={activeVenue}
+          onSelect={onSelect}
+          classCounts={Object.fromEntries(trackVenues.map(v => [v.id, trackClasses.filter(c => c.venueId === v.id).length]))}
         />
       </div>
 
@@ -396,7 +394,7 @@ function PriceSection() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
           { label: '基本教室', price: '¥6,600', note: '/月', sub: 'かけっこ塾・泉・西部・中村町・スポレク' },
-          { label: 'るぶげる親子', price: '¥9,900', note: '/月', sub: '親子で参加の陸上塾' },
+          { label: 'るぶげる親子', price: '¥9,900', note: '/月', sub: '親子で参加の陸上教室' },
           { label: 'インクルーシブ', price: '¥3,300', note: '/月', sub: '障がいの有無を問わず' },
           { label: '大人のマラソン', price: '¥3,300', note: '/月', sub: '中学生〜大人対象' },
         ].map(({ label, price, note, sub }) => (
@@ -499,8 +497,8 @@ function SocialProof() {
           },
           {
             icon: '💰',
-            title: '安心の価格設定',
-            desc: '月額¥3,300〜¥6,600の明朗会計。兄弟割引あり。',
+            title: 'わかりやすい月額制',
+            desc: '月額¥3,300〜¥9,900の明朗会計。兄弟割引あり。',
           },
         ].map(({ icon, title, desc }) => (
           <div key={title} className="bg-white rounded-xl p-5 text-center border border-warm-200">
