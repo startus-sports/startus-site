@@ -221,11 +221,11 @@ function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSel
   const trackVenueIds = ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec']
   const trackVenues = venues.filter(v => trackVenueIds.includes(v.id))
 
-  // Build map URL: show selected venue with pin, or overview of all venues
+  // Build map URL: place mode always shows a pin
   const activeV = activeVenue ? venues.find(v => v.id === activeVenue) : null
   const mapSrc = activeV
-    ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(activeV.name)}&center=${activeV.lat},${activeV.lng}&zoom=15&language=ja`
-    : `https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=36.565,136.650&zoom=12&language=ja`
+    ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(activeV.name + ' ' + activeV.address)}&zoom=15&language=ja`
+    : `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent('金沢市営陸上競技場 石川県金沢市弥生3丁目5-1')}&zoom=12&language=ja`
 
   return (
     <div className="space-y-3">
