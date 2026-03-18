@@ -215,54 +215,76 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
 }
 
 // ============================================================
-// Map Section (Google Maps with markers)
+// Venue Map using Google Maps Embed + venue cards
 // ============================================================
 function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSelect: (id: string | null) => void }) {
   const trackVenueIds = ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec']
   const trackVenues = venues.filter(v => trackVenueIds.includes(v.id))
 
-  // Build Google Maps Static API URL with markers
-  const center = activeVenue
-    ? venues.find(v => v.id === activeVenue)
-    : null
-
-  const mapLat = center?.lat ?? 36.565
-  const mapLng = center?.lng ?? 136.650
-  const mapZoom = activeVenue ? 15 : 12
-
-  // Use Google Maps Embed with place mode for selected venue
-  const mapSrc = activeVenue && center
-    ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(center.name + ' ' + center.address)}&center=${center.lat},${center.lng}&zoom=${mapZoom}&language=ja`
-    : `https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=${mapLat},${mapLng}&zoom=${mapZoom}&language=ja`
+  // Build map URL: show selected venue with pin, or overview of all venues
+  const activeV = activeVenue ? venues.find(v => v.id === activeVenue) : null
+  const mapSrc = activeV
+    ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(activeV.name)}&center=${activeV.lat},${activeV.lng}&zoom=15&language=ja`
+    : `https://www.google.com/maps/embed/v1/view?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&center=36.565,136.650&zoom=12&language=ja`
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-warm-200">
-      <iframe
-        title="会場マップ"
-        className="w-full h-64 md:h-80"
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        src={mapSrc}
-      />
+    <div className="space-y-3">
+      {/* Map */}
+      <div className="relative rounded-2xl overflow-hidden border border-warm-200">
+        <iframe
+          title="会場マップ"
+          className="w-full h-56 md:h-72"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          src={mapSrc}
+        />
+      </div>
 
-      {/* Venue quick-select chips overlay */}
-      <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 justify-center">
+      {/* Venue cards grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
         {trackVenues.map(v => {
           const classCount = trackClasses.filter(c => c.venueId === v.id).length
           const isActive = activeVenue === v.id
+
           return (
             <button
               key={v.id}
               onClick={() => onSelect(isActive ? null : v.id)}
-              className={`text-[10px] px-2.5 py-1.5 rounded-full border transition-all flex items-center gap-1 shadow-sm backdrop-blur-sm ${
+              className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all active:scale-[0.97] ${
                 isActive
-                  ? 'bg-brand-orange text-white border-brand-orange font-bold'
-                  : 'bg-white/90 border-white/50 text-brand-navy hover:border-brand-orange'
+                  ? 'border-brand-orange bg-brand-orange-light shadow-md'
+                  : 'border-warm-200 bg-white hover:border-brand-orange/50 hover:shadow-sm'
               }`}
             >
-              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: isActive ? '#fff' : v.color }} />
-              {v.shortName}
-              <span className={`text-[8px] ${isActive ? 'text-white/80' : 'text-gray-400'}`}>({classCount})</span>
+              {/* Color dot + count badge */}
+              <div className="relative mb-1.5">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-base shadow-md"
+                  style={{ backgroundColor: v.color }}
+                >
+                  {classCount}
+                </div>
+                {isActive && (
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-brand-orange rounded-full flex items-center justify-center">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
+                      <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Venue name */}
+              <span className={`text-xs font-bold text-center leading-tight ${isActive ? 'text-brand-orange' : 'text-brand-navy'}`}>
+                {v.shortName}
+              </span>
+
+              {/* Area label */}
+              <span className="text-[9px] text-gray-400 mt-0.5">{v.area}</span>
+
+              {/* Class count label */}
+              <span className={`text-[9px] mt-1 ${isActive ? 'text-brand-orange' : 'text-gray-400'}`}>
+                {classCount}教室
+              </span>
             </button>
           )
         })}
