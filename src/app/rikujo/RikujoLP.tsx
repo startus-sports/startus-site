@@ -215,12 +215,12 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
 }
 
 // ============================================================
-// Venue Map using Google Maps JS API + venue cards
+// Venue Map using Leaflet (OpenStreetMap) + venue cards
 // ============================================================
 import dynamic from 'next/dynamic'
 
-// Google Maps must be loaded client-side only
-const GoogleMapComponent = dynamic(() => import('./GoogleMap'), { ssr: false })
+// Leaflet must be loaded client-side only
+const LeafletMap = dynamic(() => import('./LeafletMap'), { ssr: false })
 
 function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSelect: (id: string | null) => void }) {
   const trackVenueIds = ['shiei', 'nakamura', 'seibu', 'inoki', 'sporec']
@@ -230,7 +230,7 @@ function VenueMap({ activeVenue, onSelect }: { activeVenue: string | null; onSel
     <div className="space-y-3">
       {/* Map with all venue markers */}
       <div className="relative rounded-2xl overflow-hidden border border-warm-200">
-        <GoogleMapComponent
+        <LeafletMap
           venues={trackVenues}
           activeVenue={activeVenue}
           onSelect={onSelect}
