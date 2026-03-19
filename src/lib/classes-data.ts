@@ -1,3 +1,5 @@
+export type ClassLevel = 'beginner' | 'basic' | 'intermediate' | 'advanced' | 'marathon' | 'parent' | 'inclusive' | 'adult'
+
 export type ClassData = {
   id: string
   name: string
@@ -10,10 +12,28 @@ export type ClassData = {
   age: string
   price: number
   instructor: string
+  instructorTitle?: string
   description: string
+  level: ClassLevel
+  levelLabel: string
+  levelStars: 1 | 2 | 3
+  oneLiner: string
+  recommendFor: string
+  lessonContent: string
   tags?: string[]
   isNew?: boolean
   isPopular?: boolean
+}
+
+export const levelConfig: Record<ClassLevel, { label: string; stars: 1 | 2 | 3; color: string; bgColor: string }> = {
+  beginner:     { label: 'はじめて',   stars: 1, color: '#22C55E', bgColor: '#F0FDF4' },
+  basic:        { label: '基本',       stars: 2, color: '#3B82F6', bgColor: '#EFF6FF' },
+  intermediate: { label: '発展',       stars: 3, color: '#F97316', bgColor: '#FFF7ED' },
+  marathon:     { label: 'マラソン',   stars: 2, color: '#8B5CF6', bgColor: '#F5F3FF' },
+  advanced:     { label: '上級',       stars: 3, color: '#EF4444', bgColor: '#FEF2F2' },
+  parent:       { label: '親子',       stars: 2, color: '#EC4899', bgColor: '#FDF2F8' },
+  inclusive:    { label: 'インクルーシブ', stars: 1, color: '#06B6D4', bgColor: '#ECFEFF' },
+  adult:        { label: '大人向け',   stars: 2, color: '#6B7280', bgColor: '#F9FAFB' },
 }
 
 export const venues = [
@@ -26,6 +46,7 @@ export const venues = [
 ] as const
 
 export const trackClasses: ClassData[] = [
+  // ── 稲置学園 ──
   {
     id: 'kakekko-hop',
     name: 'かけっこ塾（ホップ・ステップ・ジャンプ）',
@@ -38,7 +59,14 @@ export const trackClasses: ClassData[] = [
     age: '小2〜中学生',
     price: 6600,
     instructor: '金沢星稜大学陸上競技部、スタータススタッフ',
+    instructorTitle: '星稜大学陸上部の現役大学生が直接指導',
     description: '金沢星稜大学陸上部の大学生が楽しく指導！専用の陸上競技場で、走る喜びを体感しながら運動能力を伸ばせる人気教室！',
+    level: 'intermediate',
+    levelLabel: '発展',
+    levelStars: 3,
+    oneLiner: '大学生と一緒に走力アップ！',
+    recommendFor: 'もっと速く走りたい子、大会に挑戦したい子',
+    lessonContent: 'ウォーミングアップ → スタート練習・フォーム改善 → スプリントトレーニング → ミニレース・タイム計測',
     tags: ['人気No.1'],
     isPopular: true,
   },
@@ -54,8 +82,16 @@ export const trackClasses: ClassData[] = [
     age: '年中〜小1',
     price: 6600,
     instructor: '星稜大学陸上競技部、スタータススタッフ',
-    description: 'かけっこ塾と合同開催。小さなお子様向けのやさしいプログラム。',
+    instructorTitle: '大学生のお兄さん・お姉さんと楽しく',
+    description: 'かけっこ塾と合同開催。小さなお子様向けのやさしいプログラムで、走る楽しさを知る第一歩。',
+    level: 'beginner',
+    levelLabel: 'はじめて',
+    levelStars: 1,
+    oneLiner: '走る楽しさを知る第一歩',
+    recommendFor: '初めて習い事をするお子さん、運動に自信がない子',
+    lessonContent: '遊びの中で体を動かす → かけっこの基本動作 → みんなで楽しくリレー',
   },
+  // ── 市営陸上競技場 ──
   {
     id: 'izumi-junior',
     name: '陸上 泉（ジュニア）',
@@ -68,7 +104,14 @@ export const trackClasses: ClassData[] = [
     age: '小学〜中学生',
     price: 6600,
     instructor: '山本 勝裕（やまティー）',
-    description: 'エビデンスと理論で一歩進んだレッスン。フィードバックシートなど手厚い指導が定評。',
+    instructorTitle: 'エビデンスに基づく理論派コーチ',
+    description: 'エビデンスと理論で一歩進んだレッスン。フィードバックシートによる手厚い個別指導が定評。',
+    level: 'intermediate',
+    levelLabel: '発展',
+    levelStars: 3,
+    oneLiner: 'データと理論でタイムを伸ばす',
+    recommendFor: 'タイムを本格的に伸ばしたい子、理論的な指導を受けたい子',
+    lessonContent: 'ドリル → フォーム分析・改善 → 種目別トレーニング → タイム計測・フィードバック',
   },
   {
     id: 'izumi-kids',
@@ -82,8 +125,16 @@ export const trackClasses: ClassData[] = [
     age: '小学生',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
-    description: 'スポーツ、陸上を好きになる楽しいプログラム。走り、投げ、跳びを行い、親密な指導が定評。',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: 'スポーツを好きになる楽しいプログラム。走り・投げ・跳びをバランスよく行い、親密な指導が定評。',
+    level: 'basic',
+    levelLabel: '基本',
+    levelStars: 2,
+    oneLiner: '走る・跳ぶ・投げるを楽しく',
+    recommendFor: '運動の基礎を身につけたい子、いろんな種目を試したい子',
+    lessonContent: 'ウォーミングアップ → 走り・跳び・投げの基本練習 → ゲーム形式のトレーニング',
   },
+  // ── 西部緑地 ──
   {
     id: 'seibu-junior',
     name: '陸上 西部（ジュニア）',
@@ -96,7 +147,14 @@ export const trackClasses: ClassData[] = [
     age: '小学〜中学生',
     price: 6600,
     instructor: '須田崇',
-    description: '',
+    instructorTitle: '基礎から応用まで丁寧に指導',
+    description: '西部エリアで通いやすい教室。基礎から応用まで、一人ひとりのレベルに合わせた指導。',
+    level: 'intermediate',
+    levelLabel: '発展',
+    levelStars: 3,
+    oneLiner: 'レベルに合わせてステップアップ',
+    recommendFor: '西部エリアにお住まいの方、しっかり実力をつけたい子',
+    lessonContent: 'ウォーミングアップ → 基礎ドリル → スプリント・種目練習 → クールダウン',
   },
   {
     id: 'seibu-kids',
@@ -110,8 +168,16 @@ export const trackClasses: ClassData[] = [
     age: '小学生',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
-    description: '',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: '西部エリアのキッズ向け。楽しみながら走る基本を身につけます。',
+    level: 'basic',
+    levelLabel: '基本',
+    levelStars: 2,
+    oneLiner: '楽しみながら走りの基本を',
+    recommendFor: '西部エリアにお住まいの方、運動を始めたい小学生',
+    lessonContent: 'ウォーミングアップ → かけっこの基本 → 走り・跳び・投げの体験 → ミニゲーム',
   },
+  // ── 中村町小 ──
   {
     id: 'nakamura-kakekko',
     name: '陸上 中村町（かけっこ・キッズ）',
@@ -124,7 +190,14 @@ export const trackClasses: ClassData[] = [
     age: '小学生',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
-    description: '',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: '学校のグラウンドで気軽に参加。走ることが好きになるキッズ向け教室。',
+    level: 'basic',
+    levelLabel: '基本',
+    levelStars: 2,
+    oneLiner: '学校帰りにそのまま参加！',
+    recommendFor: '中村町エリアの小学生、放課後に通いたい子',
+    lessonContent: 'ウォーミングアップ → かけっこフォーム練習 → リレー・ミニレース',
   },
   {
     id: 'nakamura-junior',
@@ -138,7 +211,14 @@ export const trackClasses: ClassData[] = [
     age: '小学〜中学生',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
-    description: '',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: 'キッズと合同開催。より発展的な内容でスプリント力を磨きます。',
+    level: 'intermediate',
+    levelLabel: '発展',
+    levelStars: 3,
+    oneLiner: 'スプリント力を本格的に磨く',
+    recommendFor: 'かけっこの基本ができている子、もっと速くなりたい子',
+    lessonContent: 'ウォーミングアップ → スタート・加速の練習 → スプリントトレーニング → タイム計測',
   },
   {
     id: 'nakamura-marathon-kids',
@@ -152,7 +232,14 @@ export const trackClasses: ClassData[] = [
     age: '小学生',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
-    description: '',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: '持久走が苦手な子も大丈夫。ペース配分を楽しく学べるマラソン入門。',
+    level: 'marathon',
+    levelLabel: 'マラソン',
+    levelStars: 2,
+    oneLiner: '持久走が楽しくなる！',
+    recommendFor: 'マラソン大会に出たい子、持久走が苦手な子',
+    lessonContent: 'ジョグ → ペース走の練習 → インターバル走 → クールダウン',
   },
   {
     id: 'nakamura-marathon-junior',
@@ -166,8 +253,16 @@ export const trackClasses: ClassData[] = [
     age: '小学〜中学生',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
-    description: '',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: 'より長い距離に挑戦。大会出場を目指す本格マラソントレーニング。',
+    level: 'marathon',
+    levelLabel: 'マラソン',
+    levelStars: 2,
+    oneLiner: '大会出場を目指すトレーニング',
+    recommendFor: 'マラソン大会で上位を目指す子、長距離が好きな子',
+    lessonContent: 'ウォーミングアップ → ペース走・ビルドアップ走 → レースシミュレーション',
   },
+  // ── スポレク ──
   {
     id: 'sporec-kids',
     name: '陸上 スポレク（キッズ）',
@@ -180,7 +275,14 @@ export const trackClasses: ClassData[] = [
     age: '年中〜小学生',
     price: 6600,
     instructor: '須田崇',
-    description: '',
+    instructorTitle: '基礎から応用まで丁寧に指導',
+    description: '屋内施設なので雨でも安心。年中さんから参加でき、運動の基礎を楽しく身につけます。',
+    level: 'beginner',
+    levelLabel: 'はじめて',
+    levelStars: 1,
+    oneLiner: '雨でも安心！屋内で楽しく',
+    recommendFor: '天候を気にせず通いたい方、初めての習い事にぴったり',
+    lessonContent: '体をほぐす遊び → 走り方の基本 → 跳ぶ・投げるの体験 → みんなで楽しくゲーム',
   },
   {
     id: 'sporec-junior',
@@ -194,8 +296,16 @@ export const trackClasses: ClassData[] = [
     age: '小学生',
     price: 6600,
     instructor: '須田崇',
-    description: '',
+    instructorTitle: '基礎から応用まで丁寧に指導',
+    description: '屋内施設で天候に左右されない。基礎を固めて次のレベルへ。',
+    level: 'basic',
+    levelLabel: '基本',
+    levelStars: 2,
+    oneLiner: '天候に左右されず基礎固め',
+    recommendFor: '安定して毎週通いたい子、基礎力を高めたい子',
+    lessonContent: 'ウォーミングアップ → 走りのフォーム改善 → 種目練習 → タイムトライアル',
   },
+  // ── 市営陸上 マラソン系 ──
   {
     id: 'marathon-kids',
     name: 'マラソン塾（キッズ）',
@@ -208,7 +318,14 @@ export const trackClasses: ClassData[] = [
     age: '小学生',
     price: 6600,
     instructor: '松井 久',
-    description: '',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: '本格的な陸上競技場で持久力を鍛える。マラソン大会に向けた実践的な練習。',
+    level: 'marathon',
+    levelLabel: 'マラソン',
+    levelStars: 2,
+    oneLiner: '競技場で本格マラソン練習',
+    recommendFor: 'マラソン大会に挑戦したい子、持久力をつけたい子',
+    lessonContent: 'ジョグ → ペース走 → インターバル走 → クールダウン・ストレッチ',
   },
   {
     id: 'marathon-junior',
@@ -222,8 +339,16 @@ export const trackClasses: ClassData[] = [
     age: '小学〜中学生',
     price: 6600,
     instructor: '松井 久',
-    description: '',
+    instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
+    description: 'ジュニア向けの本格マラソントレーニング。レースを意識した実戦的な練習。',
+    level: 'marathon',
+    levelLabel: 'マラソン',
+    levelStars: 2,
+    oneLiner: 'レースを意識した実戦練習',
+    recommendFor: '大会で上位入賞を目指す子、長距離をもっと伸ばしたい子',
+    lessonContent: 'ウォーミングアップ → ビルドアップ走・テンポ走 → レースペース走 → ストレッチ',
   },
+  // ── 大人・インクルーシブ ──
   {
     id: 'otona-marathon',
     name: '大人のマラソン塾',
@@ -236,7 +361,14 @@ export const trackClasses: ClassData[] = [
     age: '中学〜大人',
     price: 3300,
     instructor: '松井 久（Qちゃん） 他',
-    description: 'サブ4からマラソン完走、健康維持まで幅広く対応。',
+    instructorTitle: 'ベテランランナーが伴走',
+    description: 'サブ4からマラソン完走、健康維持まで幅広く対応。大人の仲間と一緒に走れます。',
+    level: 'adult',
+    levelLabel: '大人向け',
+    levelStars: 2,
+    oneLiner: '大人の仲間と一緒に走る',
+    recommendFor: 'マラソンを始めたい大人、健康維持のために走りたい方',
+    lessonContent: 'ウォーミングアップ → ペース走・LSD → グループラン → ストレッチ',
   },
   {
     id: 'inclusive-running',
@@ -250,7 +382,14 @@ export const trackClasses: ClassData[] = [
     age: '小学〜大人',
     price: 3300,
     instructor: '橋本 祐之 他',
-    description: '障がいの有無にかかわらず参加可能。スポット参加OK。',
+    instructorTitle: 'インクルーシブスポーツの専門家',
+    description: '障がいの有無にかかわらず参加可能。スポット参加もOK。みんなで一緒に走る喜びを。',
+    level: 'inclusive',
+    levelLabel: 'インクルーシブ',
+    levelStars: 1,
+    oneLiner: 'みんなで一緒に走る喜びを',
+    recommendFor: '障がいの有無を問わず参加したい方、スポット参加したい方',
+    lessonContent: '体ほぐし → 各自のペースでランニング → グループアクティビティ → クールダウン',
   },
   {
     id: 'shunpu',
@@ -264,21 +403,36 @@ export const trackClasses: ClassData[] = [
     age: '中学〜大人',
     price: 3300,
     instructor: '橋本 祐之 他',
-    description: '障がいのある方が安心して陸上を楽しめるクラブ。',
+    instructorTitle: 'インクルーシブスポーツの専門家',
+    description: '障がいのある方が安心して陸上を楽しめるクラブ。仲間と一緒に走る楽しさを。',
+    level: 'inclusive',
+    levelLabel: 'インクルーシブ',
+    levelStars: 1,
+    oneLiner: '安心して陸上を楽しめる',
+    recommendFor: '障がいのある方、安心できる環境で走りたい方',
+    lessonContent: '体ほぐし → 各自のペースでの練習 → グループ活動 → クールダウン',
   },
+  // ── るぶげる親子 ──
   {
     id: 'rubugeru',
     name: 'るぶげる親子陸上塾',
     shortName: 'るぶげる親子',
     sport: 'track',
-    venue: '金沢市営陸上競技場',
-    venueId: 'shiei',
+    venue: '中村町小学校',
+    venueId: 'nakamura',
     day: '土・日',
     time: '13:00〜14:30',
     age: '小学〜大人',
     price: 9900,
     instructor: '山本 勝裕（やまティー）',
-    description: '親子で向き合い、成長を真剣に、楽しく取り組める時間。',
+    instructorTitle: 'エビデンスに基づく理論派コーチ',
+    description: '親子で向き合い、成長を真剣に、楽しく取り組める時間。エビデンスに基づいた指導で親子一緒に上達。',
+    level: 'parent',
+    levelLabel: '親子',
+    levelStars: 2,
+    oneLiner: '親子で一緒に成長する時間',
+    recommendFor: 'お子さんと一緒に運動を楽しみたい保護者、親子の絆を深めたい方',
+    lessonContent: '親子ウォーミングアップ → 走り方の基本を親子で → チーム対抗レース → 振り返り',
     isNew: true,
   },
 ]

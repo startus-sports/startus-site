@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { trackClasses, venues } from '@/lib/classes-data'
+import { trackClasses, venues, levelConfig } from '@/lib/classes-data'
 import type { ClassData } from '@/lib/classes-data'
 
 // ============================================================
@@ -75,45 +75,60 @@ function VenueDetail({ venueId, onClassSelect }: { venueId: string; onClassSelec
         {childClasses.length > 0 && (
           <>
             <div className="text-[10px] font-bold text-brand-orange mb-1">子ども向け教室（{childClasses.length}件）</div>
-            {childClasses.map(cls => (
-              <button
-                key={cls.id}
-                onClick={() => onClassSelect(cls)}
-                className="w-full text-left p-3 rounded-lg border border-warm-200 hover:border-brand-orange hover:bg-brand-orange-light transition-all active:scale-[0.98]"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-xs text-brand-navy">{cls.shortName}</span>
-                      {cls.isPopular && <span className="text-[8px] bg-brand-orange/10 text-brand-orange font-bold px-1 py-px rounded">人気</span>}
-                      {cls.isNew && <span className="text-[8px] bg-blue-50 text-blue-600 font-bold px-1 py-px rounded">NEW</span>}
+            {childClasses.map(cls => {
+              const lc = levelConfig[cls.level]
+              return (
+                <button
+                  key={cls.id}
+                  onClick={() => onClassSelect(cls)}
+                  className="w-full text-left p-3 rounded-lg border border-warm-200 hover:border-brand-orange hover:bg-brand-orange-light transition-all active:scale-[0.98]"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-bold text-xs text-brand-navy">{cls.shortName}</span>
+                        {cls.isPopular && <span className="text-[8px] bg-brand-orange/10 text-brand-orange font-bold px-1 py-px rounded">人気</span>}
+                        {cls.isNew && <span className="text-[8px] bg-blue-50 text-blue-600 font-bold px-1 py-px rounded">NEW</span>}
+                        <span className="text-[8px] font-bold px-1.5 py-px rounded" style={{ backgroundColor: lc.bgColor, color: lc.color }}>
+                          {'★'.repeat(lc.stars)}{'☆'.repeat(3 - lc.stars)} {lc.label}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-gray-600 mt-1 font-medium">{cls.oneLiner}</div>
+                      <div className="text-[10px] text-gray-400 mt-0.5">{cls.day} {cls.time} ｜ {cls.age} ｜ ¥{cls.price.toLocaleString()}/月</div>
                     </div>
-                    <div className="text-[10px] text-gray-400 mt-0.5">{cls.day} {cls.time} ｜ {cls.age} ｜ ¥{cls.price.toLocaleString()}/月</div>
+                    <span className="text-brand-orange text-sm flex-shrink-0 ml-2 mt-1">詳細 →</span>
                   </div>
-                  <span className="text-brand-orange text-sm flex-shrink-0 ml-2">詳細 →</span>
-                </div>
-              </button>
-            ))}
+                </button>
+              )
+            })}
           </>
         )}
         {otherClasses.length > 0 && (
           <>
             <div className="text-[10px] font-bold text-gray-400 mt-3 mb-1">その他の教室</div>
-            {otherClasses.map(cls => (
-              <button
-                key={cls.id}
-                onClick={() => onClassSelect(cls)}
-                className="w-full text-left p-2.5 rounded-lg border border-warm-100 hover:border-brand-orange hover:bg-brand-orange-light transition-all"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="font-bold text-xs text-gray-500">{cls.shortName}</span>
-                    <div className="text-[10px] text-gray-400 mt-0.5">{cls.day} {cls.time} ｜ {cls.age} ｜ ¥{cls.price.toLocaleString()}/月</div>
+            {otherClasses.map(cls => {
+              const lc = levelConfig[cls.level]
+              return (
+                <button
+                  key={cls.id}
+                  onClick={() => onClassSelect(cls)}
+                  className="w-full text-left p-2.5 rounded-lg border border-warm-100 hover:border-brand-orange hover:bg-brand-orange-light transition-all"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-bold text-xs text-gray-500">{cls.shortName}</span>
+                        <span className="text-[8px] font-bold px-1.5 py-px rounded" style={{ backgroundColor: lc.bgColor, color: lc.color }}>
+                          {lc.label}
+                        </span>
+                      </div>
+                      <div className="text-[10px] text-gray-400 mt-0.5">{cls.day} {cls.time} ｜ {cls.age} ｜ ¥{cls.price.toLocaleString()}/月</div>
+                    </div>
+                    <span className="text-gray-300 text-sm flex-shrink-0 ml-2">→</span>
                   </div>
-                  <span className="text-gray-300 text-sm flex-shrink-0 ml-2">→</span>
-                </div>
-              </button>
-            ))}
+                </button>
+              )
+            })}
           </>
         )}
       </div>
@@ -149,7 +164,13 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
         </div>
 
         <div className="px-5 py-4 space-y-4">
-          <div className="flex gap-2">
+          {/* Badges row */}
+          <div className="flex gap-2 flex-wrap">
+            {(() => { const lc = levelConfig[cls.level]; return (
+              <span className="inline-block text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: lc.bgColor, color: lc.color }}>
+                {'★'.repeat(lc.stars)}{'☆'.repeat(3 - lc.stars)} {lc.label}
+              </span>
+            )})()}
             {cls.isPopular && (
               <span className="inline-block text-xs bg-brand-orange/10 text-brand-orange font-bold px-2 py-1 rounded">人気No.1 教室</span>
             )}
@@ -158,10 +179,26 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
             )}
           </div>
 
+          {/* One-liner */}
+          <p className="text-base font-bold text-brand-navy">{cls.oneLiner}</p>
+
           {cls.description && (
             <p className="text-sm text-gray-600 leading-relaxed">{cls.description}</p>
           )}
 
+          {/* こんなお子さんにおすすめ */}
+          <div className="bg-green-50 border border-green-200 rounded-xl p-3.5">
+            <div className="text-xs font-bold text-green-700 mb-1">🎯 こんなお子さんにおすすめ</div>
+            <p className="text-sm text-green-800 leading-relaxed">{cls.recommendFor}</p>
+          </div>
+
+          {/* レッスン内容 */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3.5">
+            <div className="text-xs font-bold text-blue-700 mb-1">📋 レッスンの流れ</div>
+            <p className="text-sm text-blue-800 leading-relaxed">{cls.lessonContent}</p>
+          </div>
+
+          {/* 基本情報 */}
           <div className="bg-warm-50 rounded-xl p-4 space-y-2.5 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-400">会場</span>
@@ -183,9 +220,16 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
               <span className="text-gray-400">月会費</span>
               <span className="font-display font-bold text-brand-orange text-lg">¥{cls.price.toLocaleString()}<span className="text-xs text-gray-400 font-normal">/月</span></span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">指導者</span>
-              <span className="text-brand-navy text-right">{cls.instructor}</span>
+            <div className="border-t border-warm-200 pt-2.5">
+              <div className="flex justify-between items-start">
+                <span className="text-gray-400">指導者</span>
+                <div className="text-right">
+                  <span className="font-bold text-brand-navy">{cls.instructor}</span>
+                  {cls.instructorTitle && (
+                    <div className="text-[10px] text-gray-400 mt-0.5">{cls.instructorTitle}</div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -497,8 +541,8 @@ function SocialProof() {
           },
           {
             icon: '💰',
-            title: 'わかりやすい月額制',
-            desc: '月額¥3,300〜¥9,900の明朗会計。兄弟割引あり。',
+            title: '安心の月額制',
+            desc: '月額¥3,300〜¥9,900。明朗会計で追加料金なし。兄弟割引もあります。',
           },
         ].map(({ icon, title, desc }) => (
           <div key={title} className="bg-white rounded-xl p-5 text-center border border-warm-200">
@@ -572,7 +616,7 @@ function Footer() {
     <footer className="bg-brand-navy text-center px-5 py-8">
       <div className="font-display text-white font-bold text-sm mb-1">STARTUS sports academy</div>
       <p className="text-white/35 text-[10px] leading-relaxed">
-        かなざわ総合スポーツクラブ
+        運営：かなざわ総合スポーツクラブ
         <br />〒921-8022 金沢市中村町26-43 VIDA金沢2階
         <br />TEL 076-287-3789（10:00〜16:00）
       </p>
