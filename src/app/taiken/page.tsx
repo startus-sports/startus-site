@@ -44,6 +44,47 @@ export default function TaikenPage() {
             <p className="font-bold text-brand-orange mb-1">体験当日のご入会で入会金(¥5,500)が無料！</p>
             <p className="text-gray-500 text-xs">+ STARTUSオリジナルTシャツプレゼント</p>
           </div>
+
+          {/* 当日の持ち物 */}
+          <div className="bg-warm-50 border border-warm-200 rounded-xl p-4 mb-4 text-left">
+            <div className="font-bold text-sm text-brand-navy mb-2">🎒 体験当日の持ち物</div>
+            <ul className="text-sm text-gray-600 space-y-1.5">
+              {[
+                '運動できる服装（ジャージ・Tシャツ等）',
+                '運動靴（外履き用）',
+                '飲み物（水筒・ペットボトル）',
+                'タオル',
+                '着替え（必要に応じて）',
+              ].map(item => (
+                <li key={item} className="flex items-start gap-2">
+                  <span className="text-brand-orange mt-0.5">✓</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 当日の流れ */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 text-left">
+            <div className="font-bold text-sm text-blue-700 mb-2">📋 体験当日の流れ</div>
+            <ol className="text-sm text-blue-800 space-y-2">
+              {[
+                { time: '開始10分前', desc: '会場に到着・受付' },
+                { time: '開始', desc: 'ウォーミングアップから一緒に参加' },
+                { time: 'レッスン中', desc: '通常の教室に混ざって体験（約60分）' },
+                { time: '終了後', desc: 'スタッフから入会のご案内（5分程度）' },
+              ].map((s, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">{i + 1}</span>
+                  <div>
+                    <span className="font-bold text-blue-700">{s.time}</span>
+                    <span className="text-blue-600 ml-1">— {s.desc}</span>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
           <Link href="/rikujo" className="btn-outline">陸上教室ページに戻る</Link>
         </main>
       </>

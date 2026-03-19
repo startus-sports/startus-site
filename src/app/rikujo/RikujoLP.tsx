@@ -590,6 +590,152 @@ function FAQ() {
 }
 
 // ============================================================
+// Class Finder Quiz (おすすめ教室診断)
+// ============================================================
+function ClassFinderQuiz({ onClassSelect }: { onClassSelect: (cls: ClassData) => void }) {
+  const [q1, setQ1] = useState<string | null>(null) // age
+  const [q2, setQ2] = useState<string | null>(null) // goal
+
+  function getRecommendations(): ClassData[] {
+    const childClasses = trackClasses.filter(c => !['中学〜大人'].includes(c.age))
+
+    if (!q1 || !q2) return []
+
+    let filtered = childClasses
+
+    // Filter by age
+    if (q1 === 'preschool') {
+      filtered = filtered.filter(c => c.age.includes('年中') || c.age.includes('年長') || c.level === 'beginner')
+    } else if (q1 === 'lower') {
+      filtered = filtered.filter(c => c.age.includes('小学') || c.age.includes('小1') || c.age.includes('小2'))
+    } else if (q1 === 'upper') {
+      filtered = filtered.filter(c => c.age.includes('中学') || c.level === 'intermediate' || c.level === 'marathon')
+    }
+
+    // Sort by goal preference
+    if (q2 === 'fun') {
+      filtered.sort((a, b) => (a.level === 'beginner' || a.level === 'basic' ? -1 : 1) - (b.level === 'beginner' || b.level === 'basic' ? -1 : 1))
+    } else if (q2 === 'speed') {
+      filtered.sort((a, b) => (a.level === 'intermediate' ? -1 : 1) - (b.level === 'intermediate' ? -1 : 1))
+    } else if (q2 === 'marathon') {
+      filtered.sort((a, b) => (a.level === 'marathon' ? -1 : 1) - (b.level === 'marathon' ? -1 : 1))
+    } else if (q2 === 'parent') {
+      filtered = trackClasses.filter(c => c.level === 'parent')
+    }
+
+    return filtered.slice(0, 3)
+  }
+
+  const results = getRecommendations()
+  const isComplete = q1 && q2
+
+  function reset() {
+    setQ1(null)
+    setQ2(null)
+  }
+
+  return (
+    <section className="px-5 py-8 max-w-3xl mx-auto">
+      <div className="bg-gradient-to-br from-brand-orange-light to-white border-2 border-brand-orange/20 rounded-2xl p-5 md:p-6">
+        <div className="text-center mb-4">
+          <span className="text-2xl">🔍</span>
+          <h2 className="font-display font-bold text-lg text-brand-navy mt-1">お子さんにぴったりの教室は？</h2>
+          <p className="text-xs text-gray-500 mt-1">2つの質問に答えるだけでおすすめ教室がわかります</p>
+        </div>
+
+        {/* Q1 */}
+        <div className="mb-4">
+          <div className="text-xs font-bold text-brand-navy mb-2">Q1. お子さんの年齢は？</div>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { id: 'preschool', label: '年中〜小1' },
+              { id: 'lower', label: '小2〜小4' },
+              { id: 'upper', label: '小5〜中学' },
+            ].map(opt => (
+              <button
+                key={opt.id}
+                onClick={() => setQ1(opt.id)}
+                className={`text-xs py-2.5 px-2 rounded-lg border-2 transition-all font-bold ${
+                  q1 === opt.id
+                    ? 'border-brand-orange bg-brand-orange text-white'
+                    : 'border-warm-200 bg-white text-brand-navy hover:border-brand-orange/50'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Q2 */}
+        <div className="mb-4">
+          <div className="text-xs font-bold text-brand-navy mb-2">Q2. どんな目標がありますか？</div>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { id: 'fun', label: '🏃 楽しく体を動かしたい' },
+              { id: 'speed', label: '⚡ もっと速く走りたい' },
+              { id: 'marathon', label: '🏅 マラソンに挑戦したい' },
+              { id: 'parent', label: '👨‍👩‍👧 親子で一緒に' },
+            ].map(opt => (
+              <button
+                key={opt.id}
+                onClick={() => setQ2(opt.id)}
+                className={`text-xs py-2.5 px-2 rounded-lg border-2 transition-all font-bold text-left ${
+                  q2 === opt.id
+                    ? 'border-brand-orange bg-brand-orange text-white'
+                    : 'border-warm-200 bg-white text-brand-navy hover:border-brand-orange/50'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results */}
+        {isComplete && results.length > 0 && (
+          <div className="animate-fadeIn">
+            <div className="border-t border-brand-orange/20 pt-4 mt-2">
+              <div className="text-xs font-bold text-brand-orange mb-2">✨ おすすめの教室（{results.length}件）</div>
+              <div className="space-y-2">
+                {results.map(cls => {
+                  const lc = levelConfig[cls.level]
+                  return (
+                    <button
+                      key={cls.id}
+                      onClick={() => onClassSelect(cls)}
+                      className="w-full text-left p-3 rounded-lg bg-white border border-warm-200 hover:border-brand-orange hover:shadow-sm transition-all active:scale-[0.98]"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-bold text-xs text-brand-navy">{cls.shortName}</span>
+                            <span className="text-[8px] font-bold px-1.5 py-px rounded" style={{ backgroundColor: lc.bgColor, color: lc.color }}>
+                              {lc.label}
+                            </span>
+                            {cls.isPopular && <span className="text-[8px] bg-brand-orange/10 text-brand-orange font-bold px-1 py-px rounded">人気</span>}
+                          </div>
+                          <div className="text-[11px] text-gray-600 mt-0.5">{cls.oneLiner}</div>
+                          <div className="text-[10px] text-gray-400 mt-0.5">{cls.day} {cls.time} ｜ {cls.venue}</div>
+                        </div>
+                        <span className="text-brand-orange text-sm flex-shrink-0 ml-2">詳細 →</span>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            <button onClick={reset} className="text-[10px] text-gray-400 hover:text-brand-orange mt-3 block mx-auto">
+              もう一度やり直す
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
 // Sticky CTA
 // ============================================================
 function StickyCTA() {
@@ -646,6 +792,14 @@ export default function RikujoLP() {
     <main>
       {/* 1. Hero */}
       <Hero />
+
+      {/* Season Banner */}
+      <div className="bg-gradient-to-r from-brand-orange to-amber-500 text-white text-center px-4 py-3">
+        <p className="text-sm font-bold">🌸 春の入会キャンペーン実施中！体験当日の入会で入会金無料 + Tシャツプレゼント</p>
+      </div>
+
+      {/* Quick Quiz */}
+      <ClassFinderQuiz onClassSelect={setSelectedClass} />
 
       {/* 2. Map Section */}
       <section id="map" className="px-5 py-10 max-w-3xl mx-auto">
