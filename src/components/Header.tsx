@@ -20,9 +20,9 @@ export default function Header({ variant = 'main' }: { variant?: 'main' | 'rikuj
         <nav className="hidden md:flex items-center gap-6 text-sm text-brand-navy">
           {variant === 'rikujo' ? (
             <>
-              <a href="#map" className="hover:text-brand-orange transition-colors">会場を探す</a>
-              <a href="#matrix" className="hover:text-brand-orange transition-colors">教室一覧</a>
-              <a href="#price" className="hover:text-brand-orange transition-colors">料金</a>
+              <Link href="/rikujo#map" className="hover:text-brand-orange transition-colors">会場を探す</Link>
+              <Link href="/rikujo#matrix" className="hover:text-brand-orange transition-colors">教室一覧</Link>
+              <Link href="/rikujo#price" className="hover:text-brand-orange transition-colors">料金</Link>
             </>
           ) : (
             <>
@@ -59,9 +59,9 @@ export default function Header({ variant = 'main' }: { variant?: 'main' | 'rikuj
         <div className="md:hidden border-t border-warm-200 bg-white px-4 py-3 space-y-3">
           {variant === 'rikujo' ? (
             <>
-              <a href="#map" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>会場を探す</a>
-              <a href="#matrix" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>教室一覧</a>
-              <a href="#price" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>料金</a>
+              <Link href="/rikujo#map" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>会場を探す</Link>
+              <Link href="/rikujo#matrix" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>教室一覧</Link>
+              <Link href="/rikujo#price" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>料金</Link>
             </>
           ) : (
             <>
