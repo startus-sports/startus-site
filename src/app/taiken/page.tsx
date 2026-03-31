@@ -1,34 +1,20 @@
-'use client'
-
-import { useEffect, useRef } from 'react'
+import type { Metadata } from 'next'
 import Header from '@/components/Header'
+import TaikenForm from './TaikenForm'
+
+export const metadata: Metadata = {
+  title: '体験申込フォーム | STARTUS sports academy',
+  description: 'STARTUSの教室を無料で体験できます。体験後の当日入会で入会金無料＋Tシャツプレゼント！',
+}
 
 export default function TaikenPage() {
-  const iframeRef = useRef<HTMLIFrameElement>(null)
-
-  useEffect(() => {
-    function handleMessage(e: MessageEvent) {
-      if (e.data && e.data.type === 'stx-resize' && iframeRef.current) {
-        iframeRef.current.style.height = e.data.height + 'px'
-      }
-    }
-    window.addEventListener('message', handleMessage)
-    return () => window.removeEventListener('message', handleMessage)
-  }, [])
-
   return (
     <>
       <Header variant="rikujo" />
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <iframe
-          ref={iframeRef}
-          src="https://startus-system.startus.workers.dev/taiken/"
-          className="w-full border-none"
-          style={{ minHeight: '800px', overflow: 'hidden' }}
-          scrolling="no"
-          loading="lazy"
-          title="体験申込フォーム"
-        />
+      <main className="max-w-lg mx-auto px-5 py-8">
+        <h1 className="font-display text-xl font-bold text-brand-navy text-center mb-1">体験申込フォーム</h1>
+        <p className="text-sm text-gray-400 text-center mb-8">以下の項目にご記入の上、送信してください。</p>
+        <TaikenForm />
       </main>
     </>
   )
