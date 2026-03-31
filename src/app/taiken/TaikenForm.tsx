@@ -65,7 +65,7 @@ export default function TaikenForm() {
   }, [])
 
   // --- Derived ---
-  const rikujoClasses = classes.filter(c => c.category === '陸上')
+  const rikujoClasses = classes.filter(c => c.category === '陸上・マラソン')
 
   const kanaPattern = /^[ァ-ヶー・\s\u3000]+$/
 
