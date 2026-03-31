@@ -37,12 +37,12 @@ export const levelConfig: Record<ClassLevel, { label: string; stars: 1 | 2 | 3; 
 }
 
 export const venues = [
-  { id: 'shiei', name: '金沢市営陸上競技場', shortName: '市営陸上', color: '#185FA5', lat: 36.5613, lng: 136.6486, area: '中心部', address: '石川県金沢市弥生3丁目5-1' },
-  { id: 'nakamura', name: '中村町小学校', shortName: '中村町小', color: '#854F0B', lat: 36.5468, lng: 136.6445, area: '中村町', address: '金沢市中村町26-12' },
-  { id: 'seibu', name: '西部緑地公園陸上競技場', shortName: '西部緑地', color: '#2A7B5B', lat: 36.5783, lng: 136.6167, area: '西部', address: '石川県金沢市袋畠町南136' },
-  { id: 'inoki', name: '稲置学園総合運動場', shortName: '稲置学園', color: '#993C1D', lat: 36.5868, lng: 136.6724, area: '東部', address: '石川県金沢市御所町2-46' },
-  { id: 'sporec', name: '健民スポレクプラザ', shortName: 'スポレク', color: '#534AB7', lat: 36.5529, lng: 136.6263, area: '泉野', address: '金沢市西泉6丁目188番地' },
-  { id: 'sogo', name: '金沢市総合体育館', shortName: '市総合', color: '#A32D2D', lat: 36.5561, lng: 136.6558, area: '中心部', address: '金沢市泉野出町3-8-1' },
+  { id: 'shiei', name: '金沢市営陸上競技場', shortName: '市営陸上', color: '#185FA5', lat: 36.5409, lng: 136.6439, area: '中心部', address: '石川県金沢市弥生3丁目5-1' },
+  { id: 'nakamura', name: '中村町小学校', shortName: '中村町小', color: '#854F0B', lat: 36.5609, lng: 136.6420, area: '中村町', address: '金沢市中村町26-12' },
+  { id: 'seibu', name: '西部緑地公園陸上競技場', shortName: '西部緑地', color: '#2A7B5B', lat: 36.5758, lng: 136.6053, area: '西部', address: '石川県金沢市袋畠町南136' },
+  { id: 'inoki', name: '稲置学園総合運動場', shortName: '稲置学園', color: '#993C1D', lat: 36.5790, lng: 136.6977, area: '東部', address: '石川県金沢市御所町2-46' },
+  { id: 'sporec', name: '健民スポレクプラザ', shortName: 'スポレク', color: '#534AB7', lat: 36.5550, lng: 136.6269, area: '泉野', address: '金沢市西泉6丁目188番地' },
+  { id: 'sogo', name: '金沢市総合体育館', shortName: '市総合', color: '#A32D2D', lat: 36.5400, lng: 136.6502, area: '中心部', address: '金沢市泉野出町3-8-1' },
 ] as const
 
 export const trackClasses: ClassData[] = [
