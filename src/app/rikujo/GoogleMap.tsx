@@ -20,7 +20,7 @@ type Props = {
   classCounts: Record<string, number>
 }
 
-const API_KEY = 'AIzaSyB9IUV1O9pONBqR0sAgqX3g6tOqCMz2yPY'
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''
 const MAP_CENTER = { lat: 36.565, lng: 136.645 }
 const DEFAULT_ZOOM = 12
 const ACTIVE_ZOOM = 15
