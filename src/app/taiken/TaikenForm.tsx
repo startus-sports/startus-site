@@ -18,7 +18,6 @@ export default function TaikenForm() {
   // --- State ---
   const [classes, setClasses] = useState<ClassItem[]>([])
   const [classLoading, setClassLoading] = useState(true)
-  const [activeCategory, setActiveCategory] = useState('すべて')
   const [selectedClassName, setSelectedClassName] = useState('')
   const [selectedClassId, setSelectedClassId] = useState('')
 
@@ -66,10 +65,7 @@ export default function TaikenForm() {
   }, [])
 
   // --- Derived ---
-  const categories = ['すべて', ...Array.from(new Set(classes.map(c => c.category)))]
-  const filteredClasses = activeCategory === 'すべて'
-    ? classes
-    : classes.filter(c => c.category === activeCategory)
+  const rikujoClasses = classes.filter(c => c.category === '陸上')
 
   const kanaPattern = /^[ァ-ヶー・\s\u3000]+$/
 
@@ -244,57 +240,22 @@ export default function TaikenForm() {
           1. 参加希望の教室 {reqBadge}
         </h3>
 
-        <div className="bg-warm-50 rounded-xl p-4">
-          <div className={subLabelClass}>Step1. カテゴリで絞り込む</div>
-          <div className="flex flex-wrap gap-2 mb-3">
-            {classLoading ? (
-              <span className="text-xs text-gray-400">読み込み中...</span>
-            ) : (
-              categories.map(cat => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${
-                    activeCategory === cat
-                      ? 'bg-brand-orange text-white border-brand-orange'
-                      : 'bg-white text-brand-orange border-brand-orange hover:bg-brand-orange hover:text-white'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))
-            )}
-          </div>
-
-          <div className={subLabelClass}>Step2. 一覧から選ぶ</div>
+        {classLoading ? (
+          <p className="text-xs text-gray-400">読み込み中...</p>
+        ) : (
           <select
             className={inputClass}
             value={selectedClassName}
             onChange={handleClassSelect}
           >
-            <option value="">
-              {activeCategory === 'すべて' ? '▼ まずカテゴリを選んでください' : `▼ ${activeCategory} の教室から選択`}
-            </option>
-            {filteredClasses.map(cls => (
+            <option value="">▼ 教室を選んでください</option>
+            {rikujoClasses.map(cls => (
               <option key={cls.id} value={cls.name} data-id={cls.id}>
                 {cls.name}
               </option>
             ))}
           </select>
-
-          <div className="text-center text-xs text-brand-orange font-bold my-2">▼ 自動入力 ▼</div>
-
-          <div className={subLabelClass}>教室名 (修正・直接入力もOK)</div>
-          <input
-            type="text"
-            className={`${inputClass} border-2 border-warm-200 font-bold`}
-            value={selectedClassName}
-            onChange={e => { setSelectedClassName(e.target.value); setSelectedClassId('') }}
-            placeholder="ここに教室名が入ります"
-            required
-          />
-        </div>
+        )}
       </section>
 
       {/* ===== 2. 参加者情報 ===== */}
