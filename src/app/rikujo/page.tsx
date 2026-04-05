@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '金沢の陸上教室・かけっこ教室 | STARTUS',
     description: '金沢市内6会場で毎日開催。12教室から曜日・会場を選べる陸上教室。月額¥3,300〜。無料体験受付中。',
-    url: 'https://kanazawa-ssc.jp/rikujo',
+    url: 'https://startus-kanazawa.org/rikujo',
   },
 }
 
@@ -18,7 +18,7 @@ const jsonLd = {
   '@type': 'SportsActivityLocation',
   name: 'STARTUS 陸上教室',
   description: '金沢市内6会場で開催する陸上・かけっこ教室。年中〜大人まで対応。',
-  url: 'https://kanazawa-ssc.jp/rikujo',
+  url: 'https://startus-kanazawa.org/rikujo',
   address: {
     '@type': 'PostalAddress',
     addressLocality: '金沢市',
