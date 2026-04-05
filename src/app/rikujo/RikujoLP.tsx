@@ -2,31 +2,40 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { trackClasses, venues, levelConfig } from '@/lib/classes-data'
+import { trackClasses, venues, levelConfig, instructors, testimonials } from '@/lib/classes-data'
 import type { ClassData } from '@/lib/classes-data'
 
 // ============================================================
-// Hero Section
+// Hero Section (improved with SVG silhouettes)
 // ============================================================
 function Hero() {
   return (
     <section className="relative bg-gradient-to-br from-brand-navy to-brand-navy-light overflow-hidden">
+      {/* Decorative elements */}
       <div className="absolute top-[-40px] right-[-40px] w-44 h-44 rounded-full bg-brand-orange opacity-10" />
       <div className="absolute bottom-[-60px] left-[-30px] w-36 h-36 rounded-full bg-brand-orange opacity-[0.06]" />
 
-      <div className="relative max-w-3xl mx-auto px-5 py-12 md:py-20 text-center">
+      {/* Running silhouettes */}
+      <svg className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.07] text-brand-orange" viewBox="0 0 200 200" fill="currentColor">
+        <path d="M120 40c5.5 0 10-4.5 10-10s-4.5-10-10-10-10 4.5-10 10 4.5 10 10 10zm38 82l-18-18-8 8-24-24-28 28v20h16v36h20v-36h16v36h20v-36h16v-14h-10z" />
+      </svg>
+      <svg className="absolute bottom-4 left-8 w-40 h-40 opacity-[0.05] text-white" viewBox="0 0 200 200" fill="currentColor">
+        <path d="M80 35c5.5 0 10-4.5 10-10s-4.5-10-10-10-10 4.5-10 10 4.5 10 10 10zm18 82l-18-18-8 8-24-24-28 28v20h16v36h20v-36h16v36h20v-36h16v-14h-10z" />
+      </svg>
+
+      <div className="relative max-w-3xl mx-auto px-5 py-14 md:py-24 text-center">
         <span className="inline-block bg-brand-orange/20 text-brand-orange text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide">
           金沢で一番通いやすい陸上教室
         </span>
 
         <h1 className="font-display text-white text-2xl md:text-4xl font-bold leading-relaxed mb-3">
-          家の近くで、<span className="text-brand-orange">好きな曜日</span>に。
+          走ることが、<span className="text-brand-orange">好き</span>になる。
           <br />金沢の陸上教室
         </h1>
 
-        <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
-          市内5会場で毎日開催。お子様のスケジュールに
-          <br className="md:hidden" />合わせて教室を選べます。
+        <p className="text-white/60 text-sm md:text-base leading-relaxed mb-4">
+          市内5会場で週6日開催。家の近くで、
+          <br className="md:hidden" />好きな曜日に通えます。
         </p>
 
         <div className="flex justify-center gap-8 md:gap-12 mb-8">
@@ -46,6 +55,372 @@ function Hero() {
           無料体験に申し込む
         </Link>
         <p className="text-white/40 text-xs mt-3">体験当日の入会で入会金(¥5,500)が無料</p>
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// About Section (3 key features at a glance)
+// ============================================================
+function AboutSection() {
+  const features = [
+    {
+      icon: (
+        <svg className="w-10 h-10 text-brand-orange" fill="none" viewBox="0 0 40 40" stroke="currentColor" strokeWidth="2">
+          <circle cx="20" cy="10" r="5" />
+          <path d="M14 20h12l-2 14h-8l-2-14z" />
+          <path d="M10 28l-4-6M30 28l4-6" strokeLinecap="round" />
+        </svg>
+      ),
+      num: '17',
+      title: '年中〜大人まで17教室',
+      desc: 'お子様の年齢・レベルに合わせた教室を選べます。',
+    },
+    {
+      icon: (
+        <svg className="w-10 h-10 text-brand-orange" fill="none" viewBox="0 0 40 40" stroke="currentColor" strokeWidth="2">
+          <path d="M20 6l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z" />
+          <circle cx="12" cy="30" r="3" />
+          <circle cx="28" cy="28" r="3" />
+          <circle cx="20" cy="34" r="2" />
+        </svg>
+      ),
+      num: '5',
+      title: '市内5会場で毎日開催',
+      desc: '家の近くの会場で、好きな曜日に通えます。',
+    },
+    {
+      icon: (
+        <svg className="w-10 h-10 text-brand-orange" fill="none" viewBox="0 0 40 40" stroke="currentColor" strokeWidth="2">
+          <circle cx="20" cy="12" r="6" />
+          <path d="M10 32c0-6 4-10 10-10s10 4 10 10" strokeLinecap="round" />
+          <path d="M24 8l4-3M28 12l4 0" strokeLinecap="round" />
+        </svg>
+      ),
+      num: '5',
+      title: '専門の指導者がいる',
+      desc: '大学陸上部コーチからベテランまで、各教室に専門コーチ。',
+    },
+  ]
+
+  return (
+    <section className="px-5 py-10 max-w-3xl mx-auto">
+      <p className="section-label">STARTUSとは</p>
+      <h2 className="section-title mb-6">3秒でわかるSTARTUS陸上教室</h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {features.map(({ icon, num, title, desc }) => (
+          <div key={title} className="bg-white rounded-xl p-5 text-center border border-warm-200 hover:border-brand-orange/30 transition-colors">
+            <div className="flex justify-center mb-3">{icon}</div>
+            <div className="font-display font-bold text-3xl text-brand-orange mb-1">{num}</div>
+            <div className="font-bold text-sm text-brand-navy mb-1">{title}</div>
+            <div className="text-xs text-gray-500 leading-relaxed">{desc}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// Social Proof / Trust Section (enhanced with numbers & mini testimonials)
+// ============================================================
+function SocialProof() {
+  const reasons = [
+    {
+      icon: (
+        <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+          <path d="M16 4l2 5 5 0-4 3 1 5-4-3-4 3 1-5-4-3 5 0 2-5z" />
+          <rect x="6" y="18" width="20" height="10" rx="2" />
+        </svg>
+      ),
+      highlight: '5会場',
+      title: '市内5会場・週6日開催',
+      desc: '家の近くで通いやすい。振替も柔軟に対応できます。',
+      voice: '「近くで通えるのが決め手でした」',
+      voiceBy: '40代保護者',
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+          <circle cx="16" cy="10" r="5" />
+          <path d="M8 26c0-5 3-8 8-8s8 3 8 8" strokeLinecap="round" />
+        </svg>
+      ),
+      highlight: '5名+',
+      title: '教室ごとの専門指導者',
+      desc: '大学陸上部コーチから元選手まで、各教室に専門の指導者が在籍。',
+      voice: '「先生が優しくて子どもが毎週楽しみにしています」',
+      voiceBy: '30代保護者',
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+          <circle cx="16" cy="16" r="10" />
+          <path d="M16 10v6l4 4" strokeLinecap="round" />
+        </svg>
+      ),
+      highlight: '¥3,300〜',
+      title: '安心の月額制',
+      desc: '月額¥3,300〜¥9,900。明朗会計で追加料金なし。兄弟割引もあります。',
+      voice: '「他のスクールより安くて助かります」',
+      voiceBy: '30代保護者',
+    },
+  ]
+
+  return (
+    <section className="px-5 py-10 max-w-3xl mx-auto bg-warm-50">
+      <p className="section-label">選ばれる理由</p>
+      <h2 className="section-title mb-6">保護者が安心して通わせられる理由</h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {reasons.map(({ icon, highlight, title, desc, voice, voiceBy }) => (
+          <div key={title} className="bg-white rounded-xl p-5 text-center border border-warm-200">
+            <div className="flex justify-center mb-2">{icon}</div>
+            <div className="font-display font-bold text-2xl text-brand-orange mb-1">{highlight}</div>
+            <div className="font-bold text-sm text-brand-navy mb-1">{title}</div>
+            <div className="text-xs text-gray-500 leading-relaxed mb-3">{desc}</div>
+            <div className="border-t border-warm-200 pt-2">
+              <p className="text-[10px] text-brand-navy italic">{voice}</p>
+              <p className="text-[9px] text-gray-400">— {voiceBy}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// Instructor Profiles Section (new)
+// ============================================================
+function InstructorProfiles() {
+  return (
+    <section className="px-5 py-10 max-w-3xl mx-auto">
+      <p className="section-label">指導者紹介</p>
+      <h2 className="section-title mb-2">お子さんを指導するコーチたち</h2>
+      <p className="text-sm text-gray-500 mb-6">各教室に専門の指導者が在籍。安心してお任せください。</p>
+
+      <div className="flex gap-3 overflow-x-auto pb-3 scroll-snap-x -mx-2 px-2">
+        {instructors.map(inst => {
+          const classNames = inst.classIds
+            .map(id => trackClasses.find(c => c.id === id)?.shortName)
+            .filter(Boolean)
+            .slice(0, 3)
+
+          return (
+            <div
+              key={inst.id}
+              className="flex-shrink-0 w-44 bg-white rounded-xl border border-warm-200 p-4 text-center scroll-snap-item hover:border-brand-orange/30 transition-colors"
+            >
+              {/* Avatar placeholder */}
+              <div
+                className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-display font-bold text-xl shadow-md"
+                style={{ backgroundColor: inst.avatarColor }}
+              >
+                {inst.avatarInitial}
+              </div>
+
+              <div className="font-bold text-sm text-brand-navy">
+                {inst.nickname ? `${inst.name}` : inst.name}
+              </div>
+              {inst.nickname && (
+                <div className="text-xs text-brand-orange font-bold">{inst.nickname}</div>
+              )}
+
+              <span className="inline-block text-[9px] bg-brand-orange/10 text-brand-orange font-bold px-2 py-0.5 rounded-full mt-1">
+                {inst.title}
+              </span>
+
+              <p className="text-[10px] text-gray-500 mt-2 leading-relaxed">{inst.description}</p>
+
+              <div className="mt-2 flex flex-wrap justify-center gap-1">
+                {classNames.map(name => (
+                  <span key={name} className="text-[8px] bg-warm-50 text-gray-500 px-1.5 py-0.5 rounded">
+                    {name}
+                  </span>
+                ))}
+                {inst.classIds.length > 3 && (
+                  <span className="text-[8px] text-gray-400">他{inst.classIds.length - 3}教室</span>
+                )}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      <p className="text-[10px] text-gray-400 text-center mt-2">← 横にスクロールして他のコーチも見る</p>
+    </section>
+  )
+}
+
+// ============================================================
+// Parent Voices Section (new)
+// ============================================================
+function ParentVoices() {
+  return (
+    <section className="px-5 py-10 max-w-3xl mx-auto bg-warm-50">
+      <p className="section-label">保護者の声</p>
+      <h2 className="section-title mb-6">「通わせてよかった」</h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {testimonials.map(t => (
+          <div key={t.id} className="bg-white rounded-xl p-5 border border-warm-200 relative">
+            {/* Quote mark */}
+            <span className="absolute top-3 left-4 text-4xl text-brand-orange/15 font-display font-bold leading-none">&ldquo;</span>
+
+            <p className="text-sm text-brand-navy leading-relaxed mt-4 mb-3">
+              {t.quote}
+            </p>
+
+            <div className="border-t border-warm-200 pt-2 flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-brand-orange/10 flex items-center justify-center">
+                <svg className="w-4 h-4 text-brand-orange" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="10" cy="7" r="3" />
+                  <path d="M4 17c0-3 2-5 6-5s6 2 6 5" strokeLinecap="round" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-[10px] font-bold text-brand-navy">{t.parent}</div>
+                <div className="text-[9px] text-gray-400">{t.classRef}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// Enrollment Flow Section (new)
+// ============================================================
+function EnrollmentFlow() {
+  const steps = [
+    {
+      num: '1',
+      title: '無料体験に申し込む',
+      desc: 'このサイトから申し込み。3営業日以内に事務局からご連絡します。',
+      icon: (
+        <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+          <rect x="8" y="4" width="16" height="24" rx="3" />
+          <path d="M14 20h4M12 16h8M12 12h8" strokeLinecap="round" />
+        </svg>
+      ),
+    },
+    {
+      num: '2',
+      title: '体験レッスンに参加',
+      desc: '運動できる服装と飲み物だけでOK。お気軽にどうぞ。',
+      icon: (
+        <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+          <circle cx="16" cy="8" r="4" />
+          <path d="M10 28l2-10 4 4 4-4 2 10" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ),
+    },
+    {
+      num: '3',
+      title: '入会手続き',
+      desc: '体験当日にその場で入会OK！入会金無料の特典あり。',
+      icon: (
+        <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+          <circle cx="16" cy="16" r="10" />
+          <path d="M11 16l3 3 7-7" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ),
+    },
+  ]
+
+  return (
+    <section id="flow" className="px-5 py-10 max-w-3xl mx-auto">
+      <p className="section-label">入会の流れ</p>
+      <h2 className="section-title mb-6">かんたん3ステップ</h2>
+
+      <div className="space-y-0">
+        {steps.map((step, i) => (
+          <div key={step.num}>
+            <div className="flex gap-4 items-start">
+              {/* Step number */}
+              <div className="flex-shrink-0 w-12 h-12 bg-brand-orange rounded-full flex items-center justify-center text-white font-display font-bold text-xl shadow-md">
+                {step.num}
+              </div>
+
+              <div className="flex-1 pb-2">
+                <div className="flex items-center gap-2 mb-1">
+                  {step.icon}
+                  <h3 className="font-bold text-base text-brand-navy">{step.title}</h3>
+                </div>
+                <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+
+            {/* Connector line */}
+            {i < steps.length - 1 && (
+              <div className="flex items-center ml-6 py-1">
+                <div className="w-px h-6 bg-brand-orange/30" />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Benefit badge */}
+      <div className="mt-6 bg-brand-orange-light border border-brand-orange/20 rounded-xl p-4 text-center">
+        <p className="text-sm font-bold text-brand-orange">
+          体験当日の入会で入会金(¥5,500)が無料！
+        </p>
+        <p className="text-xs text-gray-500 mt-1">+ STARTUSオリジナルTシャツプレゼント</p>
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// Instagram Section (new - placeholder)
+// ============================================================
+function InstagramSection() {
+  return (
+    <section className="px-5 py-10 max-w-3xl mx-auto bg-warm-50">
+      <p className="section-label">活動報告</p>
+      <h2 className="section-title mb-2">Instagramで最新の活動をチェック</h2>
+      <p className="text-sm text-gray-500 mb-6">教室の様子やイベント情報を発信中</p>
+
+      {/* Placeholder grid */}
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        {[
+          { label: 'ウォーミングアップ', gradient: 'from-brand-orange/20 to-amber-100' },
+          { label: 'スタート練習', gradient: 'from-blue-100 to-blue-50' },
+          { label: 'フォーム指導', gradient: 'from-green-100 to-green-50' },
+          { label: 'タイム計測', gradient: 'from-purple-100 to-purple-50' },
+          { label: 'みんなでリレー', gradient: 'from-brand-orange/10 to-yellow-50' },
+          { label: 'マラソン練習', gradient: 'from-cyan-100 to-cyan-50' },
+        ].map(({ label, gradient }) => (
+          <div
+            key={label}
+            className={`aspect-square rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center p-2`}
+          >
+            <span className="text-[10px] text-gray-500 text-center font-medium">{label}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-[10px] text-gray-400 text-center mb-4">
+        写真は準備中です。Instagramでは実際の活動写真を公開中！
+      </p>
+
+      <div className="text-center">
+        <a
+          href="https://www.instagram.com/startus_sports/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-outline inline-flex items-center gap-2"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+          </svg>
+          Instagramをフォロー
+        </a>
       </div>
     </section>
   )
@@ -188,13 +563,13 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
 
           {/* こんなお子さんにおすすめ */}
           <div className="bg-green-50 border border-green-200 rounded-xl p-3.5">
-            <div className="text-xs font-bold text-green-700 mb-1">🎯 こんなお子さんにおすすめ</div>
+            <div className="text-xs font-bold text-green-700 mb-1">こんなお子さんにおすすめ</div>
             <p className="text-sm text-green-800 leading-relaxed">{cls.recommendFor}</p>
           </div>
 
           {/* レッスン内容 */}
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-3.5">
-            <div className="text-xs font-bold text-blue-700 mb-1">📋 レッスンの流れ</div>
+            <div className="text-xs font-bold text-blue-700 mb-1">レッスンの流れ</div>
             <p className="text-sm text-blue-800 leading-relaxed">{cls.lessonContent}</p>
           </div>
 
@@ -519,45 +894,7 @@ function AgeGuide() {
 }
 
 // ============================================================
-// Social Proof / Trust Section
-// ============================================================
-function SocialProof() {
-  return (
-    <section className="px-5 py-10 max-w-3xl mx-auto bg-warm-50">
-      <p className="section-label">選ばれる理由</p>
-      <h2 className="section-title mb-6">保護者が安心して通わせられる理由</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {[
-          {
-            icon: '🏟️',
-            title: '市内5会場・週6日開催',
-            desc: '家の近くで通いやすい。振替も柔軟に対応できます。',
-          },
-          {
-            icon: '👨‍🏫',
-            title: '教室ごとの専門指導者',
-            desc: '大学陸上部コーチから元選手まで、各教室に専門の指導者が在籍。',
-          },
-          {
-            icon: '💰',
-            title: '安心の月額制',
-            desc: '月額¥3,300〜¥9,900。明朗会計で追加料金なし。兄弟割引もあります。',
-          },
-        ].map(({ icon, title, desc }) => (
-          <div key={title} className="bg-white rounded-xl p-5 text-center border border-warm-200">
-            <div className="text-2xl mb-2">{icon}</div>
-            <div className="font-bold text-sm text-brand-navy mb-1">{title}</div>
-            <div className="text-xs text-gray-500 leading-relaxed">{desc}</div>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-// ============================================================
-// FAQ Section
+// FAQ Section (expanded with 3 more questions)
 // ============================================================
 function FAQ() {
   const faqs = [
@@ -566,6 +903,9 @@ function FAQ() {
     { q: '途中で教室を変えられる？', a: 'はい。同じ月額内で別の教室への振替・変更が可能です。曜日やレベルに合わせて柔軟に対応します。' },
     { q: '雨の日はどうなりますか？', a: '屋外教室は雨天中止です。スポレクプラザは屋内施設なので天候に左右されません。' },
     { q: '兄弟で通うと割引はある？', a: 'はい。同一世帯2人目以降は入会手数料が半額（¥2,750）になります。' },
+    { q: '入会までの流れを教えてください', a: '(1)このサイトから無料体験に申込 → (2)体験レッスンに参加 → (3)入会手続き の3ステップです。体験当日にその場で入会もできます。' },
+    { q: '必要な持ち物は？', a: '運動できる服装、運動靴、飲み物をお持ちください。特別な道具は不要です。' },
+    { q: '見学だけでもできますか？', a: 'はい。見学も大歓迎です。体験申込フォームの備考欄に「見学希望」とお書きください。' },
   ]
 
   return (
@@ -577,7 +917,9 @@ function FAQ() {
           <details key={q} className="group bg-warm-50 rounded-xl overflow-hidden">
             <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-brand-navy flex items-center justify-between list-none">
               <span>Q. {q}</span>
-              <span className="text-brand-orange transition-transform group-open:rotate-45 text-lg">+</span>
+              <svg className="w-4 h-4 text-brand-orange transition-transform group-open:rotate-180 flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </summary>
             <div className="px-4 pb-3 text-sm text-gray-500 leading-relaxed">
               A. {a}
@@ -696,7 +1038,7 @@ function ClassFinderQuiz({ onClassSelect }: { onClassSelect: (cls: ClassData) =>
         {isComplete && results.length > 0 && (
           <div className="animate-fadeIn">
             <div className="border-t border-brand-orange/20 pt-4 mt-2">
-              <div className="text-xs font-bold text-brand-orange mb-2">✨ おすすめの教室（{results.length}件）</div>
+              <div className="text-xs font-bold text-brand-orange mb-2">おすすめの教室（{results.length}件）</div>
               <div className="space-y-2">
                 {results.map(cls => {
                   const lc = levelConfig[cls.level]
@@ -755,23 +1097,50 @@ function StickyCTA() {
 }
 
 // ============================================================
-// Footer
+// Footer (enhanced with SNS links and footer nav)
 // ============================================================
 function Footer() {
   return (
-    <footer className="bg-brand-navy text-center px-5 py-8">
-      <div className="font-display text-white font-bold text-sm mb-1">STARTUS sports academy</div>
-      <p className="text-white/35 text-[10px] leading-relaxed">
-        運営：かなざわ総合スポーツクラブ
-        <br />〒921-8022 金沢市中村町26-43 VIDA金沢2階
-        <br />TEL 076-287-3789（10:00〜16:00）
-      </p>
+    <footer className="bg-brand-navy px-5 py-10">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-6">
+          <div className="font-display text-white font-bold text-sm mb-1">STARTUS sports academy</div>
+          <p className="text-white/35 text-[10px] leading-relaxed">
+            運営：特定非営利活動法人 かなざわ総合スポーツクラブ
+            <br />〒921-8022 金沢市中村町26-43 VIDA金沢2階
+            <br />TEL 076-287-3789（10:00〜16:00）
+          </p>
+        </div>
+
+        {/* SNS links */}
+        <div className="flex justify-center gap-4 mb-6">
+          <a
+            href="https://www.instagram.com/startus_sports/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center"
+            aria-label="Instagram"
+          >
+            <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Footer nav */}
+        <div className="flex justify-center gap-4 text-[10px] text-white/40">
+          <a href="#price" className="hover:text-white/70 transition-colors">料金</a>
+          <a href="#map" className="hover:text-white/70 transition-colors">会場一覧</a>
+          <a href="#faq" className="hover:text-white/70 transition-colors">よくある質問</a>
+          <Link href="/taiken" className="hover:text-white/70 transition-colors">体験申込</Link>
+        </div>
+      </div>
     </footer>
   )
 }
 
 // ============================================================
-// Main LP Component
+// Main LP Component (reordered sections)
 // ============================================================
 export default function RikujoLP() {
   const [activeVenue, setActiveVenue] = useState<string | null>(null)
@@ -793,15 +1162,27 @@ export default function RikujoLP() {
       {/* 1. Hero */}
       <Hero />
 
-      {/* Season Banner */}
+      {/* 2. Season Banner */}
       <div className="bg-gradient-to-r from-brand-orange to-amber-500 text-white text-center px-4 py-3">
         <p className="text-sm font-bold">🌸 春の入会キャンペーン実施中！体験当日の入会で入会金無料 + Tシャツプレゼント</p>
       </div>
 
-      {/* Quick Quiz */}
+      {/* 3. About - 3 key features */}
+      <AboutSection />
+
+      {/* 4. Social Proof (enhanced) */}
+      <SocialProof />
+
+      {/* 5. Instructor Profiles (new) */}
+      <InstructorProfiles />
+
+      {/* 6. Parent Voices (new) */}
+      <ParentVoices />
+
+      {/* 7. Quick Quiz */}
       <ClassFinderQuiz onClassSelect={setSelectedClass} />
 
-      {/* 2. Map Section */}
+      {/* 8. Map Section */}
       <section id="map" className="px-5 py-10 max-w-3xl mx-auto">
         <p className="section-label">step 1</p>
         <h2 className="section-title mb-1">近くの会場をタップ</h2>
@@ -850,7 +1231,7 @@ export default function RikujoLP() {
         </div>
       </section>
 
-      {/* 3. Matrix Section */}
+      {/* 9. Matrix Section */}
       <section id="matrix" className="px-5 py-10 bg-brand-orange-light max-w-3xl mx-auto">
         <p className="section-label">step 2</p>
         <h2 className="section-title mb-1">曜日と教室をくらべる</h2>
@@ -858,10 +1239,7 @@ export default function RikujoLP() {
         <ClassMatrix activeVenue={activeVenue} onClassSelect={setSelectedClass} />
       </section>
 
-      {/* 4. Social Proof */}
-      <SocialProof />
-
-      {/* 5. Growth / Data Section */}
+      {/* 10. Growth / Data Section */}
       <section className="px-5 py-10 max-w-3xl mx-auto">
         <p className="section-label">成長の見える化</p>
         <h2 className="section-title mb-2">データで成長が見える指導</h2>
@@ -870,40 +1248,92 @@ export default function RikujoLP() {
           在籍データも公開し、教室の雰囲気がわかります。
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {[
-            { icon: '📊', title: 'フィードバックシート', desc: '半年ごとに目標と改善点を可視化。お子様の成長を実感できます。' },
-            { icon: '👥', title: '在籍データ公開', desc: '学校別・学年別・男女比のデータを公開。どんな仲間がいるか事前にわかります。' },
-            { icon: '💬', title: '保護者の声', desc: '「走るのが楽しくなった！」「50m走のタイムが上がった！」' },
+            {
+              icon: (
+                <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+                  <rect x="6" y="4" width="20" height="24" rx="2" />
+                  <path d="M10 12h12M10 16h8M10 20h10" strokeLinecap="round" />
+                </svg>
+              ),
+              title: 'フィードバックシート',
+              desc: '半年ごとに目標と改善点を可視化。お子様の成長を実感できます。',
+            },
+            {
+              icon: (
+                <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="10" r="4" />
+                  <circle cx="22" cy="12" r="3" />
+                  <path d="M4 24c0-4 3-7 8-7s8 3 8 7M18 22c0-3 2-5 5-5s5 2 5 5" strokeLinecap="round" />
+                </svg>
+              ),
+              title: '在籍データ公開',
+              desc: '学校別・学年別・男女比のデータを公開。どんな仲間がいるか事前にわかります。',
+            },
           ].map(({ icon, title, desc }) => (
-            <div key={title} className="bg-warm-50 rounded-xl p-5 text-center">
-              <div className="text-2xl mb-2">{icon}</div>
-              <div className="font-bold text-sm text-brand-navy mb-1">{title}</div>
-              <div className="text-xs text-gray-500 leading-relaxed">{desc}</div>
+            <div key={title} className="bg-warm-50 rounded-xl p-5 flex gap-4 items-start">
+              <div className="flex-shrink-0">{icon}</div>
+              <div>
+                <div className="font-bold text-sm text-brand-navy mb-1">{title}</div>
+                <div className="text-xs text-gray-500 leading-relaxed">{desc}</div>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 6. Price */}
+      {/* 11. Price */}
       <PriceSection />
 
-      {/* 7. Age Guide */}
+      {/* 12. Enrollment Flow (new) */}
+      <EnrollmentFlow />
+
+      {/* 13. Age Guide */}
       <AgeGuide />
 
-      {/* 8. FAQ */}
-      <FAQ />
+      {/* 14. FAQ */}
+      <section id="faq">
+        <FAQ />
+      </section>
 
-      {/* 9. Bottom CTA */}
+      {/* 15. Instagram (new) */}
+      <InstagramSection />
+
+      {/* 16. Bottom CTA (enhanced) */}
       <section className="bg-brand-navy px-5 py-12 text-center">
         <p className="text-white/80 text-base mb-2">
           まずは気軽に<span className="font-bold text-brand-orange">無料体験</span>から。
         </p>
         <p className="text-white/50 text-sm mb-6">お子様の「やってみたい」を応援します。</p>
+
         <Link href="/taiken" className="btn-primary text-lg px-12 py-4">
           無料体験に申し込む
         </Link>
-        <p className="text-white/30 text-xs mt-3">体験当日の入会でおトクな特典あり</p>
+
+        {/* Trust badges */}
+        <div className="flex flex-wrap justify-center gap-4 mt-6 text-xs text-white/50">
+          <span className="flex items-center gap-1">
+            <svg className="w-3.5 h-3.5 text-brand-orange" fill="none" viewBox="0 0 16 16" stroke="currentColor" strokeWidth="2">
+              <path d="M3 8l3 3 7-7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            勧誘はありません
+          </span>
+          <span className="flex items-center gap-1">
+            <svg className="w-3.5 h-3.5 text-brand-orange" fill="none" viewBox="0 0 16 16" stroke="currentColor" strokeWidth="2">
+              <path d="M3 8l3 3 7-7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            各教室1回ずつ無料
+          </span>
+          <span className="flex items-center gap-1">
+            <svg className="w-3.5 h-3.5 text-brand-orange" fill="none" viewBox="0 0 16 16" stroke="currentColor" strokeWidth="2">
+              <path d="M3 8l3 3 7-7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            当日入会で入会金無料
+          </span>
+        </div>
+
+        <p className="text-white/30 text-xs mt-4">ネットが苦手な方はお電話でも → 076-287-3789</p>
       </section>
 
       {/* Sticky CTA */}

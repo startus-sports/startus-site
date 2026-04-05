@@ -23,6 +23,7 @@ export default function Header({ variant = 'main' }: { variant?: 'main' | 'rikuj
               <Link href="/rikujo#map" className="hover:text-brand-orange transition-colors">会場を探す</Link>
               <Link href="/rikujo#matrix" className="hover:text-brand-orange transition-colors">教室一覧</Link>
               <Link href="/rikujo#price" className="hover:text-brand-orange transition-colors">料金</Link>
+              <Link href="/rikujo#faq" className="hover:text-brand-orange transition-colors">Q&A</Link>
             </>
           ) : (
             <>
@@ -62,6 +63,7 @@ export default function Header({ variant = 'main' }: { variant?: 'main' | 'rikuj
               <Link href="/rikujo#map" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>会場を探す</Link>
               <Link href="/rikujo#matrix" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>教室一覧</Link>
               <Link href="/rikujo#price" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>料金</Link>
+              <Link href="/rikujo#faq" className="block text-sm text-brand-navy py-1" onClick={() => setMenuOpen(false)}>Q&A</Link>
             </>
           ) : (
             <>

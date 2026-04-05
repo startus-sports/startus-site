@@ -437,6 +437,97 @@ export const trackClasses: ClassData[] = [
   },
 ]
 
+// ── 指導者データ ──
+export type InstructorData = {
+  id: string
+  name: string
+  nickname?: string
+  title: string
+  description: string
+  classIds: string[]
+  avatarInitial: string
+  avatarColor: string
+}
+
+export const instructors: InstructorData[] = [
+  {
+    id: 'matsui',
+    name: '松井 久',
+    nickname: 'Qちゃん',
+    title: 'ベテランコーチ',
+    description: '子どもに大人気！走る・跳ぶ・投げるをバランスよく楽しく指導するベテランコーチ。',
+    classIds: ['izumi-kids', 'seibu-kids', 'nakamura-kakekko', 'nakamura-junior', 'nakamura-marathon-kids', 'nakamura-marathon-junior', 'marathon-kids', 'marathon-junior', 'otona-marathon'],
+    avatarInitial: 'Q',
+    avatarColor: '#2A7B5B',
+  },
+  {
+    id: 'yamamoto',
+    name: '山本 勝裕',
+    nickname: 'やまティー',
+    title: '理論派コーチ',
+    description: 'エビデンスに基づく科学的な指導。フィードバックシートで一人ひとりの成長を可視化。',
+    classIds: ['izumi-junior', 'rubugeru'],
+    avatarInitial: 'Y',
+    avatarColor: '#185FA5',
+  },
+  {
+    id: 'suda',
+    name: '須田 崇',
+    title: '丁寧なコーチ',
+    description: '基礎から応用まで丁寧に指導。屋内教室で天候を気にせず安定したレッスンを提供。',
+    classIds: ['sporec-kids', 'sporec-junior', 'seibu-junior'],
+    avatarInitial: '須',
+    avatarColor: '#993C1D',
+  },
+  {
+    id: 'seiryo',
+    name: '金沢星稜大学 陸上競技部',
+    title: '大学生コーチ',
+    description: '現役の大学生が楽しく直接指導！お兄さん・お姉さんと一緒に走る喜びを体感。',
+    classIds: ['kakekko-hop', 'kakekko-approach'],
+    avatarInitial: '星',
+    avatarColor: '#854F0B',
+  },
+  {
+    id: 'hashimoto',
+    name: '橋本 祐之',
+    title: 'インクルーシブ専門',
+    description: 'インクルーシブスポーツの専門家。障がいの有無にかかわらず、誰もが走れる場を提供。',
+    classIds: ['inclusive-running', 'shunpu'],
+    avatarInitial: '橋',
+    avatarColor: '#534AB7',
+  },
+]
+
+// ── 保護者の声データ ──
+export type TestimonialData = {
+  id: string
+  quote: string
+  parent: string
+  classRef: string
+}
+
+export const testimonials: TestimonialData[] = [
+  {
+    id: 't1',
+    quote: '50m走のタイムが1秒以上速くなりました。子どもが毎週の練習を心待ちにしています。',
+    parent: '小3男子の保護者',
+    classRef: '泉ジュニア',
+  },
+  {
+    id: 't2',
+    quote: '運動が苦手だった息子が、今では自分から「走りたい！」と言うようになりました。先生が優しくて安心です。',
+    parent: '年長男子の保護者',
+    classRef: 'アプローチ',
+  },
+  {
+    id: 't3',
+    quote: '親子で一緒に参加できるのが嬉しい。子どもの成長を間近で見られる貴重な時間です。',
+    parent: '小2男子の保護者',
+    classRef: 'るぶげる親子',
+  },
+]
+
 // マトリクス表用のヘルパー
 export const days = ['月', '火', '水', '木', '金', '土・日'] as const
 
