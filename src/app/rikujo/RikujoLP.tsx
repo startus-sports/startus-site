@@ -1260,16 +1260,6 @@ export default function RikujoLP() {
               title: 'フィードバックシート',
               desc: '定期的に目標と改善点を可視化。お子様の成長を実感できます。',
             },
-            {
-              icon: (
-                <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 4h20v24H6z" strokeLinejoin="round" />
-                  <path d="M10 10h6M10 14h8M10 18h4M20 10l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              ),
-              title: 'シートのサンプル公開',
-              desc: '実際のフィードバックシートをサンプルで公開中。どんな指導を受けられるか事前にわかります。',
-            },
           ].map(({ icon, title, desc }) => (
             <div key={title} className="bg-warm-50 rounded-xl p-5 flex gap-4 items-start">
               <div className="flex-shrink-0">{icon}</div>
