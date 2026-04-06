@@ -161,10 +161,10 @@ function SocialProof() {
           <path d="M16 10v6l4 4" strokeLinecap="round" />
         </svg>
       ),
-      highlight: '¥3,300〜',
-      title: '安心の月額制',
-      desc: '月額¥3,300〜¥9,900。明朗会計で追加料金なし。兄弟割引もあります。',
-      voice: '「他のスクールより安くて助かります」',
+      highlight: '月額制',
+      title: '分かりやすい月額制',
+      desc: '月額¥6,600が中心。月謝以外の追加料金なし。兄弟割引もあります。',
+      voice: '「料金体系がシンプルで分かりやすいです」',
       voiceBy: '30代保護者',
     },
   ]
@@ -1164,7 +1164,7 @@ export default function RikujoLP() {
 
       {/* 2. Season Banner */}
       <div className="bg-gradient-to-r from-brand-orange to-amber-500 text-white text-center px-4 py-3">
-        <p className="text-sm font-bold">🌸 春の入会キャンペーン実施中！体験当日の入会で入会金無料 + Tシャツプレゼント</p>
+        <p className="text-sm font-bold">🎁 体験当日の入会で入会金(¥5,500)無料 + STARTUSオリジナルTシャツプレゼント</p>
       </div>
 
       {/* 3. About - 3 key features */}
@@ -1244,8 +1244,8 @@ export default function RikujoLP() {
         <p className="section-label">成長の見える化</p>
         <h2 className="section-title mb-2">データで成長が見える指導</h2>
         <p className="text-sm text-gray-500 mb-6">
-          半年に一度のフィードバックシートで、お子様の成長を可視化。
-          在籍データも公開し、教室の雰囲気がわかります。
+          定期的なフィードバックシートで、お子様の成長を可視化。
+          一人ひとりの目標と成長をコーチが丁寧に記録します。
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1258,18 +1258,17 @@ export default function RikujoLP() {
                 </svg>
               ),
               title: 'フィードバックシート',
-              desc: '半年ごとに目標と改善点を可視化。お子様の成長を実感できます。',
+              desc: '定期的に目標と改善点を可視化。お子様の成長を実感できます。',
             },
             {
               icon: (
                 <svg className="w-8 h-8 text-brand-orange" fill="none" viewBox="0 0 32 32" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="10" r="4" />
-                  <circle cx="22" cy="12" r="3" />
-                  <path d="M4 24c0-4 3-7 8-7s8 3 8 7M18 22c0-3 2-5 5-5s5 2 5 5" strokeLinecap="round" />
+                  <path d="M6 4h20v24H6z" strokeLinejoin="round" />
+                  <path d="M10 10h6M10 14h8M10 18h4M20 10l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               ),
-              title: '在籍データ公開',
-              desc: '学校別・学年別・男女比のデータを公開。どんな仲間がいるか事前にわかります。',
+              title: 'シートのサンプル公開',
+              desc: '実際のフィードバックシートをサンプルで公開中。どんな指導を受けられるか事前にわかります。',
             },
           ].map(({ icon, title, desc }) => (
             <div key={title} className="bg-warm-50 rounded-xl p-5 flex gap-4 items-start">
