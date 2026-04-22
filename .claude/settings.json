@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vercel ls)",
+      "Bash(npx vercel inspect --scope startus-admin-2173s-projects)",
+      "Bash(npx vercel project ls)",
+      "Bash(npx vercel whoami)"
+    ]
+  }
+}
