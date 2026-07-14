@@ -73,8 +73,8 @@ function AboutSection() {
           <path d="M10 28l-4-6M30 28l4-6" strokeLinecap="round" />
         </svg>
       ),
-      num: '19',
-      title: '年中〜大人まで19教室',
+      num: '16',
+      title: '年中〜大人まで16教室',
       desc: 'お子様の年齢・レベルに合わせた教室を選べます。',
     },
     {
