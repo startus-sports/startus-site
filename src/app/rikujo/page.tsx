@@ -4,10 +4,10 @@ import RikujoLP from './RikujoLP'
 
 export const metadata: Metadata = {
   title: '金沢の陸上教室・かけっこ教室 | STARTUS sports academy',
-  description: '金沢市内5会場で毎日開催。かけっこから陸上競技まで、曜日・会場を選べます。月額¥3,300〜。無料体験受付中。',
+  description: '金沢市内5会場で週6日開催。かけっこから陸上競技まで、曜日・会場を選べます。月額¥3,300〜。無料体験受付中。',
   openGraph: {
     title: '金沢の陸上教室・かけっこ教室 | STARTUS',
-    description: '金沢市内6会場で毎日開催。12教室から曜日・会場を選べる陸上教室。月額¥3,300〜。無料体験受付中。',
+    description: '金沢市内5会場で週6日開催。19教室から曜日・会場を選べる陸上教室。月額¥3,300〜。無料体験受付中。',
     url: 'https://startus-kanazawa.org/rikujo',
   },
 }
@@ -17,7 +17,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SportsActivityLocation',
   name: 'STARTUS 陸上教室',
-  description: '金沢市内6会場で開催する陸上・かけっこ教室。年中〜大人まで対応。',
+  description: '金沢市内5会場で開催する陸上・かけっこ教室。年中〜大人まで対応。',
   url: 'https://startus-kanazawa.org/rikujo',
   address: {
     '@type': 'PostalAddress',

@@ -73,8 +73,8 @@ function AboutSection() {
           <path d="M10 28l-4-6M30 28l4-6" strokeLinecap="round" />
         </svg>
       ),
-      num: '17',
-      title: '年中〜大人まで17教室',
+      num: '19',
+      title: '年中〜大人まで19教室',
       desc: 'お子様の年齢・レベルに合わせた教室を選べます。',
     },
     {
@@ -411,7 +411,7 @@ function InstagramSection() {
 
       <div className="text-center">
         <a
-          href="https://www.instagram.com/startus_sports/"
+          href="https://www.instagram.com/kanazawa.sogo.sports.club/"
           target="_blank"
           rel="noopener noreferrer"
           className="btn-outline inline-flex items-center gap-2"
@@ -861,7 +861,7 @@ function PriceSection() {
 // ============================================================
 function AgeGuide() {
   const steps = [
-    { age: '年中〜小1', name: 'アプローチ', highlight: true },
+    { age: '年長〜小2', name: 'アプローチ', highlight: true },
     { age: '小1〜小3', name: 'キッズ', highlight: false },
     { age: '小3〜中学', name: 'ジュニア', highlight: false },
     { age: '中学〜大人', name: 'マラソン塾', highlight: false },
@@ -898,7 +898,7 @@ function AgeGuide() {
 // ============================================================
 function FAQ() {
   const faqs = [
-    { q: '運動が苦手でも大丈夫？', a: 'はい。年中〜小1向けのアプローチクラスから始められます。楽しく体を動かすことから始めるので安心です。' },
+    { q: '運動が苦手でも大丈夫？', a: 'はい。年長〜小2向けのアプローチクラスや、年中さんから参加できるスポレクキッズなど、楽しく体を動かすことから始められる教室があるので安心です。' },
     { q: '体験は何回できますか？', a: '各教室1回ずつ無料で体験できます。複数の教室を体験して比較するのもおすすめです。' },
     { q: '途中で教室を変えられる？', a: 'はい。同じ月額内で別の教室への振替・変更が可能です。曜日やレベルに合わせて柔軟に対応します。' },
     { q: '雨の日はどうなりますか？', a: '屋外教室は雨天中止です。スポレクプラザは屋内施設なので天候に左右されません。' },
@@ -990,7 +990,7 @@ function ClassFinderQuiz({ onClassSelect }: { onClassSelect: (cls: ClassData) =>
           <div className="text-xs font-bold text-brand-navy mb-2">Q1. お子さんの年齢は？</div>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { id: 'preschool', label: '年中〜小1' },
+              { id: 'preschool', label: '年中〜小2' },
               { id: 'lower', label: '小2〜小4' },
               { id: 'upper', label: '小5〜中学' },
             ].map(opt => (
@@ -1115,7 +1115,7 @@ function Footer() {
         {/* SNS links */}
         <div className="flex justify-center gap-4 mb-6">
           <a
-            href="https://www.instagram.com/startus_sports/"
+            href="https://www.instagram.com/kanazawa.sogo.sports.club/"
             target="_blank"
             rel="noopener noreferrer"
             className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center"

@@ -185,7 +185,7 @@ function SnsSection() {
     {
       name: 'LINE公式',
       desc: '教室の質問・お問い合わせはLINEが便利です',
-      href: 'https://line.me/R/ti/p/@startus',
+      href: 'https://lin.ee/BQKtTDq',
       bg: 'bg-[#06C755]',
       icon: (
         <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -196,7 +196,7 @@ function SnsSection() {
     {
       name: 'Instagram',
       desc: '活動の様子・最新情報を発信中',
-      href: 'https://www.instagram.com/startus_sports/',
+      href: 'https://www.instagram.com/kanazawa.sogo.sports.club/',
       bg: 'bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400',
       icon: (
         <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -207,22 +207,11 @@ function SnsSection() {
     {
       name: 'Facebook',
       desc: 'イベント情報・活動報告を掲載',
-      href: 'https://www.facebook.com/startus.kanazawa',
+      href: 'https://www.facebook.com/kanazawa.sogo.sportsclub/',
       bg: 'bg-[#1877F2]',
       icon: (
         <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-        </svg>
-      ),
-    },
-    {
-      name: 'YouTube',
-      desc: '教室の様子・イベント動画を公開',
-      href: 'https://www.youtube.com/@startus_sports',
-      bg: 'bg-[#FF0000]',
-      icon: (
-        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
         </svg>
       ),
     },
@@ -235,7 +224,7 @@ function SnsSection() {
         <h2 className="section-title mb-2">SNS・公式アカウント</h2>
         <p className="text-sm text-gray-500 mb-6">最新情報・お問い合わせはSNSでも受け付けています。</p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {links.map(({ name, desc, href, bg, icon }) => (
             <a
               key={name}
@@ -272,8 +261,8 @@ function ClassesSection() {
       name: '陸上・マラソン',
       tag: '人気No.1',
       tagColor: 'bg-brand-orange/10 text-brand-orange',
-      desc: 'かけっこ塾・ジュニア陸上・マラソン塾・インクルーシブランニングなど17教室。市内5会場で週6日開催。',
-      classes: ['かけっこ塾（年中〜小3）', 'ジュニア陸上（小1〜中学）', 'るぶげる親子陸上', 'インクルーシブランニング', '大人のマラソン塾'],
+      desc: 'かけっこ塾・ジュニア陸上・マラソン塾・インクルーシブランニングなど19教室。市内5会場で週6日開催。',
+      classes: ['かけっこ塾（年長〜中学生）', 'ジュニア陸上（小1〜中学）', '陸上星稜教室（2026年8月開講）', 'るぶげる親子陸上', 'インクルーシブランニング・大人のマラソン塾'],
       price: '月額 ¥3,300〜¥9,900',
       href: '/rikujo',
       available: true,
@@ -317,14 +306,14 @@ function ClassesSection() {
     {
       id: 'soccer',
       icon: '⚽',
-      name: 'サッカー・フットサル',
-      tag: '',
-      tagColor: '',
-      desc: '大人向けソーシャルフットサル。心身のリフレッシュを目的とした楽しめる教室です。',
-      classes: ['大人フットサル（初心者〜中級）'],
-      price: '月額 ¥3,300〜',
+      name: 'ソーシャルフットボール',
+      tag: '誰でも参加OK',
+      tagColor: 'bg-cyan-50 text-cyan-600',
+      desc: '障がいの有無・年齢を問わず参加できるフットボール教室。屋内人工芝のあめるんパークで毎週開催。スポット参加もOK。',
+      classes: ['ソーシャルフットボール（木 17:00〜19:00・あめるんパーク）'],
+      price: '月額 ¥3,300（スポット ¥1,500/回）',
       href: null,
-      available: false,
+      available: true,
     },
     {
       id: 'kinball',
@@ -510,7 +499,7 @@ function FeeSection() {
       <div className="max-w-5xl mx-auto">
         <p className="section-label">料金</p>
         <h2 className="section-title mb-2">わかりやすい月額制</h2>
-        <p className="text-sm text-gray-500 mb-6">月額¥3,300〜。追加料金なし。兄弟割引あり。</p>
+        <p className="text-sm text-gray-500 mb-6">月額¥3,300〜。兄弟割引あり（2人目は月会費20%OFF・3人目以降は半額）。</p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[
@@ -533,7 +522,7 @@ function FeeSection() {
           <div className="divide-y divide-warm-200">
             {[
               { item: '入会手数料', price: '¥5,500', note: '※同一世帯2人目以降 ¥2,750' },
-              { item: '年度会費', price: '¥5,500/年', note: '' },
+              { item: '年度会費', price: '¥5,500/年', note: '※障がいのある方は ¥2,750/年' },
               { item: 'スポーツ安全保険', price: '¥800〜¥2,000/年', note: '加入区分により異なる' },
             ].map(({ item, price, note }) => (
               <div key={item} className="flex items-center justify-between px-4 py-3">
@@ -556,12 +545,12 @@ function FeeSection() {
 // ============================================================
 function AboutSection() {
   const history = [
-    { year: '2006', event: '設立準備委員会を発足' },
-    { year: '2008', event: 'NPO法人設立総会・法人登記完了' },
-    { year: '2009', event: '事務局を現在地（VIDA金沢2階）に移転' },
-    { year: '2014', event: '会員数が100名を超え、教室数も拡大' },
-    { year: '2018', event: '法人設立10周年記念イベントを開催' },
-    { year: '2024', event: '会員数約500名、30以上の教室を運営' },
+    { year: '2006', event: '金沢市内の有志により設立準備委員会を発足' },
+    { year: '2008', event: '設立総会・NPO法人登記完了' },
+    { year: '2009', event: '事務所を金沢市泉本町に移転' },
+    { year: '2017', event: 'スタジオ運営を開始（ジョイスタジオ）' },
+    { year: '2018', event: '事務所を現在地（中村町 VIDA金沢2階）に移転、設立10周年イベントを開催' },
+    { year: '2025', event: '31教室・会員数約350名に。新教室も続々開講中' },
   ]
 
   return (
@@ -574,7 +563,7 @@ function AboutSection() {
         <div>
           <h3 className="font-bold text-brand-navy mb-3">クラブの理念</h3>
           <p className="text-sm text-gray-600 leading-loose mb-4">
-            私たちSTARTUSは、「スポーツを通じて、地域の人々が健やかで豊かな生活を送れるよう」という理念のもと設立されたNPO法人です。
+            私たちSTARTUSは、スポーツの力で「元気とうるおいある生活」を創造することをミッションに掲げるNPO法人です。気軽にできるスポーツの身近な機会を提供し、一人ひとりの挑戦と達成感をサポートする「スポーツ元気パートナー」を目指しています。
           </p>
           <p className="text-sm text-gray-600 leading-loose mb-4">
             乳幼児から高齢者まで、障がいの有無を問わず、誰もが気軽にスポーツに親しめる環境づくりを目指しています。
@@ -589,8 +578,8 @@ function AboutSection() {
             { label: '設立年', value: '2008年' },
             { label: '法人格', value: 'NPO法人' },
             { label: '教室数', value: '30以上' },
-            { label: '会員数', value: '約500名' },
-            { label: '会場数', value: '5会場' },
+            { label: '会員数', value: '約350名' },
+            { label: '会場数', value: '市内多数' },
             { label: '対象年齢', value: '乳幼児〜大人' },
           ].map(({ label, value }) => (
             <div key={label} className="bg-warm-50 rounded-xl p-3 text-center">
@@ -628,10 +617,10 @@ function AboutSection() {
 // ============================================================
 function InstructorSection() {
   const instructors = [
-    { name: '井波 義明', role: '理事長', sport: '陸上・マラソン', color: '#1B2A4A' },
-    { name: '宮本 コーチ', role: '陸上コーチ', sport: '大学陸上部出身', color: '#E8740C' },
-    { name: '田中 コーチ', role: 'バドミントンコーチ', sport: 'バドミントン', color: '#2A3F6A' },
-    { name: '佐藤 コーチ', role: 'ダンスインストラクター', sport: 'チア・ダンス', color: '#D06A0B' },
+    { name: '松井 久', role: 'ベテランコーチ（Qちゃん）', sport: '陸上・マラソン', color: '#2A7B5B' },
+    { name: '山本 勝裕', role: '理論派コーチ（やまティー）', sport: '陸上・親子陸上', color: '#185FA5' },
+    { name: '須田 崇', role: '陸上コーチ', sport: '陸上（基礎〜応用）', color: '#993C1D' },
+    { name: '橋本 祐之', role: 'インクルーシブ専門', sport: 'インクルーシブスポーツ', color: '#534AB7' },
   ]
 
   return (
@@ -656,7 +645,7 @@ function InstructorSection() {
             </div>
           ))}
         </div>
-        <p className="text-xs text-gray-400 text-center">※ 各教室の指導者詳細はお問い合わせください</p>
+        <p className="text-xs text-gray-400 text-center">※ かけっこ塾・陸上星稜教室では金沢星稜大学陸上競技部の学生コーチも指導しています</p>
       </div>
     </section>
   )
@@ -671,7 +660,7 @@ function FaqSection() {
     { q: '無料体験は何回できますか？', a: '各教室につき1回ずつ無料体験いただけます。複数の教室を体験して比較するのもおすすめです。' },
     { q: '体験だけで入会しなくても大丈夫ですか？', a: 'もちろんです。体験後に勧誘はありません。ご自身のペースでご検討ください。' },
     { q: '途中で教室を変えることはできますか？', a: 'はい。同じ月額内で別の教室への振替・変更が可能です。スケジュールに合わせて柔軟に対応します。' },
-    { q: '兄弟で通う場合、割引はありますか？', a: 'はい。同一世帯2人目以降は入会手数料が半額（¥2,750）になります。' },
+    { q: '兄弟で通う場合、割引はありますか？', a: 'はい。同一世帯2人目以降は入会手数料が半額（¥2,750）になるほか、月会費も2人目は20%OFF・3人目以降は半額になります。' },
     { q: '障がいがあっても参加できますか？', a: 'はい。インクルーシブランニングをはじめ、障がいの有無を問わず参加できる教室があります。お気軽にご相談ください。' },
     { q: '大人でも参加できますか？', a: 'はい。マラソン塾・バドミントン・フットサルなど大人向けの教室も充実しています。' },
     { q: '見学だけでもできますか？', a: 'はい、見学も大歓迎です。体験申込フォームの備考欄に「見学希望」とお書きいただくか、お電話でご連絡ください。' },
@@ -705,11 +694,12 @@ function FaqSection() {
 // ============================================================
 function VenueSection() {
   const venues = [
-    { name: '金沢市営陸上競技場', area: '泉野', access: '金沢市泉野出町3丁目' },
-    { name: '中村町スポーツ広場', area: '中村町', access: '金沢市中村町（事務局そば）' },
-    { name: '金沢市西部体育館', area: '西部', access: '金沢市西部' },
-    { name: '猪木スポーツアリーナ', area: '南部', access: '金沢市南部' },
-    { name: 'スポレクプラザ', area: '中心部', access: '屋内施設（雨天OK）' },
+    { name: '金沢市営陸上競技場', area: '中心部', access: '金沢市弥生3丁目5-1' },
+    { name: '中村町小学校', area: '中村町', access: '金沢市中村町（事務局そば）' },
+    { name: '西部緑地公園陸上競技場', area: '西部', access: '金沢市袋畠町南136' },
+    { name: '稲置学園総合運動場', area: '東部', access: '金沢市御所町2-46' },
+    { name: '健民スポレクプラザ', area: '泉野', access: '金沢市西泉6丁目（屋内・雨天OK）' },
+    { name: 'あめるんパーク', area: '駅西', access: '金沢市駅西新町23-1（屋内人工芝）' },
   ]
 
   return (
@@ -717,7 +707,7 @@ function VenueSection() {
       <div className="max-w-5xl mx-auto">
         <p className="section-label">会場案内</p>
         <h2 className="section-title mb-2">事務局・教室会場</h2>
-        <p className="text-sm text-gray-500 mb-6">市内5会場で開催中。お近くの会場をお選びください。</p>
+        <p className="text-sm text-gray-500 mb-6">市内6会場で開催中。お近くの会場をお選びください。</p>
 
         <div className="grid md:grid-cols-2 gap-4 mb-6">
           {/* Main office */}
@@ -735,7 +725,7 @@ function VenueSection() {
               </p>
               <p>
                 Email:&nbsp;
-                <a href="mailto:kssports@friend.ocn.ne.jp" className="text-brand-orange hover:underline">kssports@friend.ocn.ne.jp</a>
+                <a href="mailto:startus@startus-kanazawa.org" className="text-brand-orange hover:underline">startus@startus-kanazawa.org</a>
               </p>
               <p className="text-xs text-gray-400">受付時間: 10:00〜16:00（平日）<br />不在時は留守電にメッセージをどうぞ</p>
             </div>
@@ -787,7 +777,7 @@ function ContactSection() {
     const bodyText = encodeURIComponent(
       `お名前: ${name}\nメール: ${email}\nお電話: ${phone}\n\nお問い合わせ内容:\n${body}`
     )
-    window.location.href = `mailto:kssports@friend.ocn.ne.jp?subject=${subject}&body=${bodyText}`
+    window.location.href = `mailto:startus@startus-kanazawa.org?subject=${subject}&body=${bodyText}`
     setSent(true)
   }
 
@@ -826,7 +816,9 @@ function ContactSection() {
               </div>
               <div>
                 <div className="text-xs text-gray-400">LINE公式アカウント</div>
-                <div className="font-bold text-brand-navy text-sm">@startus で検索</div>
+                <a href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener noreferrer" className="font-bold text-brand-navy text-sm hover:text-brand-orange transition-colors">
+                  友だち追加はこちら
+                </a>
               </div>
             </div>
             <p className="text-xs text-gray-400">営業時間内に順次ご返信します</p>
@@ -841,8 +833,8 @@ function ContactSection() {
               </div>
               <div>
                 <div className="text-xs text-gray-400">メール</div>
-                <a href="mailto:kssports@friend.ocn.ne.jp" className="font-bold text-brand-navy text-sm hover:text-brand-orange transition-colors break-all">
-                  kssports@friend.ocn.ne.jp
+                <a href="mailto:startus@startus-kanazawa.org" className="font-bold text-brand-navy text-sm hover:text-brand-orange transition-colors break-all">
+                  startus@startus-kanazawa.org
                 </a>
               </div>
             </div>
@@ -959,10 +951,9 @@ function Footer() {
         <div className="border-t border-white/10 pt-6">
           <div className="flex justify-center gap-3 mb-4">
             {[
-              { href: 'https://line.me/R/ti/p/@startus', label: 'LINE', bg: 'bg-[#06C755]' },
-              { href: 'https://www.instagram.com/startus_sports/', label: 'IG', bg: 'bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400' },
-              { href: 'https://www.facebook.com/startus.kanazawa', label: 'FB', bg: 'bg-[#1877F2]' },
-              { href: 'https://www.youtube.com/@startus_sports', label: 'YT', bg: 'bg-[#FF0000]' },
+              { href: 'https://lin.ee/BQKtTDq', label: 'LINE', bg: 'bg-[#06C755]' },
+              { href: 'https://www.instagram.com/kanazawa.sogo.sports.club/', label: 'IG', bg: 'bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400' },
+              { href: 'https://www.facebook.com/kanazawa.sogo.sportsclub/', label: 'FB', bg: 'bg-[#1877F2]' },
             ].map(({ href, label, bg }) => (
               <a
                 key={label}
