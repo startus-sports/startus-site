@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // ============================================================
 // Header / Navigation
@@ -86,43 +87,66 @@ function Hero() {
       <div className="absolute bottom-[-60px] left-[-30px] w-48 h-48 rounded-full bg-brand-orange opacity-[0.05]" />
       <div className="absolute top-1/2 right-8 -translate-y-1/2 w-80 h-80 rounded-full bg-white opacity-[0.02]" />
 
-      <div className="relative max-w-4xl mx-auto px-5 py-16 md:py-28 text-center">
-        <span className="inline-block bg-white/10 text-white/80 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide">
-          NPO法人 かなざわ総合スポーツクラブ
-        </span>
+      <div className="relative max-w-5xl mx-auto px-5 py-14 md:py-20">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-center">
+          {/* Text */}
+          <div className="text-center md:text-left">
+            <span className="inline-block bg-white/10 text-white/80 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide">
+              NPO法人 かなざわ総合スポーツクラブ
+            </span>
 
-        <h1 className="font-display text-white text-3xl md:text-5xl font-bold leading-relaxed mb-4">
-          スポーツで、<span className="text-brand-orange">もっと輝こう</span>。
-        </h1>
+            <h1 className="font-display text-white text-3xl md:text-5xl font-bold leading-relaxed mb-4">
+              スポーツで、<br className="hidden md:block" />
+              <span className="text-brand-orange">もっと輝こう</span>。
+            </h1>
 
-        <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto">
-          金沢市で30以上のスポーツ教室を運営。<br />
-          かけっこから陸上・バドミントン・チアまで、<br />
-          専門コーチが一人ひとりに寄り添います。
-        </p>
+            <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto md:mx-0">
+              金沢市で30以上のスポーツ教室を運営。
+              かけっこから陸上・バドミントン・チアまで、
+              専門コーチが一人ひとりに寄り添います。
+            </p>
 
-        <div className="flex justify-center gap-8 md:gap-16 mb-10">
-          {[
-            { num: '30+', label: 'スポーツ教室' },
-            { num: '5', label: '会場' },
-            { num: '2008', label: '年設立' },
-          ].map(({ num, label }) => (
-            <div key={label} className="text-center">
-              <div className="font-display text-brand-orange text-2xl md:text-3xl font-bold">{num}</div>
-              <div className="text-white/50 text-xs mt-0.5">{label}</div>
+            <div className="flex justify-center md:justify-start gap-8 md:gap-12 mb-8">
+              {[
+                { num: '30+', label: 'スポーツ教室' },
+                { num: '350+', label: '会員数' },
+                { num: '2008', label: '年設立' },
+              ].map(({ num, label }) => (
+                <div key={label} className="text-center md:text-left">
+                  <div className="font-display text-brand-orange text-2xl md:text-3xl font-bold">{num}</div>
+                  <div className="text-white/50 text-xs mt-0.5">{label}</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/taiken" className="btn-primary text-base px-10 py-4">
-            無料体験に申し込む
-          </Link>
-          <a href="#classes" className="inline-flex items-center justify-center px-10 py-4 border-2 border-white/30 text-white font-display font-bold text-base rounded-full hover:bg-white/10 transition-all">
-            教室を見る
-          </a>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+              <Link href="/taiken" className="btn-primary text-base px-10 py-4">
+                無料体験に申し込む
+              </Link>
+              <a href="#classes" className="inline-flex items-center justify-center px-10 py-4 border-2 border-white/30 text-white font-display font-bold text-base rounded-full hover:bg-white/10 transition-all">
+                教室を見る
+              </a>
+            </div>
+            <p className="text-white/30 text-xs mt-3">体験当日の入会で入会金(¥5,500)が無料</p>
+          </div>
+
+          {/* Visual */}
+          <div className="relative">
+            <div className="absolute -inset-3 bg-brand-orange/20 rounded-[2rem] rotate-2" />
+            <Image
+              src="/hero-running.png"
+              alt="コーチと一緒に走る子どもたち"
+              width={1408}
+              height={768}
+              priority
+              className="relative rounded-3xl shadow-2xl ring-1 ring-white/10 object-cover w-full h-56 md:h-80"
+            />
+            <div className="absolute -bottom-3 left-4 md:left-6 bg-white rounded-full shadow-lg px-4 py-2 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs font-bold text-brand-navy">無料体験 受付中</span>
+            </div>
+          </div>
         </div>
-        <p className="text-white/30 text-xs mt-3">体験当日の入会で入会金(¥5,500)が無料</p>
       </div>
     </section>
   )
@@ -531,7 +555,7 @@ function FeeSection() {
             {[
               { item: '入会手数料', price: '¥5,500', note: '※同一世帯2人目以降 ¥2,750' },
               { item: '年度会費', price: '¥5,500/年', note: '※障がいのある方は ¥2,750/年' },
-              { item: 'スポーツ安全保険', price: '¥800〜¥2,000/年', note: '加入区分により異なる' },
+              { item: 'スポーツ安全保険', price: '¥800〜¥1,850/年', note: '中学生以下 ¥800／大人 ¥1,850' },
             ].map(({ item, price, note }) => (
               <div key={item} className="flex items-center justify-between px-4 py-3">
                 <div>
@@ -596,6 +620,12 @@ function AboutSection() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="text-center mb-10">
+        <Link href="/about" className="btn-outline !text-sm">
+          クラブについて詳しく見る →
+        </Link>
       </div>
 
       {/* History timeline */}
@@ -940,19 +970,21 @@ function Footer() {
               <div className="text-white/60 font-bold mb-2">教室</div>
               <div className="space-y-1.5">
                 <Link href="/rikujo" className="block text-white/40 hover:text-white/70 transition-colors">陸上・マラソン教室</Link>
-                <span className="block text-white/20">バドミントン（準備中）</span>
-                <span className="block text-white/20">テニス（準備中）</span>
-                <span className="block text-white/20">ダンス・チア（準備中）</span>
+                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">バドミントン</a>
+                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">テニス</a>
+                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">ダンス・チア</a>
+                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">ソーシャルフットボール</a>
               </div>
             </div>
             <div>
               <div className="text-white/60 font-bold mb-2">クラブ情報</div>
               <div className="space-y-1.5">
-                <a href="#about" className="block text-white/40 hover:text-white/70 transition-colors">クラブについて</a>
+                <Link href="/about" className="block text-white/40 hover:text-white/70 transition-colors">クラブについて</Link>
                 <a href="#flow" className="block text-white/40 hover:text-white/70 transition-colors">入会の流れ</a>
                 <a href="#venue" className="block text-white/40 hover:text-white/70 transition-colors">会場案内</a>
                 <a href="#contact" className="block text-white/40 hover:text-white/70 transition-colors">お問い合わせ</a>
                 <Link href="/taiken" className="block text-white/40 hover:text-white/70 transition-colors">体験申込</Link>
+                <Link href="/tokushoho" className="block text-white/40 hover:text-white/70 transition-colors">特定商取引法に基づく表記</Link>
               </div>
             </div>
           </div>

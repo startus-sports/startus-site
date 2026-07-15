@@ -28,7 +28,8 @@ export default function Header({ variant = 'main' }: { variant?: 'main' | 'rikuj
           ) : (
             <>
               <Link href="/rikujo" className="hover:text-brand-orange transition-colors">陸上教室</Link>
-              <Link href="/class" className="hover:text-brand-orange transition-colors">教室一覧</Link>
+              <Link href="/#classes" className="hover:text-brand-orange transition-colors">教室一覧</Link>
+              <Link href="/about" className="hover:text-brand-orange transition-colors">クラブについて</Link>
             </>
           )}
           <Link href="/taiken" className="btn-primary !py-2 !px-5 !text-sm">無料体験</Link>
@@ -68,7 +69,8 @@ export default function Header({ variant = 'main' }: { variant?: 'main' | 'rikuj
           ) : (
             <>
               <Link href="/rikujo" className="block text-sm text-brand-navy py-1">陸上教室</Link>
-              <Link href="/class" className="block text-sm text-brand-navy py-1">教室一覧</Link>
+              <Link href="/#classes" className="block text-sm text-brand-navy py-1">教室一覧</Link>
+              <Link href="/about" className="block text-sm text-brand-navy py-1">クラブについて</Link>
             </>
           )}
         </div>
