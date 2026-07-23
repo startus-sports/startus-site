@@ -51,7 +51,7 @@ function Hero() {
           ))}
         </div>
 
-        <Link href="/taiken" className="btn-primary text-lg px-10 py-4">
+        <Link href="/taiken?from=rikujo" className="btn-primary text-lg px-10 py-4">
           無料体験に申し込む
         </Link>
         <p className="text-white/40 text-xs mt-3">体験当日の入会で入会金(¥5,500)が無料</p>
@@ -621,7 +621,7 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
           )}
 
           <Link
-            href="/taiken"
+            href="/taiken?from=rikujo"
             className="btn-primary w-full text-center"
           >
             この教室の無料体験に申し込む
@@ -1088,7 +1088,7 @@ function StickyCTA() {
           <span className="font-bold text-brand-navy text-sm block">まずは無料体験から</span>
           体験当日の入会で入会金無料
         </div>
-        <Link href="/taiken" className="btn-primary !py-2.5 !px-6 !text-sm whitespace-nowrap">
+        <Link href="/taiken?from=rikujo" className="btn-primary !py-2.5 !px-6 !text-sm whitespace-nowrap">
           体験申込
         </Link>
       </div>
@@ -1132,7 +1132,7 @@ function Footer() {
           <a href="#price" className="hover:text-white/70 transition-colors">料金</a>
           <a href="#map" className="hover:text-white/70 transition-colors">会場一覧</a>
           <a href="#faq" className="hover:text-white/70 transition-colors">よくある質問</a>
-          <Link href="/taiken" className="hover:text-white/70 transition-colors">体験申込</Link>
+          <Link href="/taiken?from=rikujo" className="hover:text-white/70 transition-colors">体験申込</Link>
         </div>
       </div>
     </footer>
@@ -1296,7 +1296,7 @@ export default function RikujoLP() {
         </p>
         <p className="text-white/50 text-sm mb-6">お子様の「やってみたい」を応援します。</p>
 
-        <Link href="/taiken" className="btn-primary text-lg px-12 py-4">
+        <Link href="/taiken?from=rikujo" className="btn-primary text-lg px-12 py-4">
           無料体験に申し込む
         </Link>
 

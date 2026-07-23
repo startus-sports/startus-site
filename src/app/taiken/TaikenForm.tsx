@@ -5,7 +5,7 @@ import { fetchClassrooms, submitApplication, sendEmail, type Classroom } from '@
 import { trackEvent } from '@/lib/gtag'
 import CalendarPicker from './CalendarPicker'
 
-type ClassItem = { name: string; category: string; sort: number; id: string }
+type ClassItem = { name: string; category: string; sort: number; id: string; trialOpen: boolean }
 
 function toKatakana(str: string) {
   return str.replace(/[\u3041-\u3096]/g, ch =>
@@ -15,10 +15,11 @@ function toKatakana(str: string) {
 
 const ROUTES = ['友人・知人', 'ネット検索', 'HP', 'SNS', 'チラシ', 'その他']
 
-export default function TaikenForm() {
+export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolean }) {
   // --- State ---
   const [classes, setClasses] = useState<ClassItem[]>([])
   const [classLoading, setClassLoading] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState('すべて')
   const [selectedClassName, setSelectedClassName] = useState('')
   const [selectedClassId, setSelectedClassId] = useState('')
 
@@ -59,6 +60,8 @@ export default function TaikenForm() {
           category: d.category,
           sort: d.display_order,
           id: d.calendar_tag || d.name,
+          // trial_open が false の教室はキャンセル待ち扱い（未設定は受付可）
+          trialOpen: d.trial_open !== false,
         })))
       })
       .catch(err => console.error('教室リスト取得エラー:', err))
@@ -66,7 +69,11 @@ export default function TaikenForm() {
   }, [])
 
   // --- Derived ---
-  const rikujoClasses = classes.filter(c => c.category === '陸上・マラソン')
+  const baseClasses = rikujoOnly ? classes.filter(c => c.category === '陸上・マラソン') : classes
+  const categories = ['すべて', ...Array.from(new Set(baseClasses.map(c => c.category)))]
+  const visibleClasses = (rikujoOnly || selectedCategory === 'すべて')
+    ? baseClasses
+    : baseClasses.filter(c => c.category === selectedCategory)
 
   const kanaPattern = /^[ァ-ヶー・\s\u3000]+$/
 
@@ -80,6 +87,13 @@ export default function TaikenForm() {
     setSelectedClassName(name)
     const opt = e.target.selectedOptions[0]
     setSelectedClassId(opt?.dataset.id || '')
+    setKiboubi('')
+  }
+
+  function handleCategorySelect(cat: string) {
+    setSelectedCategory(cat)
+    setSelectedClassName('')
+    setSelectedClassId('')
     setKiboubi('')
   }
 
@@ -245,18 +259,38 @@ export default function TaikenForm() {
         {classLoading ? (
           <p className="text-xs text-gray-400">読み込み中...</p>
         ) : (
-          <select
-            className={inputClass}
-            value={selectedClassName}
-            onChange={handleClassSelect}
-          >
-            <option value="">▼ 教室を選んでください</option>
-            {rikujoClasses.map(cls => (
-              <option key={cls.id} value={cls.name} data-id={cls.id}>
-                {cls.name}
-              </option>
-            ))}
-          </select>
+          <>
+            {!rikujoOnly && (
+              <div className="flex flex-wrap gap-2 mb-3">
+                {categories.map(cat => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => handleCategorySelect(cat)}
+                    className={`px-3 py-2 rounded-xl border text-xs font-bold transition-colors ${
+                      selectedCategory === cat
+                        ? 'bg-brand-orange text-white border-brand-orange'
+                        : 'bg-white text-gray-600 border-warm-200 hover:border-brand-orange'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+            <select
+              className={inputClass}
+              value={selectedClassName}
+              onChange={handleClassSelect}
+            >
+              <option value="">▼ 教室を選んでください</option>
+              {visibleClasses.map(cls => (
+                <option key={cls.id} value={cls.name} data-id={cls.id}>
+                  {cls.name}{cls.trialOpen ? '' : '（キャンセル待ち）'}
+                </option>
+              ))}
+            </select>
+          </>
         )}
       </section>
 

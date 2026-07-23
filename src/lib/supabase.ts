@@ -12,11 +12,12 @@ export type Classroom = {
   category: string
   display_order: number
   calendar_tag: string | null
+  trial_open?: boolean | null
 }
 
 export async function fetchClassrooms(): Promise<Classroom[]> {
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/classrooms?select=name,category,display_order,calendar_tag&is_active=eq.true&order=display_order.asc`,
+    `${SUPABASE_URL}/rest/v1/classrooms?select=name,category,display_order,calendar_tag,trial_open&is_active=eq.true&order=display_order.asc`,
     { headers }
   )
   if (!res.ok) throw new Error('教室リストの取得に失敗しました')

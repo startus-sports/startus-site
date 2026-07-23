@@ -32,12 +32,12 @@ export default function Header({ variant = 'main' }: { variant?: 'main' | 'rikuj
               <Link href="/about" className="hover:text-brand-orange transition-colors">クラブについて</Link>
             </>
           )}
-          <Link href="/taiken" className="btn-primary !py-2 !px-5 !text-sm">無料体験</Link>
+          <Link href={variant === 'rikujo' ? '/taiken?from=rikujo' : '/taiken'} className="btn-primary !py-2 !px-5 !text-sm">無料体験</Link>
         </nav>
 
         {/* Mobile */}
         <div className="flex md:hidden items-center gap-3">
-          <Link href="/taiken" className="bg-brand-orange text-white text-xs font-bold px-3 py-1.5 rounded-full">
+          <Link href={variant === 'rikujo' ? '/taiken?from=rikujo' : '/taiken'} className="bg-brand-orange text-white text-xs font-bold px-3 py-1.5 rounded-full">
             体験申込
           </Link>
           <button
