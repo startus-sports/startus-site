@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { trackEvent } from '@/lib/gtag'
 
 // ============================================================
 // Header / Navigation
@@ -817,6 +818,7 @@ function ContactSection() {
     const bodyText = encodeURIComponent(
       `お名前: ${name}\nメール: ${email}\nお電話: ${phone}\n\nお問い合わせ内容:\n${body}`
     )
+    trackEvent('contact_form_submit')
     window.location.href = `mailto:startus@startus-kanazawa.org?subject=${subject}&body=${bodyText}`
     setSent(true)
   }

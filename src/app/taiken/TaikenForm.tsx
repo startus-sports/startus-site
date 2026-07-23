@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { fetchClassrooms, submitApplication, sendEmail, type Classroom } from '@/lib/supabase'
+import { trackEvent } from '@/lib/gtag'
 import CalendarPicker from './CalendarPicker'
 
 type ClassItem = { name: string; category: string; sort: number; id: string }
@@ -177,6 +178,7 @@ export default function TaikenForm() {
           question1: question,
         }),
       ])
+      trackEvent('taiken_form_submit', { class_name: selectedClassName || '未選択' })
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
