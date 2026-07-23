@@ -82,11 +82,9 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
     setter(toKatakana(val))
   }
 
-  function handleClassSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    const name = e.target.value
-    setSelectedClassName(name)
-    const opt = e.target.selectedOptions[0]
-    setSelectedClassId(opt?.dataset.id || '')
+  function selectClass(cls: ClassItem) {
+    setSelectedClassName(cls.name)
+    setSelectedClassId(cls.id)
     setKiboubi('')
   }
 
@@ -278,18 +276,48 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
                 ))}
               </div>
             )}
-            <select
-              className={inputClass}
-              value={selectedClassName}
-              onChange={handleClassSelect}
-            >
-              <option value="">▼ 教室を選んでください</option>
-              {visibleClasses.map(cls => (
-                <option key={cls.id} value={cls.name} data-id={cls.id}>
-                  {cls.name}{cls.trialOpen ? '' : '（キャンセル待ち）'}
-                </option>
-              ))}
-            </select>
+            <div className="border border-warm-200 rounded-xl bg-white overflow-hidden">
+              <div className="max-h-80 overflow-y-auto divide-y divide-warm-200/60">
+                {visibleClasses.length === 0 ? (
+                  <p className="text-xs text-gray-400 p-4 text-center">該当する教室がありません</p>
+                ) : visibleClasses.map(cls => {
+                  const isSelected = selectedClassName === cls.name
+                  return (
+                    <button
+                      key={cls.id}
+                      type="button"
+                      onClick={() => selectClass(cls)}
+                      className={`w-full flex items-center justify-between gap-2 px-4 py-3 text-sm font-bold text-left transition-colors ${
+                        isSelected
+                          ? 'bg-brand-orange text-white'
+                          : 'bg-white text-brand-navy hover:bg-brand-orange-light'
+                      }`}
+                    >
+                      <span>
+                        {cls.name}
+                        {!cls.trialOpen && (
+                          <span className={`inline-block ml-2 px-2 py-0.5 rounded-full text-[10px] font-bold align-middle ${
+                            isSelected ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-800'
+                          }`}>
+                            キャンセル待ち
+                          </span>
+                        )}
+                      </span>
+                      {isSelected ? (
+                        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" className="flex-shrink-0">
+                          <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      ) : (
+                        <span className="text-warm-200 text-xs flex-shrink-0">▶</span>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            {selectedClassName && (
+              <p className="text-xs text-brand-orange font-bold mt-2">選択中：{selectedClassName}</p>
+            )}
           </>
         )}
       </section>
