@@ -23,6 +23,8 @@ export type ClassData = {
   tags?: string[]
   isNew?: boolean
   isPopular?: boolean
+  /** 個別の教室紹介ページ（hp-lp から取り込んだLP）がある場合のパス */
+  lpHref?: string
 }
 
 export const levelConfig: Record<ClassLevel, { label: string; stars: 1 | 2 | 3; color: string; bgColor: string }> = {
@@ -91,6 +93,7 @@ export const trackClasses: ClassData[] = [
     recommendFor: '水曜かけっこ塾が満員で入れなかった子、少人数でしっかり見てほしい子',
     lessonContent: 'ウォーミングアップ → かけっこの基本動作 → スプリント練習 → ミニレース',
     isNew: true,
+    lpHref: '/kakekko-monday',
   },
   {
     id: 'hashiri-juku',
@@ -113,6 +116,7 @@ export const trackClasses: ClassData[] = [
     recommendFor: '陸上競技に本格的に取り組みたい高学年・中学生',
     lessonContent: 'ウォーミングアップ → 専門ドリル → 種目別トレーニング → タイム計測',
     isNew: true,
+    lpHref: '/hashiri-juku',
   },
   // ── 市営陸上競技場 ──
   {

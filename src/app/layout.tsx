@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'STARTUS sports academy | かなざわ総合スポーツクラブ',
     template: '%s | STARTUS sports academy',
   },
-  description: '金沢で30以上のスポーツ教室を運営。かけっこから陸上・バドミントン・チアまで、専門コーチが一人ひとりに寄り添います。無料体験受付中。',
+  description: '金沢で約30のスポーツ教室を運営。かけっこから陸上・バドミントン・チアまで、専門コーチが一人ひとりに寄り添います。無料体験受付中。',
   openGraph: {
     type: 'website',
     locale: 'ja_JP',

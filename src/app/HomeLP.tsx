@@ -102,7 +102,7 @@ function Hero() {
             </h1>
 
             <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto md:mx-0">
-              金沢市で30以上のスポーツ教室を運営。
+              金沢市で約30のスポーツ教室を運営。
               かけっこから陸上・バドミントン・チアまで、
               専門コーチが一人ひとりに寄り添います。
             </p>
@@ -168,10 +168,10 @@ function NoticeBanner() {
 // News Section
 // ============================================================
 function NewsSection() {
-  const news = [
+  const news: { date: string; tag: string; title: string; href?: string }[] = [
     { date: '2026.08', tag: 'お知らせ', title: '夏季休業（8/11〜8/16）を終了しました。8/17より通常どおり開講しています' },
-    { date: '2026.08', tag: 'お知らせ', title: '新教室「走り塾（初中級）」開講（小5〜中学生・月曜／稲置学園総合運動場）' },
-    { date: '2026.08', tag: 'お知らせ', title: '「月曜かけっこ塾」開講（小学3〜6年生・毎週月曜 19:30〜）' },
+    { date: '2026.08', tag: 'お知らせ', title: '新教室「走り塾（初中級）」開講（小5〜中学生・月曜／稲置学園総合運動場）', href: '/hashiri-juku' },
+    { date: '2026.08', tag: 'お知らせ', title: '「月曜かけっこ塾」開講（小学3〜6年生・毎週月曜 19:30〜）', href: '/kakekko-monday' },
     { date: '2026.07', tag: 'イベント', title: '夏休みかけっこ短期教室を開催しました' },
     { date: '2026.04', tag: 'お知らせ', title: '体験→即入会でおトク！当日入会特典がはじまりました' },
   ]
@@ -188,15 +188,27 @@ function NewsSection() {
       <h2 className="section-title mb-6">お知らせ</h2>
 
       <div className="space-y-2">
-        {news.map(({ date, tag, title }) => (
-          <div key={title} className="flex items-start gap-4 p-4 bg-warm-50 rounded-xl hover:bg-warm-100 transition-colors">
-            <span className="text-xs text-gray-400 w-16 flex-shrink-0 pt-0.5">{date}</span>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${tagColors[tag] ?? 'bg-gray-100 text-gray-500'}`}>
-              {tag}
-            </span>
-            <p className="text-sm text-brand-navy font-medium leading-relaxed">{title}</p>
-          </div>
-        ))}
+        {news.map(({ date, tag, title, href }) => {
+          const inner = (
+            <>
+              <span className="text-xs text-gray-400 w-16 flex-shrink-0 pt-0.5">{date}</span>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${tagColors[tag] ?? 'bg-gray-100 text-gray-500'}`}>
+                {tag}
+              </span>
+              <p className="text-sm text-brand-navy font-medium leading-relaxed">
+                {title}
+                {href && <span className="text-brand-orange font-bold ml-1 whitespace-nowrap">詳しく見る →</span>}
+              </p>
+            </>
+          )
+          const className = 'flex items-start gap-4 p-4 bg-warm-50 rounded-xl hover:bg-warm-100 transition-colors'
+
+          return href ? (
+            <Link key={title} href={href} className={className}>{inner}</Link>
+          ) : (
+            <div key={title} className={className}>{inner}</div>
+          )
+        })}
       </div>
     </section>
   )
@@ -382,7 +394,7 @@ function ClassesSection() {
     <section id="classes" className="px-5 py-12 bg-warm-50">
       <div className="max-w-5xl mx-auto">
         <p className="section-label">定期教室</p>
-        <h2 className="section-title mb-2">30以上のスポーツ教室</h2>
+        <h2 className="section-title mb-2">約30のスポーツ教室</h2>
         <p className="text-sm text-gray-500 mb-6">年齢・目的・レベルに合わせた豊富なラインアップ。まずは無料体験から。</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -583,7 +595,7 @@ function AboutSection() {
     { year: '2009', event: '事務所を金沢市泉本町に移転' },
     { year: '2017', event: 'スタジオ運営を開始（ジョイスタジオ）' },
     { year: '2018', event: '事務所を現在地（中村町 VIDA金沢2階）に移転、設立10周年イベントを開催' },
-    { year: '2026', event: '30以上の教室・会員数約350名に。月曜かけっこ塾／走り塾（初中級）など新教室も続々開講中' },
+    { year: '2026', event: '約30教室・会員数350名以上に。月曜かけっこ塾／走り塾（初中級）など新教室も続々開講中' },
   ]
 
   return (
@@ -602,7 +614,7 @@ function AboutSection() {
             乳幼児から高齢者まで、障がいの有無を問わず、誰もが気軽にスポーツに親しめる環境づくりを目指しています。
           </p>
           <p className="text-sm text-gray-600 leading-loose">
-            現在は30以上のスポーツ教室を運営し、専門コーチが一人ひとりのペースに合わせて丁寧に指導しています。
+            現在は約30のスポーツ教室を運営し、専門コーチが一人ひとりのペースに合わせて丁寧に指導しています。
           </p>
         </div>
 
@@ -610,8 +622,8 @@ function AboutSection() {
           {[
             { label: '設立年', value: '2008年' },
             { label: '法人格', value: 'NPO法人' },
-            { label: '教室数', value: '30以上' },
-            { label: '会員数', value: '約350名' },
+            { label: '教室数', value: '約30' },
+            { label: '会員数', value: '350名以上' },
             { label: '会場数', value: '市内多数' },
             { label: '対象年齢', value: '乳幼児〜大人' },
           ].map(({ label, value }) => (

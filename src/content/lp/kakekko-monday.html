@@ -1,0 +1,1530 @@
+<!-- ============================================================
+  月曜かけっこ塾 教室紹介ページ 本文用HTML
+  ベース：教室紹介ページ_かけっこ塾.html（水曜版）
+  差分：
+   - 曜日を月曜に変更
+   - 対象を「小学3〜6年生」に変更
+   - CTAは「無料体験を申し込む」（月曜は受付中）
+   - 体験受付一時停止バナー・クラス編成・参加者の声・データ・ニュースを一旦非掲載
+   - 会場変更バナー（水曜版の稲置学園総合運動場改修対応）は月曜クラスは影響なしのため削除
+   - 数字ストリップから「1コーチ:4-5人」を外し「定員 10〜15名程度」を掲載（利用状況をみて調整）
+   - 会場は星稜大2F体育館ではなく、改修工事期間・冬季は稲置学園総合運動場内の室内走路で実施
+   - カレンダーiframeの class を月曜用 kakekojyuku-m-rikujo に差し替え
+  使い方：
+   - この内容を WordPress 投稿「月曜かけっこ塾」の本文に【テキスト（コード）モード】で貼り付け
+     （ビジュアルモードだと自動整形でレイアウトが崩れる恐れあり）
+   - タイトルは「月曜かけっこ塾」に変更（カスタムフィールド：対象=小学3〜6年生／
+     会場=稲置学園総合運動場（改修工事期間・冬季：場内の室内走路）／時間=19:30〜20:30）
+   - ローカルでこのファイルをブラウザで開けばプレビュー可能
+============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Oswald:wght@500;600&display=swap');
+
+.kjlp {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', meiryo, sans-serif;
+  color: #2b2b2b;
+  line-height: 1.9;
+  font-size: 16px;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+.kjlp * { box-sizing: border-box; }
+.kjlp img { max-width: 100%; height: auto; }
+
+/* WordPressテーマ干渉防止: ヒーロー右寄り対策（モバイル）
+   テーマが .post-content p { text-indent } 等の p 用スタイルを注入することで
+   ヒーロー内のテキストが右に寄る現象への対策。
+   ※ボタン(.kj-cta-row 等)には触れない（クリック動作阻害の原因になる）。 */
+.kjlp .kj-hero .catch,
+.kjlp .kj-hero .sub {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  text-indent: 0 !important;
+}
+/* トラック装飾のレーンライン(::before)がボタンの上に重なってクリックを
+   遮断するのを保険的に防ぐ */
+.kj-hero::before,
+.kj-final::before {
+  pointer-events: none;
+}
+
+/* ---------- 共通：セクション見出し ---------- */
+.kj-head { margin: 4.5rem 0 1.8rem; text-align: center; }
+.kj-head .en {
+  display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  color: #eb6600;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.kj-head .ja {
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1.45;
+  margin: 0;
+  color: #1d1d1d;
+}
+.kj-head .ja .mk {
+  background: linear-gradient(transparent 62%, #ffd9a8 62%);
+  padding: 0 0.1em;
+}
+.kj-head::after {
+  content: "";
+  display: block;
+  width: 54px; height: 4px;
+  border-radius: 2px;
+  background: #eb6600;
+  margin: 1rem auto 0;
+}
+.kj-lead { text-align: center; max-width: 640px; margin: 0 auto 2rem; }
+
+/* ---------- スクロール出現 ---------- */
+.kj-reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.kj-reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .kj-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- ヒーロー ---------- */
+.kj-hero {
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 45% at 18% 8%, rgba(255, 196, 110, 0.28), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 85% 12%, rgba(120, 160, 255, 0.20), transparent 60%),
+    linear-gradient(165deg, #0d1226 0%, #18234a 55%, #243463 100%);
+  border-radius: 20px;
+  padding: clamp(3rem, 8vw, 5rem) 1.5rem 4.2rem;
+  text-align: center;
+  color: #fff;
+  margin: 1.2rem 0 0;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(13, 18, 38, 0.35);
+}
+.kj-hero::before {  /* トラックのレーンライン */
+  content: "";
+  position: absolute;
+  left: -10%; right: -10%; bottom: -36px;
+  height: 120px;
+  background: repeating-linear-gradient(90deg,
+    #c8401f 0 90px, #e8e6e1 90px 96px);
+  transform: rotate(-2.5deg);
+  opacity: 0.92;
+}
+.kj-hero::after {  /* ナイター光 */
+  content: "";
+  position: absolute;
+  top: -40%; left: 50%;
+  width: 140%; height: 90%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center top, rgba(255,255,255,0.14), transparent 65%);
+  pointer-events: none;
+}
+.kj-hero .inner { position: relative; z-index: 2; }
+.kj-hero .night-label {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.45em;
+  color: #ffc46e;
+  border: 1px solid rgba(255, 196, 110, 0.5);
+  border-radius: 50px;
+  padding: 0.35em 1.4em 0.35em 1.75em;
+  margin-bottom: 1.6rem;
+}
+.kj-hero .catch {
+  font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.9rem, 7vw, 3.3rem);
+  line-height: 1.5;
+  margin: 0 0 1.1rem;
+  letter-spacing: 0.03em;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.45);
+}
+.kj-hero .catch em {
+  font-style: normal;
+  color: #ffb35c;
+  position: relative;
+}
+.kj-hero .sub {
+  font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+  color: #d9e2f7;
+  line-height: 2.1;
+  margin-bottom: 1.8rem;
+  font-weight: 500;
+}
+.kj-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin-bottom: 2rem; }
+.kj-chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(2px);
+  border-radius: 50px;
+  padding: 0.35em 1.1em;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+.kj-chip b { color: #ffc46e; font-weight: 800; }
+
+/* ---------- ボタン ---------- */
+.kj-cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; justify-content: center; align-items: center; position: relative; z-index: 2; }
+.kj-btn {
+  position: relative;
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: 60px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+.kj-btn:hover { transform: translateY(-3px) scale(1.02); }
+.kj-btn-primary {
+  background: linear-gradient(135deg, #ff7a1a, #e8550f);
+  color: #ffffff !important;
+  box-shadow: 0 8px 22px rgba(235, 102, 0, 0.45);
+}
+.kj-btn-primary::after {  /* シャイン */
+  content: "";
+  position: absolute;
+  top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.45), transparent);
+  transform: skewX(-20deg);
+  animation: kj-shine 3.2s ease-in-out infinite;
+}
+@keyframes kj-shine {
+  0%, 60% { left: -80%; }
+  85%, 100% { left: 130%; }
+}
+@media (prefers-reduced-motion: reduce) { .kj-btn-primary::after { animation: none; } }
+.kj-btn-ghost {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.65);
+  color: #fff !important;
+}
+.kj-btn-line {
+  background: #06c755;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(6, 199, 85, 0.35);
+}
+.kj-center { text-align: center; margin: 2.5rem 0 1rem; }
+
+/* ---------- 数字ストリップ ---------- */
+.kj-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: #f0ddc8;
+  border: 1px solid #f0ddc8;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 2.2rem 0 0;
+  box-shadow: 0 10px 26px rgba(120, 70, 10, 0.08);
+}
+.kj-stat { background: #fffdf9; text-align: center; padding: 1.4rem 0.6rem 1.2rem; }
+.kj-stat .label { font-size: 0.78rem; font-weight: 700; color: #9a6a35; letter-spacing: 0.08em; }
+.kj-stat .num {
+  font-family: 'Oswald', 'Noto Sans JP', sans-serif;
+  font-size: clamp(1.7rem, 5vw, 2.4rem);
+  font-weight: 600;
+  color: #e8550f;
+  line-height: 1.2;
+}
+.kj-stat .num small { font-size: 0.5em; font-weight: 700; color: #b3622a; }
+
+/* ---------- 共感チェック ---------- */
+.kj-empathy {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #f3e3d0;
+  box-shadow: 0 10px 30px rgba(120, 70, 10, 0.07);
+  padding: 2rem clamp(1.2rem, 4vw, 2.4rem);
+}
+.kj-empathy li {
+  list-style: none;
+  position: relative;
+  padding: 0.85em 0 0.85em 2.4em;
+  border-bottom: 1px dashed #ecd9c2;
+  font-weight: 500;
+}
+.kj-empathy li:last-child { border-bottom: none; }
+.kj-empathy li::before {
+  content: "";
+  position: absolute;
+  left: 0.2em; top: 1.15em;
+  width: 1.25em; height: 1.25em;
+  border-radius: 6px;
+  background: #eb6600;
+  clip-path: polygon(14% 44%, 0 65%, 42% 100%, 100% 16%, 80% 0%, 40% 64%);
+}
+.kj-empathy ul { margin: 0; padding: 0; }
+.kj-empathy strong { background: linear-gradient(transparent 64%, #ffe2bd 64%); }
+.kj-empathy .closing {
+  margin: 1.4rem -0.4rem 0;
+  background: #fff3e5;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  font-weight: 800;
+  color: #b34a00;
+  text-align: center;
+  font-size: 1.02rem;
+}
+
+/* ---------- 理由：ジグザグ ---------- */
+.kj-reason-row {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0 0 2.6rem;
+}
+.kj-reason-row .num {
+  flex: 0 0 auto;
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(4.2rem, 12vw, 7rem);
+  font-weight: 600;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 2px #f1bd8a;
+  margin-right: -0.45em;
+  margin-top: -0.12em;
+  z-index: 0;
+  user-select: none;
+}
+.kj-reason-row .body {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #f3e3d0;
+  border-left: 6px solid #eb6600;
+  box-shadow: 0 10px 26px rgba(120, 70, 10, 0.08);
+  padding: 1.6rem clamp(1.2rem, 3.5vw, 2rem);
+  flex: 1 1 auto;
+}
+.kj-reason-row.alt { flex-direction: row-reverse; }
+.kj-reason-row.alt .num { margin-right: 0; margin-left: -0.45em; }
+.kj-reason-row.alt .body { border-left: 1px solid #f3e3d0; border-right: 6px solid #eb6600; }
+.kj-reason-row .body h4 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.15rem, 3.4vw, 1.4rem);
+  font-weight: 900;
+  color: #1d1d1d;
+  line-height: 1.5;
+}
+.kj-reason-row .body h4 .tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #eb6600;
+  border: 1px solid #eb6600;
+  border-radius: 4px;
+  padding: 0.1em 0.7em;
+  vertical-align: 0.25em;
+  margin-right: 0.7em;
+}
+.kj-reason-row .body p { margin: 0; font-size: 0.97rem; color: #444; }
+.kj-reason-row .body strong { background: linear-gradient(transparent 64%, #ffe2bd 64%); font-weight: 800; }
+
+/* ---------- 記録会：ナイトセクション ---------- */
+.kj-night {
+  position: relative;
+  background:
+    radial-gradient(ellipse 50% 40% at 80% 0%, rgba(255, 196, 110, 0.16), transparent 60%),
+    linear-gradient(160deg, #0d1226 0%, #1c2850 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: clamp(2rem, 6vw, 3.4rem) clamp(1.2rem, 4.5vw, 2.8rem);
+  margin: 0 0 1.6rem;
+  box-shadow: 0 16px 40px rgba(13, 18, 38, 0.3);
+  overflow: hidden;
+}
+.kj-night .kj-head { margin-top: 0; }
+.kj-night .kj-head .ja { color: #fff; }
+.kj-night .kj-head .en { color: #ffc46e; }
+.kj-night-steps { list-style: none; margin: 0 0 1.8rem; padding: 0; position: relative; }
+.kj-night-steps::before {
+  content: "";
+  position: absolute;
+  left: 17px; top: 10px; bottom: 10px;
+  width: 2px;
+  background: linear-gradient(#ffb35c, rgba(255,179,92,0.15));
+}
+.kj-night-steps li {
+  position: relative;
+  padding: 0 0 1.4em 3.2em;
+  font-size: 1rem;
+  color: #d9e2f7;
+}
+.kj-night-steps li:last-child { padding-bottom: 0; }
+.kj-night-steps li::before {
+  content: "";
+  position: absolute;
+  left: 10px; top: 0.45em;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #ffb35c;
+  box-shadow: 0 0 0 5px rgba(255, 179, 92, 0.18);
+}
+.kj-night-steps strong { color: #fff; font-weight: 800; }
+.kj-night .quote {
+  border-left: 4px solid #ffb35c;
+  padding-left: 1.1em;
+  font-size: clamp(1.02rem, 3vw, 1.18rem);
+  font-weight: 700;
+  line-height: 2.05;
+  color: #fff;
+  margin: 0;
+}
+.kj-night .quote .small { display: block; font-size: 0.85em; font-weight: 500; color: #d9e2f7; margin-top: 0.5em; }
+
+/* ---------- 測定サイクル ---------- */
+.kj-measure {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+.kj-measure .cell {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  border-top: 5px solid #ccc;
+  padding: 1.1rem 1.2rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+.kj-measure .cell.sp { border-top-color: #f48fb1; }
+.kj-measure .cell.su { border-top-color: #fbc02d; }
+.kj-measure .cell.au { border-top-color: #ef6c00; }
+.kj-measure .cell.wi { border-top-color: #5c8de6; }
+.kj-measure .season { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.12em; color: #888; }
+.kj-measure h5 { margin: 0.2rem 0 0.4rem; font-size: 1.05rem; font-weight: 900; color: #222; }
+.kj-measure p { margin: 0; font-size: 0.9rem; color: #555; }
+.kj-yearend {
+  background: linear-gradient(135deg, #fff7ec, #ffefdb);
+  border: 1px solid #f5c282;
+  border-radius: 16px;
+  padding: 1.6rem clamp(1.2rem, 3.5vw, 2rem);
+  margin-bottom: 1.4rem;
+}
+.kj-yearend h4 {
+  margin: 0 0 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #b34a00;
+}
+.kj-yearend ul { margin: 0; padding-left: 1.3em; }
+.kj-yearend li { margin: 0.4em 0; }
+.kj-yearend strong { background: linear-gradient(transparent 64%, #ffd9a8 64%); }
+
+/* ---------- 独自レポート（FB用紙）セクション ---------- */
+.kj-report {
+  background: linear-gradient(160deg, #fff8ef 0%, #fff 100%);
+  border-radius: 20px;
+  padding: clamp(2rem, 5vw, 2.8rem);
+  box-shadow: 0 10px 30px rgba(120, 70, 10, 0.08);
+  border: 1px solid #f5e0bd;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 2.6rem);
+  align-items: center;
+}
+.kj-report-photos {
+  position: relative;
+  height: 380px;
+  max-width: 360px;
+  margin: 0 auto;
+  width: 100%;
+}
+.kj-report-photo {
+  position: absolute;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(120, 70, 10, 0.22);
+  border: 5px solid #fff;
+  width: 220px;
+  transition: transform 0.4s;
+}
+.kj-report-photo.p1 { top: 0; left: 0; transform: rotate(-5deg); z-index: 1; }
+.kj-report-photo.p2 { top: 80px; right: 0; transform: rotate(4deg); z-index: 2; }
+.kj-report-photos:hover .kj-report-photo.p1 { transform: rotate(-8deg) translate(-8px, -4px); }
+.kj-report-photos:hover .kj-report-photo.p2 { transform: rotate(7deg) translate(8px, -4px); }
+.kj-report-badge {
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ffc46e, #eb6600);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  border-radius: 50px;
+  padding: 0.4em 1.1em;
+  z-index: 10;
+  box-shadow: 0 6px 16px rgba(232,85,15,0.4);
+  white-space: nowrap;
+}
+.kj-report-text h4 {
+  font-size: clamp(1.15rem, 3.4vw, 1.4rem);
+  font-weight: 900;
+  margin: 0 0 1rem;
+  line-height: 1.5;
+  color: #1d1d1d;
+}
+.kj-report-text h4 .mk { background: linear-gradient(transparent 64%, #ffe2bd 64%); }
+.kj-report-text .feats { list-style: none; margin: 0; padding: 0; }
+.kj-report-text .feats li {
+  padding: 0.75em 0 0.75em 1.8em;
+  position: relative;
+  border-bottom: 1px dashed #ecd9c2;
+  font-size: 0.96rem;
+}
+.kj-report-text .feats li:last-child { border-bottom: none; }
+.kj-report-text .feats li::before {
+  content: "✓";
+  position: absolute;
+  left: 0; top: 0.7em;
+  color: #eb6600;
+  font-weight: 900;
+}
+.kj-report-text .feats b { color: #b34a00; font-weight: 800; }
+.kj-report-note {
+  margin-top: 1.2rem;
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.7;
+}
+
+/* ---------- 季節カード ---------- */
+.kj-seasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); gap: 1.2rem; }
+.kj-season {
+  position: relative;
+  border-radius: 16px;
+  padding: 1.5rem 1.4rem 1.4rem;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.07);
+}
+.kj-season .wm {
+  position: absolute;
+  right: -0.08em; bottom: -0.35em;
+  font-size: 6.5rem;
+  font-weight: 900;
+  line-height: 1;
+  opacity: 0.13;
+  user-select: none;
+  pointer-events: none;
+}
+.kj-season .period {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  background: rgba(255,255,255,0.75);
+  border-radius: 50px;
+  padding: 0.2em 1em;
+  margin-bottom: 0.6rem;
+}
+.kj-season h5 { margin: 0 0 0.5rem; font-size: 1.12rem; font-weight: 900; color: #222; position: relative; }
+.kj-season p { margin: 0; font-size: 0.93rem; color: #3c3c3c; position: relative; }
+.kj-season strong { font-weight: 800; }
+.kj-sp { background: linear-gradient(150deg, #ffe9f4, #ffd6e9); }
+.kj-sp .wm { color: #e91e63; }
+.kj-su { background: linear-gradient(150deg, #fff9d8, #fff0a6); }
+.kj-su .wm { color: #f9a825; }
+.kj-au { background: linear-gradient(150deg, #ffeede, #ffdcb8); }
+.kj-au .wm { color: #ef6c00; }
+.kj-wi { background: linear-gradient(150deg, #e9f1ff, #d5e3fb); }
+.kj-wi .wm { color: #3a6ccc; }
+.kj-season-note { font-size: 0.88rem; color: #666; margin-top: 1.2rem; text-align: center; }
+
+/* ---------- クラスのステップ ---------- */
+.kj-classes { display: grid; gap: 0.4rem; }
+.kj-class {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+.kj-class .badge {
+  flex: 0 0 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: 900;
+  text-align: center;
+  padding: 1rem 0.4rem;
+  font-size: 0.98rem;
+  line-height: 1.4;
+}
+.kj-class .badge small { font-size: 0.72rem; font-weight: 700; opacity: 0.95; }
+.kj-class .desc { padding: 0.95rem 1.2rem; flex: 1; }
+.kj-class .desc .meta { font-size: 0.8rem; font-weight: 800; color: #777; margin-bottom: 0.2rem; }
+.kj-class .desc .meta b { color: #e8550f; }
+.kj-class .desc p { margin: 0; font-size: 0.93rem; color: #444; }
+.kj-c1 .badge { background: linear-gradient(150deg, #f9b234, #f29111); }
+.kj-c2 .badge { background: linear-gradient(150deg, #8bc34a, #5e9e2e); }
+.kj-c3 .badge { background: linear-gradient(150deg, #42a5f5, #1976d2); }
+.kj-c4 .badge { background: linear-gradient(150deg, #ab47bc, #7b1fa2); }
+.kj-c5 .badge { background: linear-gradient(150deg, #ef5350, #c62828); }
+.kj-class-arrow { text-align: center; color: #e8a76a; font-size: 1.1rem; line-height: 1; margin: -0.1rem 0; }
+.kj-class-notes { margin-top: 1.3rem; padding-left: 1.3em; font-size: 0.93rem; color: #555; }
+.kj-class-notes li { margin: 0.4em 0; }
+.kj-class-notes strong { background: linear-gradient(transparent 64%, #ffe2bd 64%); }
+
+/* ---------- 60分タイムライン ---------- */
+.kj-timeline { list-style: none; margin: 0 auto; padding: 0; max-width: 560px; position: relative; }
+.kj-timeline::before {
+  content: "";
+  position: absolute;
+  left: 86px; top: 12px; bottom: 12px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(#ffb35c, #eb6600);
+}
+.kj-timeline li { position: relative; display: flex; gap: 1.6rem; padding: 0 0 1.5em; }
+.kj-timeline li:last-child { padding-bottom: 0; }
+.kj-timeline .t {
+  flex: 0 0 70px;
+  text-align: right;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #e8550f;
+  line-height: 1.6;
+}
+.kj-timeline li::before {
+  content: "";
+  position: absolute;
+  left: 80px; top: 0.48em;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #eb6600;
+  z-index: 1;
+}
+.kj-timeline .c { flex: 1; padding-left: 1rem; }
+.kj-timeline .c b { display: block; font-size: 1rem; color: #222; }
+.kj-timeline .c span { font-size: 0.88rem; color: #666; }
+.kj-timeline-note { text-align: center; font-size: 0.92rem; color: #555; margin-top: 1.4rem; }
+
+/* ---------- コーチ ---------- */
+.kj-coach {
+  background:
+    radial-gradient(ellipse 70% 60% at 90% 10%, rgba(255,255,255,0.25), transparent 60%),
+    linear-gradient(135deg, #ff8c2e, #e8550f);
+  border-radius: 20px;
+  color: #fff;
+  padding: clamp(1.8rem, 5vw, 2.8rem);
+  box-shadow: 0 14px 34px rgba(232, 85, 15, 0.35);
+}
+.kj-coach p { margin: 0; font-size: clamp(1rem, 2.8vw, 1.12rem); font-weight: 700; line-height: 2.15; }
+.kj-coach .big { font-size: clamp(1.25rem, 3.6vw, 1.55rem); font-weight: 900; display: block; margin-bottom: 0.7rem; }
+.kj-coach .big em { font-style: normal; background: linear-gradient(transparent 62%, rgba(255,255,255,0.35) 62%); }
+
+/* ---------- 声 ---------- */
+.kj-voices { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.1rem; }
+.kj-voice {
+  position: relative;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #f0e2cf;
+  padding: 1.4rem 1.3rem 1.1rem;
+  box-shadow: 0 8px 20px rgba(120, 70, 10, 0.07);
+}
+.kj-voice::before {
+  content: "“";
+  position: absolute;
+  top: -0.18em; left: 0.32em;
+  font-family: Georgia, serif;
+  font-size: 3.2rem;
+  color: #f5c282;
+  line-height: 1;
+}
+.kj-voice p { margin: 0 0 0.6rem; font-weight: 700; color: #333; position: relative; }
+.kj-voice .who { font-size: 0.8rem; color: #999; font-weight: 700; }
+
+/* ---------- FAQ アコーディオン ---------- */
+.kj-faq { max-width: 720px; margin: 0 auto; }
+.kj-faq details {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+.kj-faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8em;
+  padding: 1.05rem 3rem 1.05rem 1.2rem;
+  font-weight: 800;
+  color: #222;
+  position: relative;
+  font-size: 0.98rem;
+}
+.kj-faq summary::-webkit-details-marker { display: none; }
+.kj-faq summary::before {
+  content: "Q";
+  flex: 0 0 auto;
+  font-family: 'Oswald', sans-serif;
+  color: #eb6600;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.kj-faq summary::after {
+  content: "＋";
+  position: absolute;
+  right: 1.1rem; top: 50%;
+  transform: translateY(-50%);
+  color: #eb6600;
+  font-weight: 700;
+  font-size: 1.15rem;
+  transition: transform 0.25s;
+}
+.kj-faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+.kj-faq .a {
+  display: flex;
+  gap: 0.8em;
+  padding: 0 1.2rem 1.2rem;
+  font-size: 0.94rem;
+  color: #444;
+}
+.kj-faq .a::before {
+  content: "A";
+  flex: 0 0 auto;
+  font-family: 'Oswald', sans-serif;
+  color: #1976d2;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.kj-faq .a p { margin: 0; }
+.kj-faq .a strong { background: linear-gradient(transparent 64%, #ffe2bd 64%); }
+
+/* ---------- 体験の流れ ---------- */
+.kj-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.8rem; counter-reset: kjflow; }
+.kj-flow .step {
+  counter-increment: kjflow;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  padding: 1.5rem 0.9rem 1.1rem;
+  text-align: center;
+  position: relative;
+}
+.kj-flow .step::before {
+  content: counter(kjflow, decimal-leading-zero);
+  display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #eb6600;
+  line-height: 1;
+  margin-bottom: 0.45rem;
+}
+.kj-flow .step b { display: block; font-size: 0.93rem; color: #222; }
+.kj-flow .step span { font-size: 0.78rem; color: #777; }
+.kj-flow-note { text-align: center; font-size: 0.9rem; color: #555; margin-top: 1.1rem; }
+
+/* ---------- データセクション（コード描画） ---------- */
+.kjlp .chart-note { text-align: center; font-size: 0.85rem; color: #888; margin-top: 1rem; }
+.kj-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+.kj-data-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #f0e2cf;
+  box-shadow: 0 8px 24px rgba(120, 70, 10, 0.07);
+  padding: 1.4rem 1.3rem 1.3rem;
+}
+.kj-data-card.dark {
+  background:
+    radial-gradient(ellipse 60% 50% at 90% 0%, rgba(255, 196, 110, 0.18), transparent 60%),
+    linear-gradient(160deg, #0d1226 0%, #1c2850 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 12px 32px rgba(13, 18, 38, 0.32);
+}
+.kj-data-card .head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+.kj-data-card .head h5 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+.kj-data-card .head .total {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  color: #999;
+}
+.kj-data-card.dark .head .total { color: #ffc46e; }
+.kj-data-card.dark .head h5 { color: #fff; }
+
+/* 学校別 横バー */
+.kj-data-bars { list-style: none; margin: 0; padding: 0; }
+.kj-data-bars li {
+  display: grid;
+  grid-template-columns: 5.5em 1fr 3em;
+  align-items: center;
+  gap: 0.7em;
+  font-size: 0.85rem;
+  margin-bottom: 0.6em;
+}
+.kj-data-bars li:last-child { margin-bottom: 0; }
+.kj-data-bars .name {
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kj-data-bars .track {
+  position: relative;
+  height: 10px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.kj-data-bars .fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, #ffb35c, #eb6600);
+  border-radius: 5px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.kj-data-card.is-in .kj-data-bars .fill { width: var(--w); }
+.kj-data-bars .v {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffc46e;
+  white-space: nowrap;
+  text-align: right;
+}
+.kj-data-bars .v small { font-size: 0.65em; opacity: 0.75; margin-left: 0.15em; }
+.kj-data-bars li.top .fill {
+  background: linear-gradient(90deg, #ffb35c, #ff7a1a 60%, #e8550f);
+  box-shadow: 0 0 12px rgba(255,122,26,0.45);
+}
+.kj-data-bars li.top .v { color: #fff; font-size: 1.05rem; }
+
+/* 学年別 縦バー */
+.kj-data-grades {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  align-items: end;
+  height: 170px;
+  padding-top: 1.3rem;
+  border-bottom: 1px dashed #f0d9b8;
+}
+.kj-data-grades .col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  height: 100%;
+}
+.kj-data-grades .bar {
+  width: 70%;
+  max-width: 22px;
+  background: linear-gradient(180deg, #ffb35c, #eb6600);
+  border-radius: 5px 5px 2px 2px;
+  height: 0;
+  transition: height 1.1s cubic-bezier(.2,.7,.2,1);
+  box-shadow: 0 4px 8px rgba(235,102,0,0.18);
+}
+.kj-data-grades .col.peak .bar {
+  background: linear-gradient(180deg, #ffb35c, #ff7a1a, #e8550f);
+  box-shadow: 0 0 14px rgba(255,122,26,0.5);
+}
+.kj-data-card.is-in .kj-data-grades .bar { height: var(--h); }
+.kj-data-grades .num {
+  position: absolute;
+  top: 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #888;
+}
+.kj-data-grades .col.peak .num { color: #e8550f; font-size: 0.88rem; }
+.kj-data-grades-labels {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+.kj-data-grades-labels span {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #777;
+  white-space: nowrap;
+}
+
+/* 男女比 ドーナツ */
+.kj-data-donut-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.2rem;
+}
+.kj-data-donut { width: 160px; height: 160px; display: block; }
+.kj-data-donut circle { fill: none; stroke-width: 16; }
+.kj-data-donut .track2 { stroke: #f3e3d0; }
+.kj-data-donut .seg {
+  transform: rotate(var(--rot, -90deg));
+  transform-origin: 50% 50%;
+  transition: stroke-dasharray 1.4s cubic-bezier(.2,.7,.2,1);
+  stroke-dasharray: 0 251.33;
+  stroke-linecap: butt;
+}
+.kj-data-card.is-in .kj-data-donut .seg { stroke-dasharray: var(--d) 251.33; }
+.kj-data-donut text {
+  font-family: 'Oswald', 'Noto Sans JP', sans-serif;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.kj-data-donut .num { font-size: 18px; font-weight: 600; fill: #1d1d1d; }
+.kj-data-donut .lbl { font-size: 5px; font-weight: 700; fill: #888; letter-spacing: 0.18em; }
+.kj-data-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1.2em;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.kj-data-legend span { display: inline-flex; align-items: center; gap: 0.45em; color: #444; }
+.kj-data-legend i {
+  display: inline-block;
+  width: 11px; height: 11px;
+  border-radius: 3px;
+}
+.kj-data-legend .m { background: #eb6600; }
+.kj-data-legend .f { background: #e91e63; }
+.kj-data-legend .x { background: #ccc; }
+.kj-data-legend b {
+  font-family: 'Oswald', sans-serif;
+  color: #1d1d1d;
+  font-weight: 600;
+  margin-left: 0.15em;
+}
+
+/* ---------- ニュースカード（現行ページから引き継ぎ） ---------- */
+.kjlp .news-card {
+  background: #ffffff;
+  border-left: 6px solid #eb6600;
+  padding: 1.1rem 1.3rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  max-width: 560px;
+  margin: 0 auto;
+}
+.kjlp .news-card h4 { font-size: 1rem; margin: 0 0 0.5rem; color: #cc3300; font-weight: 800; }
+.kjlp .news-card p { font-size: 0.93rem; color: #333; margin: 0 0 0.5rem; }
+.kjlp .news-card a { font-size: 0.9rem; color: #0066cc; text-decoration: underline; }
+
+/* ---------- 写真プレースホルダ ---------- */
+.kj-photo-placeholder {
+  background: repeating-linear-gradient(45deg, #f5f5f5 0 14px, #ededed 14px 28px);
+  border: 2px dashed #ccc;
+  border-radius: 14px;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+  margin: 1.4rem 0 0;
+}
+
+/* ---------- 最終CTA ---------- */
+.kj-final {
+  position: relative;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 0%, rgba(255, 196, 110, 0.22), transparent 60%),
+    linear-gradient(160deg, #0d1226 0%, #1c2850 100%);
+  border-radius: 20px;
+  color: #fff;
+  text-align: center;
+  padding: clamp(2.4rem, 7vw, 3.8rem) 1.4rem;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(13, 18, 38, 0.32);
+}
+.kj-final::before {
+  content: "";
+  position: absolute;
+  left: -10%; right: -10%; bottom: -42px;
+  height: 110px;
+  background: repeating-linear-gradient(90deg, #c8401f 0 90px, #e8e6e1 90px 96px);
+  transform: rotate(2deg);
+  opacity: 0.9;
+}
+.kj-final h4 {
+  position: relative;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: clamp(1.4rem, 4.6vw, 2rem);
+  font-weight: 800;
+  margin: 0 0 0.9rem;
+  z-index: 1;
+}
+.kj-final p { position: relative; color: #d9e2f7; margin: 0 0 1.7rem; z-index: 1; }
+.kj-final .tel { font-size: 0.9rem; color: #b9c6e6; margin-top: 1.6rem; }
+.kj-final .tel b { color: #fff; font-size: 1.1rem; letter-spacing: 0.05em; }
+
+/* ---------- カレンダージャンプ（既存スタイル踏襲） ---------- */
+.schedule-jump-btn {
+  display: inline-block;
+  background-color: #eb6600;
+  color: #ffffff !important;
+  padding: 12px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(235, 102, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.schedule-jump-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(235, 102, 0, 0.4); }
+
+/* ---------- 開催スケジュールジャンプ（上部CTA） ---------- */
+.kj-schedule-jump {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin: 1.6rem 0 0;
+  padding: 1.1rem 1.4rem;
+  background: linear-gradient(135deg, #fff7ec, #ffefdb);
+  border: 1px solid #f5c282;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(235, 102, 0, 0.08);
+}
+.kj-schedule-jump .lead {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.kj-schedule-jump .icon {
+  font-size: 1.7rem;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+.kj-schedule-jump strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #b34a00;
+  line-height: 1.5;
+}
+.kj-schedule-jump .sub {
+  display: block;
+  font-size: 0.82rem;
+  color: #6b5237;
+  font-weight: 500;
+  margin-top: 0.1rem;
+}
+@media (max-width: 560px) {
+  .kj-schedule-jump { justify-content: center; text-align: left; }
+  .kj-schedule-jump .schedule-jump-btn { width: 100%; text-align: center; }
+}
+
+/* ---------- 重要なお知らせバナー（会場変更） ---------- */
+.kj-notice {
+  position: relative;
+  background: linear-gradient(135deg, #fff5e6 0%, #ffffff 60%);
+  border: 2px solid #eb6600;
+  border-radius: 16px;
+  padding: 1.8rem clamp(1.2rem, 4vw, 2rem) 1.6rem;
+  margin: 1.6rem 0 0;
+  box-shadow: 0 10px 26px rgba(235, 102, 0, 0.15);
+}
+.kj-notice-badge {
+  display: inline-block;
+  background: #cc3300;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  border-radius: 50px;
+  padding: 0.4em 1.15em;
+  margin-bottom: 0.9rem;
+  box-shadow: 0 4px 12px rgba(204, 51, 0, 0.28);
+}
+.kj-notice h4 {
+  margin: 0 0 0.8rem;
+  font-size: clamp(1.15rem, 3.6vw, 1.4rem);
+  font-weight: 900;
+  color: #b34a00;
+  line-height: 1.55;
+}
+.kj-notice h4 .period {
+  display: inline-block;
+  background: linear-gradient(transparent 62%, #ffd9a8 62%);
+  padding: 0 0.15em;
+}
+.kj-notice p {
+  margin: 0 0 0.8rem;
+  font-size: 0.96rem;
+  color: #444;
+  line-height: 1.9;
+}
+.kj-notice p:last-child { margin-bottom: 0; }
+.kj-notice-venues {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 1rem 1.2rem;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px dashed #f5c282;
+}
+.kj-notice-venues li {
+  position: relative;
+  padding: 0.4em 0 0.4em 1.7em;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 700;
+}
+.kj-notice-venues li + li { border-top: 1px dashed #ecd9c2; }
+.kj-notice-venues li::before {
+  content: "";
+  position: absolute;
+  left: 0.35em; top: 0.95em;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #eb6600;
+  box-shadow: 0 0 0 3px rgba(235, 102, 0, 0.15);
+}
+.kj-notice-venues b { color: #b34a00; font-weight: 800; }
+.kj-notice-emph {
+  background: #fff3e5;
+  border-radius: 10px;
+  padding: 0.75em 1em;
+  font-weight: 800;
+  color: #b34a00 !important;
+  font-size: 0.95rem !important;
+}
+
+/* ---------- 体験受付停止バナー（kj-notice の赤バリアント） ---------- */
+.kj-notice-pause {
+  background: linear-gradient(135deg, #fdecea 0%, #ffffff 60%);
+  border-color: #c62828;
+  box-shadow: 0 10px 26px rgba(198, 40, 40, 0.18);
+}
+.kj-notice-pause .kj-notice-badge {
+  background: #b71c1c;
+  box-shadow: 0 4px 12px rgba(183, 28, 28, 0.32);
+}
+.kj-notice-pause h4 { color: #a02c0f; }
+.kj-notice-pause h4 .mk {
+  background: linear-gradient(transparent 62%, #fbd7cf 62%);
+  padding: 0 0.1em;
+}
+.kj-notice-pause p { color: #3a3a3a; }
+.kj-notice-pause p strong { background: linear-gradient(transparent 64%, #fbd7cf 64%); font-weight: 800; }
+
+@media (max-width: 560px) {
+  .kj-class { flex-direction: column; }
+  .kj-class .badge { flex-basis: auto; flex-direction: row; gap: 0.6em; padding: 0.6rem; }
+  .kj-timeline::before { left: 74px; }
+  .kj-timeline li::before { left: 68px; }
+  .kj-timeline .t { flex-basis: 58px; }
+  .kj-reason-row, .kj-reason-row.alt { flex-direction: column; }
+  .kj-reason-row .num, .kj-reason-row.alt .num { margin: 0 0 -0.5em 0.2em; }
+  .kj-reason-row.alt .body { border-right: 1px solid #f3e3d0; border-left: 6px solid #eb6600; }
+  .kj-report { grid-template-columns: 1fr; gap: 2.5rem; }
+  .kj-report-photos { height: 340px; max-width: 320px; }
+  .kj-report-photo { width: 190px; }
+}
+</style>
+
+<div class="kjlp">
+
+<!-- ============ ヒーロー ============ -->
+<div class="kj-hero">
+  <div class="inner">
+    <span class="night-label">STARTUS TRACK CLUB</span>
+    <p class="catch">楽しかったら、<br><em>速くなってた。</em></p>
+    <p class="sub">本物の陸上競技場が、週に一度、子どもたちの舞台になる。<br>金沢の小学生のためのかけっこ教室。</p>
+    <div class="kj-chips">
+      <div class="kj-chip">対象 <b>小学3〜6年生</b></div>
+      <div class="kj-chip">毎週月曜 <b>19:30〜20:30</b></div>
+      <div class="kj-chip">会場 <b>稲置学園総合運動場</b></div>
+    </div>
+    <div class="kj-cta-row">
+      <a class="kj-btn kj-btn-primary" href="/taiken">無料体験を申し込む</a>
+      <a class="kj-btn kj-btn-ghost" href="#calendar-view">開催スケジュールを見る</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 数字ストリップ ============ -->
+<div class="kj-stats kj-reveal">
+  <div class="kj-stat"><div class="label">定員</div><div class="num">10〜15<small>名程度</small></div></div>
+  <div class="kj-stat"><div class="label">年間レッスン</div><div class="num">38<small>回前後</small></div></div>
+  <div class="kj-stat"><div class="label">対象</div><div class="num">小3〜6<small>年生</small></div></div>
+  <div class="kj-stat"><div class="label">月会費（税込）</div><div class="num">6,600<small>円</small></div></div>
+</div>
+
+<!-- ============ 開催スケジュールジャンプ ============ -->
+<div class="kj-schedule-jump kj-reveal">
+  <div class="lead">
+    <span class="icon">📅</span>
+    <div>
+      <strong>開催スケジュールをご確認いただけます</strong>
+      <span class="sub">年間の練習日程・会場・記録会の予定をチェック</span>
+    </div>
+  </div>
+  <a class="schedule-jump-btn" href="#calendar-view">スケジュールを見る →</a>
+</div>
+
+<!-- ============ ① 共感 ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">For You</span>
+  <p class="ja">こんなお子さん、<span class="mk">いませんか？</span></p>
+</div>
+<div class="kj-empathy kj-reveal">
+  <ul>
+    <li>運動会のかけっこで、<strong>今年こそ前で走りたい</strong></li>
+    <li>足が遅いのがコンプレックス。<strong>自信をつけさせたい</strong></li>
+    <li>サッカーや野球がうまくなる、<strong>「速く走れる体」の土台を作りたい</strong></li>
+    <li>ぐんと伸びる小学生のうちに、<strong>正しい走り方を身につけさせたい</strong></li>
+    <li>習い事として、<strong>成長がちゃんと見えるもの</strong>を選びたい</li>
+  </ul>
+  <div class="closing">速い子のための教室ではありません。今の速さは問いません。<br>「やってみたい」が入口です。</div>
+</div>
+
+<!-- ============ ② 4つの理由 ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Reason</span>
+  <p class="ja">かけっこ塾が<span class="mk">選ばれる理由</span></p>
+</div>
+
+<div class="kj-reason-row kj-reveal">
+  <div class="num">01</div>
+  <div class="body">
+    <h4><span class="tag">少人数</span>コーチ1人に、子ども4〜5人。</h4>
+    <p>大学陸上部の学生コーチを中心に、<strong>十数名のコーチ陣</strong>がレベル別クラスごとに付きます。「並んで待つだけ」の教室とは、運動量も声かけの数も違います。一人ひとりの名前を呼んで、一人ひとりのフォームを見る。それができる人数比です。</p>
+  </div>
+</div>
+
+<div class="kj-reason-row alt kj-reveal">
+  <div class="num">02</div>
+  <div class="body">
+    <h4><span class="tag">非日常</span>本物の競技場という、特別な舞台。</h4>
+    <p>練習場所は、稲置学園総合運動場の本物のトラック。スタートラインに足を合わせ、レーンの中を全力で駆け抜ける——学校のグラウンドでは味わえない、<strong>週に一度の特別な体験</strong>です。改修工事期間や冬は<strong>競技場内の室内走路</strong>へ。雪の金沢でも、1年中走り続けられます。</p>
+  </div>
+</div>
+
+<div class="kj-reason-row kj-reveal">
+  <div class="num">03</div>
+  <div class="body">
+    <h4><span class="tag">多様性</span>走るだけじゃない。季節ごとに変わるプログラム。</h4>
+    <p>春はスプリント、夏は走幅跳やジャベリックボール投げ、秋は1000mやリレー、冬は室内走路で運動あそびと体力測定。<strong>季節ごとにテーマが変わる年間プログラム</strong>だから、1年通っても飽きません。あらゆるスポーツに通じる<strong>運動の土台</strong>が、かけっこを入口にまるごと育ちます。</p>
+  </div>
+</div>
+
+<div class="kj-reason-row alt kj-reveal">
+  <div class="num">04</div>
+  <div class="body">
+    <h4><span class="tag">見える化</span>一人ひとりに、専用のフィードバック。</h4>
+    <p>50m測定・体力測定・動画でのフォーム撮影——お子さまのデータを1年間蓄積し、<strong>タイムの推移グラフやフォーム評価をまとめた、その子だけのフィードバックシート</strong>をお渡しします。集団レッスンなのに、<strong>個人レッスンのような成長記録</strong>が残る教室です。</p>
+  </div>
+</div>
+
+<div class="kj-center kj-reveal">
+  <a class="kj-btn kj-btn-primary" href="/taiken">無料体験を申し込む</a>
+</div>
+
+<!-- ============ ③ 記録会 ============ -->
+<div class="kj-night kj-reveal">
+  <div class="kj-head">
+    <span class="en">Time Trial</span>
+    <p class="ja">記録会は、小さな大会。</p>
+  </div>
+  <ul class="kj-night-steps">
+    <li>大会と同じ<strong>番組表</strong>で、自分の組とレーンが決まる</li>
+    <li><strong>スタートラインに足を合わせ</strong>、スターターの合図で飛び出す</li>
+    <li>ゴールした瞬間、<strong>電子計測でタイムがその場で分かる</strong></li>
+    <li>自己ベストを更新したら——<strong>みんなで大きな拍手</strong>。会場が沸きます</li>
+  </ul>
+  <p class="quote">「次の測定までに、絶対◯秒出す」。<br>
+  記録が見えるから、目標が生まれる。目標があるから、練習が楽しくなる。
+  <span class="small">測定の日は、子どもも保護者もコーチも、全部巻き込んだ「小さなお祭り」です。</span></p>
+</div>
+<figure class="kj-reveal" style="margin:1.4rem 0 0;border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(13,18,38,0.18);">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/4164b25007397519ab5ae3923c315551.png" alt="記録会のスタート前、レーンに並ぶ子どもたち" loading="lazy" style="display:block;width:100%;height:auto;">
+</figure>
+
+<!-- ============ ④ 成長の見える化 ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Growth Record</span>
+  <p class="ja">1年間、ずっと<span class="mk">「伸びた」が見える</span>。</p>
+</div>
+<p class="kj-lead kj-reveal">かけっこ塾の測定は、<strong>「はじめ」と「あと」をセットで測る</strong>のがルール。<br>練習の成果が、数字ではっきり分かります。</p>
+<div class="kj-measure kj-reveal">
+  <div class="cell sp"><div class="season">SPRING</div><h5>50m走</h5><p>年度はじめの基準 → 練習後にもう一度。伸びを実感</p></div>
+  <div class="cell su"><div class="season">SUMMER</div><h5>走幅跳・ジャベリック</h5><p>投げる・跳ぶも測定。50m・100mにも挑戦</p></div>
+  <div class="cell au"><div class="season">AUTUMN</div><h5>1000mタイムトライアル</h5><p>はじめ → ペーサー付きで自己ベスト挑戦</p></div>
+  <div class="cell wi"><div class="season">WINTER</div><h5>体力測定</h5><p>握力・反復横跳び・立ち幅跳びなど、体の総点検</p></div>
+</div>
+<div class="kj-yearend kj-reveal">
+  <h4>そして年度末には——</h4>
+  <ul>
+    <li>1年分の記録をまとめた<strong>フィードバックシート／成長ダッシュボード</strong>をお渡し</li>
+    <li><strong>動画フォーム分析</strong>で「走りがどう変わったか」を映像とスコアで</li>
+    <li>お子さまの走りの個性が分かる<strong>スプリントタイプ診断</strong></li>
+    <li>最終回は<strong>卒塾式</strong>。1年間の成長をみんなで祝います</li>
+  </ul>
+</div>
+
+<!-- ============ 独自レポート(FB用紙) ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Original Report</span>
+  <p class="ja">レッスンで手渡しする<br><span class="mk">STARTUSオリジナル「見える化レポート」</span></p>
+</div>
+<p class="kj-lead kj-reveal">教室生にだけお渡しする、独自フォーマット。<br>50m・体力測定のあとの練習日に、その場で1枚ずつ手渡しでお返しします。</p>
+
+<div class="kj-report kj-reveal">
+  <div class="kj-report-photos">
+    <div class="kj-report-badge">STARTUS ORIGINAL</div>
+    <img class="kj-report-photo p1" src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/seiryo-fbsheet-1.png" alt="フィジカルテスト・成長ダッシュボード(独自フォーマット)" loading="lazy">
+    <img class="kj-report-photo p2" src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/seiryo-fbsheet-2.png" alt="50m FBシート(独自フォーマット)" loading="lazy">
+  </div>
+  <div class="kj-report-text">
+    <h4><span class="mk">「なんとなく速くなった」</span>を、<br>「ここが伸びた」に変える。</h4>
+    <ul class="feats">
+      <li><b>成長ダッシュボード</b>：年度ごとのタイム・体力データを一枚に</li>
+      <li><b>50m FBシート</b>：タイム推移と走りのタイプ診断・次の目標</li>
+      <li><b>コーチからのメッセージ</b>：その子だけの「次の挑戦テーマ」</li>
+    </ul>
+    <p class="kj-report-note">※詳細フォーマットは入会生限定。STARTUSオリジナル・無断複製不可。<br>※かけっこ塾では <b>50m対応版</b> でお渡しします。</p>
+  </div>
+</div>
+
+<!-- ============ ⑤ 季節プログラム ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Annual Program</span>
+  <p class="ja">かけっこ塾の1年は、<span class="mk">小さな冒険</span>。</p>
+</div>
+<div class="kj-seasons kj-reveal">
+  <div class="kj-season kj-sp">
+    <span class="wm">春</span>
+    <span class="period">4月〜6月</span>
+    <h5>運動会で、差をつける。</h5>
+    <p>正しい姿勢・腕振り・スタートダッシュ。走りの土台をつくる季節。50m測定で「はじめの記録」を取り、練習して、もう一度測る。<strong>運動会の直前に、一番効く内容</strong>を詰め込んでいます。</p>
+  </div>
+  <div class="kj-season kj-su">
+    <span class="wm">夏</span>
+    <span class="period">7月〜9月</span>
+    <h5>走って、跳んで、投げて。</h5>
+    <p>走幅跳・ジャベリックボール投げに挑戦。種目を<strong>自分で選ぶ練習日</strong>もあります。トップスピードに乗る走り方を覚えて、夏の終わりには50m・100mの測定へ。</p>
+  </div>
+  <div class="kj-season kj-au">
+    <span class="wm">秋</span>
+    <span class="period">10月〜11月</span>
+    <h5>ねばり強さと、チームの力。</h5>
+    <p>1000mタイムトライアル、サーキット、エンドレスリレー。マラソン大会シーズンに向けて、ペース配分と「最後まで走り切る力」を鍛えます。<strong>ペーサー付きの自己ベスト挑戦</strong>は、秋一番の盛り上がり。</p>
+  </div>
+  <div class="kj-season kj-wi">
+    <span class="wm">冬</span>
+    <span class="period">12月〜3月</span>
+    <h5>室内走路は、運動神経の実験室。</h5>
+    <p>会場は<strong>競技場内の室内走路</strong>へ。雪でも寒くても、フルパワーで動けます。短距離・跳躍・ボール・スペシャル種目の<strong>グループ別プログラム</strong>を週替わりでローテーション。締めくくりは体力測定と<strong>卒塾式</strong>。</p>
+  </div>
+</div>
+<p class="kj-season-note">年間38回前後。練習は「短く・全力で・楽しく」が基本。成長期の体に無理をさせる追い込み練習はしません。</p>
+
+<div class="kj-center kj-reveal">
+  <a class="kj-btn kj-btn-primary" href="/taiken">無料体験を申し込む</a>
+</div>
+
+<!-- ============ ⑦ タイムテーブル ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Time Table</span>
+  <p class="ja">ある日の<span class="mk">60分</span>。</p>
+</div>
+<ul class="kj-timeline kj-reveal">
+  <li><span class="t">19:30</span><div class="c"><b>集合・挨拶</b><span>今日もよろしくお願いします！</span></div></li>
+  <li><span class="t">19:35</span><div class="c"><b>ウォーミングアップ</b><span>みんなで鬼ごっこ。まずは笑って体を温める</span></div></li>
+  <li><span class="t">19:45</span><div class="c"><b>動きづくり（スタータスドリル）</b><span>スキップ・ラダー・ミニハードル</span></div></li>
+  <li><span class="t">19:55</span><div class="c"><b>休憩・グループ分け</b><span>水分補給してクラスごとに整列</span></div></li>
+  <li><span class="t">20:00</span><div class="c"><b>クラス別メインプログラム</b><span>その日のテーマ（走・投・跳）に挑戦</span></div></li>
+  <li><span class="t">20:30</span><div class="c"><b>挨拶・終了</b><span>今日一番の全力を出して「また来週！」</span></div></li>
+</ul>
+<p class="kj-timeline-note">待ち時間を作らず、つねに体を動かし続ける60分。<br>終わったあとの子どもの顔は、ちょっと誇らしげです。</p>
+
+<!-- ============ ⑧ コーチ ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Coach</span>
+  <p class="ja">コーチは、大学陸上部の<span class="mk">「先輩」</span>。</p>
+</div>
+<div class="kj-coach kj-reveal">
+  <p><span class="big">「先生」というより、ちょっと年上の<em>速くてかっこいい先輩</em>。</span>
+  教えるのは、金沢星稜大学陸上競技部の現役学生コーチたち。子どもたちは先輩の走りに憧れ、先輩は名前を呼んで本気でほめる。この距離の近さが、かけっこ塾の一番の自慢です。</p>
+</div>
+<figure class="kj-reveal" style="margin:1.4rem 0 0;border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(232,85,15,0.25);">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/kakekkozjuku4.png" alt="学生コーチとハイタッチする子ども" loading="lazy" style="display:block;width:100%;height:auto;">
+</figure>
+
+<!-- ============ ⑨ FAQ ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">FAQ</span>
+  <p class="ja">よくある<span class="mk">質問</span></p>
+</div>
+<div class="kj-faq kj-reveal">
+  <details>
+    <summary>足が遅いのですが、ついていけますか？</summary>
+    <div class="a"><p>むしろ大歓迎です。レベル別クラス＋少人数なので、その子のペースで必ず伸ばせます。<strong>「できた！」を一番たくさん経験するのは、実は最初ゆっくりな子です。</strong></p></div>
+  </details>
+  <details>
+    <summary>何年生から通えますか？</summary>
+    <div class="a"><p>月曜クラスは<strong>小学3年生〜6年生</strong>が対象です。学年や走力に応じたレベル別クラスに分かれ、それぞれの発達段階に合わせたプログラムで進めます。</p></div>
+  </details>
+  <details>
+    <summary>冬や雨の日はどうなりますか？</summary>
+    <div class="a"><p>競技場の改修工事期間と冬季は<strong>場内の室内走路</strong>で実施するので、雪の金沢でも1年中続けられます。中止・変更がある場合は公式LINEでご連絡します。</p></div>
+  </details>
+  <details>
+    <summary>保護者の見学はできますか？</summary>
+    <div class="a"><p>できます。測定会の日は特に盛り上がるので、ぜひ見に来てください。</p></div>
+  </details>
+  <details>
+    <summary>お休みした分はどうなりますか？</summary>
+    <div class="a"><p>STARTUSの他教室への振替が可能です（一部対象外）。</p></div>
+  </details>
+  <details>
+    <summary>陸上経験ゼロ・運動が苦手でも大丈夫？</summary>
+    <div class="a"><p>大半の子が「習い事としてのかけっこ」スタートです。競技志向の子だけの教室ではありません。</p></div>
+  </details>
+</div>
+
+<!-- ============ 体験の流れ ============ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Trial</span>
+  <p class="ja">無料体験の<span class="mk">流れ</span></p>
+</div>
+<div class="kj-flow kj-reveal">
+  <div class="step"><b>フォーム入力</b><span>1分で完了</span></div>
+  <div class="step"><b>スタッフから返信</b><span>メールでご連絡</span></div>
+  <div class="step"><b>体験日時の確定</b><span>ご都合に合わせて</span></div>
+  <div class="step"><b>会場のご案内</b><span>地図をお送りします</span></div>
+  <div class="step"><b>当日、走るだけ！</b><span>手ぶらの心でどうぞ</span></div>
+</div>
+<p class="kj-flow-note">持ち物：運動できる服装・運動靴・お茶</p>
+
+<!-- ▼▼▼教室ページ用 料金表（共通費用） 開始 ▼▼▼ -->
+<div class="kj-head kj-reveal">
+  <span class="en">Price</span>
+  <p class="ja">料金<span style="font-size: 0.6em; font-weight: 700; color: #888;">（すべて税込）</span></p>
+</div>
+<div style="display: flex; justify-content: center; margin-top: 1rem;" class="kj-reveal">
+<div style="width: 100%; max-width: 600px;">
+<table style="border-collapse: collapse; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+<thead style="background-color: #f37021; color: #fff;">
+<tr>
+<th style="padding: 12px; text-align: center;">項目</th>
+<th style="padding: 12px; text-align: center;">金額</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #fff;">
+<td style="padding: 12px; text-align: left;">月会費</td>
+<td style="padding: 12px; text-align: center;"><strong>6,600円／月</strong>（月曜・月3回）</td>
+</tr>
+<tr style="background-color: #fff7f0;">
+<td style="padding: 12px; text-align: left;">入会手数料</td>
+<td style="padding: 12px; text-align: center;">5,500円<br /><span style="font-size: 0.85em; color: #555;">※<span>同一世帯家族の</span>2人目以降は2,750円</span></td>
+</tr>
+<tr style="background-color: #fff;">
+<td style="padding: 12px; text-align: left;">年度会費</td>
+<td style="padding: 12px; text-align: center;">5,500円／年</td>
+</tr>
+<tr style="background-color: #fff7f0;">
+<td style="padding: 12px; text-align: left;">スポーツ安全保険</td>
+<td style="padding: 12px; text-align: center;">800円～2,000円／年<br /> <span style="font-size: 0.85em;"> <a href="https://kanazawa-ssc.jp/入会案内・会則#insurance" target="_blank" style="color: #f37021;" rel="noopener"> 加入区分の詳細はこちら </a> </span></td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center; font-size: 0.9em; margin-top: 1rem;">※兄弟割引・複数教室割引あり（兄弟2人目 月会費20%OFF・3人目〜半額）。<br />※参加形態や会場により別途使用料が発生する場合があります。<br /> ※詳しいルールは <a href="https://kanazawa-ssc.jp/%e5%85%a5%e4%bc%9a%e6%a1%88%e5%86%85%e3%83%bb%e4%bc%9a%e5%89%87" style="color: #f37021; font-weight: bold;">会則ページ</a> をご覧ください。</p>
+</div>
+</div>
+<!-- ▲▲▲教室ページ用 料金表 終了 ▲▲▲ -->
+
+<!-- ============ 最終CTA ============ -->
+<div class="kj-final kj-reveal" style="margin-top: 3.5rem;">
+  <h4>百聞は一見にしかず。<br>まずは1回、走りに来てください。</h4>
+  <p>本物の競技場を走る気持ちよさと、コーチの声かけの多さは、<br>体験すればわかります。</p>
+  <div class="kj-cta-row">
+    <a class="kj-btn kj-btn-primary" href="/taiken">無料体験を申し込む</a>
+    <a class="kj-btn kj-btn-line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで質問する</a>
+  </div>
+  <p class="tel">お電話でも：<b>076-287-3789</b>（受付 10:00〜16:00）<br>NPO法人かなざわ総合スポーツクラブ STARTUS</p>
+</div>
+
+<!-- ============ カレンダー ============ -->
+<div id="calendar-view" style="padding-top: 80px; margin-top: -80px;"></div>
+<h2 style="text-align: center; font-size: 1.4rem; font-weight: bold; margin: 40px 0 10px;">開催スケジュール</h2>
+<p style="text-align: center; font-size: 0.85rem; color: #888; margin-bottom: 20px;">タップで詳細を確認できます</p>
+<p><iframe width="300" height="150" style="width: 100%; border: none; min-height: 900px; overflow: hidden;" src="https://script.google.com/macros/s/AKfycbwos3AnwtT3S-UUx5muSHhScg3sLESEyUnB9HdaVc6LbqoX9D1kH0JX1EaM_qs1arUEzg/exec?class=kakekojyuku-m-rikujo&amp;wide_day=2&amp;taiken_btn=1" scrolling="no" id="stx-cal-frame" loading="lazy"></iframe></p>
+
+</div><!-- /.kjlp -->
+
+<script>
+(function () {
+  // スクロール出現
+  var els = document.querySelectorAll('.kj-reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  }
+  // カレンダーiframeのリサイズ
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'stx-resize') {
+      var f = document.getElementById('stx-cal-frame');
+      if (f) f.style.height = e.data.height + 'px';
+    }
+  });
+})();
+</script>

@@ -620,6 +620,15 @@ function ClassDetailModal({ cls, onClose }: { cls: ClassData; onClose: () => voi
             </a>
           )}
 
+          {cls.lpHref && (
+            <Link
+              href={cls.lpHref}
+              className="block text-center text-sm font-bold text-brand-navy border border-warm-200 rounded-xl py-2.5 hover:bg-warm-50 transition-colors"
+            >
+              この教室の詳しい紹介ページを見る
+            </Link>
+          )}
+
           <Link
             href="/taiken?from=rikujo"
             className="btn-primary w-full text-center"
