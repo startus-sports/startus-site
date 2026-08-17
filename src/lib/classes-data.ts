@@ -71,6 +71,7 @@ export const trackClasses: ClassData[] = [
     lessonContent: 'ウォーミングアップ → スタート練習・フォーム改善 → スプリントトレーニング → ミニレース・タイム計測',
     tags: ['人気No.1'],
     isPopular: true,
+    lpHref: '/kakekko-wednesday',
   },
   {
     id: 'kakekko-monday',
@@ -160,6 +161,7 @@ export const trackClasses: ClassData[] = [
     oneLiner: 'データと理論でタイムを伸ばす',
     recommendFor: 'タイムを本格的に伸ばしたい子、理論的な指導を受けたい子',
     lessonContent: 'ドリル → フォーム分析・改善 → 種目別トレーニング → タイム計測・フィードバック',
+    lpHref: '/izumi-junior',
   },
   {
     id: 'marathon-juku',
@@ -223,6 +225,7 @@ export const trackClasses: ClassData[] = [
     oneLiner: 'みんなで一緒に走る喜びを',
     recommendFor: '障がいの有無を問わず参加したい方、スポット参加したい方',
     lessonContent: '体ほぐし → 各自のペースでランニング → グループアクティビティ → クールダウン',
+    lpHref: '/inclusive-rikujo',
   },
   {
     id: 'shunpu',
@@ -373,6 +376,7 @@ export const trackClasses: ClassData[] = [
     oneLiner: '学校帰りにそのまま参加！',
     recommendFor: '中村町エリアの小中学生、放課後に通いたい子',
     lessonContent: 'ウォーミングアップ → かけっこフォーム練習 → リレー・ミニレース',
+    lpHref: '/nakamura-kakekko',
   },
   {
     id: 'nakamura-marathon',

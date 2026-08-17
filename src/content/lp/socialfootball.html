@@ -1,0 +1,724 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+.sff {
+  --pitch:  #0d3a29;
+  --pitch2: #0a2c1f;
+  --field:  #11543b;
+  --emerald:#16a85a;
+  --emer-d: #0e7c41;
+  --lime:   #b6f24a;
+  --ink:    #16211c;
+  --ink2:   #5d6b62;
+  --line:   #e4e8e1;
+  --bg:     #f1f4ef;
+  --paper:  #ffffff;
+  --r: 16px;
+  --sh:   0 18px 44px rgba(10, 44, 31, 0.18);
+  --sh-s: 0 8px 20px rgba(10, 44, 31, 0.10);
+
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', meiryo, sans-serif;
+  color: var(--ink); background: var(--bg);
+  font-size: 16.5px; line-height: 1.95;
+  border-radius: var(--r); padding: 0.4rem clamp(0.3rem, 1.5vw, 0.8rem) 1rem;
+  overflow-x: clip; max-width: 100%;
+}
+.sff * { box-sizing: border-box; }
+.sff img { max-width: 100%; height: auto; }
+.sff a { color: var(--emer-d); }
+.sff :focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
+
+.sff .rv { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.sff .rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .sff .rv { opacity: 1; transform: none; transition: none; } }
+
+/* ---------- WordPressテーマの見出しスタイル打ち消し ----------
+   テーマが h1〜h4  要素に付ける「オレンジ背景・枠・余白・擬似要素」が
+   このLPの見出しと競合する（背景色等はLP側で未指定のため透けて出る）。
+   .sff 内に限り、テーマが注入する装飾だけを無効化する。
+   ※ 文字色・フォント・余白はLPのクラスが指定済みなので触らない（:where で0特異度＋!important）*/
+.sff :where(h1, h2, h3, h4, h5, h6) {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  text-shadow: none;
+  color: var(--ink) !important; /* テーマの白文字を打ち消し、既定は濃色（淡色背景の見出し用） */
+}
+.sff :where(h1, h2, h3, h4, h5, h6)::before,
+.sff :where(h1, h2, h3, h4, h5, h6)::after { content: none !important; }
+/* 濃色（緑・黒）背景に乗る見出しだけ白／ライムを明示して読めるようにする */
+.sff-hero h1,
+.sff-about h3,
+.sff-road h3,
+.sff-final h3 { color: #fff !important; }
+.sff-change .after h4 { color: var(--lime) !important; }
+.sff-change .before h4 { color: var(--ink2) !important; }
+/* 見出し内アクセント（span/em）の色は維持 */
+.sff-h2 .mk { color: var(--emer-d) !important; }
+.sff-hero h1 em,
+.sff-about h3 em,
+.sff-road h3 em,
+.sff-final h3 em { color: var(--lime) !important; }
+/* ヒーロー見出しの影だけはデザイン上必要なので復活 */
+.sff-hero h1 { text-shadow: 0 4px 20px rgba(0,0,0,0.35); }
+
+/* ---------- 見出し ---------- */
+.sff-head { text-align: center; margin: 5rem auto 2.2rem; max-width: 760px; }
+.sff-eyebrow {
+  display: inline-block; font-family: 'Oswald', sans-serif; font-weight: 700;
+  font-size: 0.92rem; letter-spacing: 0.28em; color: var(--emer-d); text-transform: uppercase;
+  position: relative; padding-bottom: 0.5rem; margin-bottom: 0.9rem;
+}
+.sff-eyebrow::after { content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 40px; height: 4px; background: var(--lime); border-radius: 2px; }
+.sff-h2 { font-weight: 900; font-size: clamp(1.7rem, 5.5vw, 2.5rem); line-height: 1.45; margin: 0; color: var(--ink); letter-spacing: 0.01em; }
+.sff-h2 .mk { color: var(--emer-d); }
+.sff-h2 .hl { background: linear-gradient(transparent 58%, var(--lime) 58%); padding: 0 0.1em; }
+.sff-lead { color: var(--ink2); margin: 1.1rem auto 0; max-width: 640px; font-size: 1.03rem; }
+
+/* ---------- ヒーロー ---------- */
+.sff-hero {
+  position: relative; overflow: hidden; border-radius: var(--r); color: #fff;
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 5%, rgba(22,168,90,0.35), transparent 60%),
+    linear-gradient(160deg, var(--pitch) 0%, var(--pitch2) 100%);
+  padding: clamp(3rem, 9vw, 5.2rem) clamp(1.4rem, 5vw, 3.4rem) clamp(3.2rem, 9vw, 4.6rem);
+  text-align: center; box-shadow: var(--sh);
+}
+.sff-hero::before { /* センターサークル風ライン */
+  content: ""; position: absolute; left: 50%; bottom: -180px; transform: translateX(-50%);
+  width: 360px; height: 360px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.10); pointer-events: none;
+}
+.sff-hero::after { /* ハーフウェイライン */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255,255,255,0.08); pointer-events: none;
+}
+.sff-hero > * { position: relative; z-index: 1; }
+.sff-hero h1, .sff-hero .hlead, .sff-hero p {
+  margin-left: auto !important; margin-right: auto !important; text-indent: 0 !important; float: none !important; text-align: center;
+}
+.sff-hero .eyebrow {
+  display: inline-block; font-family: 'Oswald', sans-serif; font-weight: 700; letter-spacing: 0.26em;
+  font-size: 0.86rem; text-transform: uppercase; color: var(--lime); margin-bottom: 1.3rem;
+}
+.sff-hero .eyebrow span { display: block; font-family: 'Noto Sans JP', sans-serif; font-weight: 700; letter-spacing: 0.14em; font-size: 0.74rem; color: rgba(255,255,255,0.75); margin-top: 0.35rem; }
+.sff-hero h1 {
+  font-weight: 900; font-size: clamp(2.1rem, 8vw, 3.6rem); line-height: 1.4; margin: 0 0 1.3rem; letter-spacing: 0.01em;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+.sff-hero h1 em { font-style: normal; color: var(--lime); }
+.sff-hero .hlead { font-size: clamp(1rem, 2.7vw, 1.16rem); color: #d8e6dd; line-height: 2.0; margin: 0 auto 2rem; max-width: 560px; font-weight: 500; }
+.sff-hero .hlead b { color: #fff; }
+.sff-chips { display: flex; flex-wrap: wrap; gap: 0.55rem; justify-content: center; margin: 0 0 2.1rem; }
+.sff-chip {
+  background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22); border-radius: 8px;
+  padding: 0.45em 1em; font-size: 0.85rem; font-weight: 700; color: #fff;
+}
+.sff-chip b { color: var(--lime); }
+.sff-hero .welcome { margin: 1.5rem auto 0; display: inline-block; background: rgba(182,242,74,0.14); border: 1px solid rgba(182,242,74,0.5); color: #eaf7d4; border-radius: 50px; padding: 0.55em 1.4em; font-weight: 700; font-size: 0.92rem; }
+.sff-hero .welcome b { color: var(--lime); }
+
+/* ---------- はじめての方へ ---------- */
+.sff-beginner { max-width: 780px; margin: 1.2rem auto 0; background: var(--paper); border: 2px solid var(--emerald); border-radius: var(--r); box-shadow: var(--sh-s); overflow: hidden; }
+.sff-beginner .bh { background: linear-gradient(120deg, var(--emer-d), var(--emerald)); color: #fff; padding: 1.2rem 1.4rem; text-align: center; }
+.sff-beginner .bh .lab { font-family: 'Oswald', sans-serif; letter-spacing: 0.2em; color: var(--lime); font-size: 0.8rem; text-transform: uppercase; }
+.sff-beginner .bh b { display: block; font-size: clamp(1.25rem, 4.2vw, 1.6rem); font-weight: 900; line-height: 1.4; }
+.sff-beginner .bb { padding: clamp(1.4rem, 4vw, 2rem); }
+.sff-beginner .blead { text-align: center; color: #4d5a51; margin: 0 0 1.3rem; line-height: 1.85; }
+.sff-beginner .blead b { color: var(--emer-d); }
+.sff-beginner ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.sff-beginner li { display: flex; gap: 0.6em; align-items: flex-start; background: #f3f7f3; border-radius: 10px; padding: 0.85rem 1rem; font-weight: 700; font-size: 0.95rem; line-height: 1.6; }
+.sff-beginner li::before { content: "✓"; color: var(--emerald); font-weight: 900; font-size: 1.1rem; flex: 0 0 auto; line-height: 1.5; }
+.sff-beginner .bcta { text-align: center; margin-top: 1.5rem; }
+@media (max-width: 600px) { .sff-beginner ul { grid-template-columns: 1fr; } }
+
+/* ---------- ボタン ---------- */
+.sff-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; align-items: center; }
+.sff-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+  padding: 16px 36px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 1.05rem;
+  line-height: 1.3; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s; border: 2px solid transparent;
+}
+.sff-btn:hover { transform: translateY(-3px); }
+.sff-btn--primary { background: var(--emerald); color: #fff !important; box-shadow: 0 12px 26px rgba(22, 168, 90, 0.4); }
+.sff-btn--primary:hover { background: #18b863; box-shadow: 0 16px 32px rgba(22, 168, 90, 0.5); }
+.sff-btn--lime { background: var(--lime); color: var(--pitch) !important; box-shadow: 0 12px 26px rgba(182, 242, 74, 0.4); }
+.sff-btn--line { background: #06c755; color: #fff !important; box-shadow: 0 12px 26px rgba(6, 199, 85, 0.32); }
+.sff-btn--ghost { background: transparent; color: #fff !important; border-color: rgba(255,255,255,0.6); }
+.sff-btn--ghost:hover { border-color: #fff; }
+
+/* ---------- インパクト・ストリップ ---------- */
+.sff-impact {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--field);
+  border-radius: var(--r); overflow: hidden; margin: 1.2rem 0 0; box-shadow: var(--sh-s);
+}
+.sff-impact .i { background: var(--pitch); color: #fff; text-align: center; padding: 1.5rem 0.8rem; }
+.sff-impact .n { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: clamp(1.5rem, 5vw, 2.1rem); color: var(--lime); line-height: 1.2; }
+.sff-impact .l { font-size: 0.8rem; font-weight: 700; color: #cfe0d5; margin-top: 0.2rem; }
+@media (max-width: 600px) { .sff-impact { grid-template-columns: 1fr; } }
+
+/* ---------- 「ソーシャルフットボールとは」 ---------- */
+.sff-about {
+  border-radius: var(--r); overflow: hidden; box-shadow: var(--sh);
+  background:
+    radial-gradient(ellipse 50% 60% at 90% 100%, rgba(22,168,90,0.30), transparent 60%),
+    linear-gradient(155deg, var(--pitch) 0%, var(--pitch2) 100%);
+  color: #fff; padding: clamp(2.2rem, 6vw, 3.4rem) clamp(1.4rem, 5vw, 3rem);
+}
+.sff-about .lab { font-family: 'Oswald', sans-serif; font-weight: 700; letter-spacing: 0.26em; color: var(--lime); font-size: 0.9rem; text-transform: uppercase; }
+.sff-about h3 { font-weight: 900; font-size: clamp(1.5rem, 5vw, 2.1rem); line-height: 1.5; margin: 0.6rem 0 1rem; }
+.sff-about h3 em { font-style: normal; color: var(--lime); }
+.sff-about > p { color: #d8e6dd; max-width: 720px; font-size: 1.02rem; line-height: 2.0; margin: 0 0 1.8rem; }
+.sff-about .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.sff-about .pillar { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 1.4rem 1.3rem; }
+.sff-about .pillar .pn { font-family: 'Oswald', sans-serif; font-weight: 700; color: var(--lime); font-size: 0.82rem; letter-spacing: 0.16em; }
+.sff-about .pillar b { display: block; font-size: 1.12rem; font-weight: 900; margin: 0.3rem 0 0.5rem; }
+.sff-about .pillar span { font-size: 0.9rem; color: #cfe0d5; line-height: 1.8; }
+.sff-about .origin { margin: 1.8rem 0 0; font-size: 0.86rem; color: #9fbcab; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1.2rem; }
+@media (max-width: 680px) { .sff-about .pillars { grid-template-columns: 1fr; } }
+
+/* ---------- 共感 ---------- */
+.sff-empathy { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.sff-empathy .e {
+  background: var(--paper); border: 1px solid var(--line); border-left: 5px solid var(--emerald); border-radius: 10px;
+  padding: 1.1rem 1.3rem; font-weight: 500; box-shadow: var(--sh-s); line-height: 1.75;
+}
+.sff-empathy strong { background: linear-gradient(transparent 60%, var(--lime) 60%); font-weight: 700; }
+.sff-empathy-note {
+  max-width: 760px; margin: 1.3rem auto 0; background: var(--pitch); color: #fff; border-radius: 12px;
+  padding: 1.3rem 1.5rem; text-align: center; font-weight: 900; font-size: 1.08rem;
+}
+.sff-empathy-note em { font-style: normal; color: var(--lime); }
+@media (max-width: 600px) { .sff-empathy { grid-template-columns: 1fr; } }
+
+/* ---------- 変化 ---------- */
+.sff-change { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: stretch; }
+.sff-change .card { border-radius: 14px; padding: clamp(1.4rem, 3.5vw, 2rem); }
+.sff-change .before { background: #e9ebe6; border: 1px solid #d8ddd3; }
+.sff-change .after { background: linear-gradient(155deg, var(--pitch), var(--field)); color: #fff; box-shadow: var(--sh); }
+.sff-change .card h4 { font-family: 'Oswald', sans-serif; letter-spacing: 0.12em; margin: 0 0 0.9rem; font-size: 1rem; text-transform: uppercase; }
+.sff-change .before h4 { color: var(--ink2); }
+.sff-change .after h4 { color: var(--lime); }
+.sff-change .card ul { margin: 0; padding: 0; list-style: none; }
+.sff-change .card li { padding: 0.5em 0; font-size: 0.96rem; line-height: 1.7; border-bottom: 1px dashed rgba(0,0,0,0.12); }
+.sff-change .after li { border-bottom-color: rgba(255,255,255,0.18); }
+.sff-change .card li:last-child { border-bottom: none; }
+.sff-change .arrow { display: flex; align-items: center; justify-content: center; color: var(--emerald); font-size: 2.2rem; font-weight: 900; }
+@media (max-width: 660px) { .sff-change { grid-template-columns: 1fr; } .sff-change .arrow { transform: rotate(90deg); padding: 0.2rem 0; } }
+
+/* ---------- 強み ---------- */
+.sff-reasons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+.sff-reason { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 1.9rem 1.6rem; box-shadow: var(--sh-s); position: relative; overflow: hidden; }
+.sff-reason::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--emerald), var(--lime)); }
+.sff-reason .ic { width: 58px; height: 58px; border-radius: 12px; background: var(--pitch); color: var(--lime); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; margin-bottom: 1rem; }
+.sff-reason .tag { font-family: 'Oswald', sans-serif; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--emer-d); }
+.sff-reason h4 { margin: 0.3rem 0 0.6rem; font-size: 1.16rem; font-weight: 900; line-height: 1.5; color: var(--ink); }
+.sff-reason p { margin: 0; font-size: 0.93rem; color: #4d5a51; line-height: 1.85; }
+.sff-reason strong { background: linear-gradient(transparent 60%, var(--lime) 60%); font-weight: 700; }
+@media (max-width: 760px) { .sff-reasons { grid-template-columns: 1fr; } }
+
+/* ---------- 全国大会への道 ---------- */
+.sff-road {
+  border-radius: var(--r); overflow: hidden; box-shadow: var(--sh); position: relative;
+  background: linear-gradient(120deg, var(--emer-d), var(--emerald)); color: #fff;
+  padding: clamp(2.2rem, 6vw, 3.2rem) clamp(1.5rem, 5vw, 3rem); text-align: center;
+  margin-top: 4.5rem; /* 直前の「3つの理由」カードとの間隔（このカードは見出しを持たないため） */
+}
+.sff-road h3 { color: #fff; } /* テーマ打ち消し後、白文字を明示（緑背景に白） */
+.sff-road .lab { font-family: 'Oswald', sans-serif; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: var(--lime); font-size: 0.9rem; }
+.sff-road h3 { font-weight: 900; font-size: clamp(1.5rem, 5.2vw, 2.2rem); line-height: 1.45; margin: 0.6rem auto 1rem; max-width: 720px; }
+.sff-road h3 em { font-style: normal; color: var(--lime); }
+.sff-road p { color: #e3f3e9; max-width: 680px; margin: 0 auto; line-height: 1.95; }
+.sff-road .small { font-size: 0.84rem; color: #c4e3d1; margin-top: 1.2rem; }
+
+/* ---------- スタッフ ---------- */
+.sff-staff {
+  max-width: 800px; margin: 0 auto; border-radius: var(--r); padding: clamp(1.9rem, 5vw, 2.8rem);
+  background: var(--paper); border: 1px solid var(--line); border-left: 6px solid var(--emerald); box-shadow: var(--sh-s);
+}
+.sff-staff .big { font-weight: 900; font-size: clamp(1.25rem, 3.6vw, 1.55rem); display: block; margin-bottom: 0.8rem; line-height: 1.55; color: var(--ink); }
+.sff-staff .big em { font-style: normal; color: var(--emer-d); }
+.sff-staff p { margin: 0; color: #4d5a51; line-height: 2.0; }
+.sff-staff strong { color: var(--ink); }
+
+/* ---------- 協力（ジェネシス） ---------- */
+.sff-collab { max-width: 560px; margin: 1.4rem auto 0; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--sh-s); padding: 1.6rem 1.8rem; text-align: center; }
+.sff-collab .lab { font-family: 'Oswald', sans-serif; letter-spacing: 0.2em; text-transform: uppercase; color: var(--emer-d); font-size: 0.78rem; font-weight: 700; }
+.sff-collab .logo-ph { margin: 0.9rem auto; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 200px; min-height: 64px; padding: 0.8rem 1.4rem; border: 2px dashed #c2cabd; border-radius: 10px; color: #79857a; font-weight: 900; font-size: 1rem; line-height: 1.3; }
+.sff-collab .logo-ph small { font-weight: 500; font-size: 0.72rem; color: #9aa39a; margin-top: 0.2rem; }
+.sff-collab img.logo { max-height: 60px; width: auto; margin: 0.9rem auto 0; display: block; }
+.sff-collab p { margin: 0.7rem 0 0; font-size: 0.95rem; color: #4d5a51; line-height: 1.8; }
+.sff-collab p b { color: var(--ink); }
+.sff-collab .x { color: var(--emerald); font-weight: 900; }
+.sff-collab a { text-decoration: none; display: inline-block; transition: transform 0.2s; }
+.sff-collab a:hover { transform: translateY(-2px); }
+
+/* ---------- タイムライン ---------- */
+.sff-tl { max-width: 580px; margin: 0 auto; list-style: none; padding: 0; position: relative; }
+.sff-tl::before { content: ""; position: absolute; left: 78px; top: 14px; bottom: 14px; width: 3px; border-radius: 2px; background: linear-gradient(var(--emerald), var(--lime)); }
+.sff-tl li { position: relative; display: flex; gap: 1.4rem; padding-bottom: 1.5em; }
+.sff-tl li:last-child { padding-bottom: 0; }
+.sff-tl .t { flex: 0 0 64px; text-align: right; font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 1.05rem; color: var(--emer-d); line-height: 1.6; }
+.sff-tl li::before { content: ""; position: absolute; left: 72px; top: 0.5em; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 4px solid var(--emerald); }
+.sff-tl .c { flex: 1; padding-left: 1.1rem; }
+.sff-tl .c b { display: block; font-weight: 900; color: var(--ink); }
+.sff-tl .c span { font-size: 0.88rem; color: var(--ink2); }
+.sff-tl-note { text-align: center; color: var(--ink2); font-size: 0.92rem; margin-top: 1.4rem; }
+@media (max-width: 540px) { .sff-tl::before { left: 66px; } .sff-tl li::before { left: 60px; } .sff-tl .t { flex-basis: 54px; } }
+
+/* ---------- 概要 ---------- */
+.sff-spec { max-width: 720px; margin: 0 auto; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: clamp(1.4rem, 4vw, 2rem); box-shadow: var(--sh-s); }
+.sff-spec table { width: 100%; border-collapse: collapse; }
+.sff-spec td { padding: 0.95em 0; vertical-align: top; line-height: 1.85; }
+.sff-spec td:first-child { width: 96px; font-weight: 900; color: var(--emer-d); }
+.sff-spec tr + tr td { border-top: 1px solid var(--line); }
+.sff-spec small { color: var(--ink2); font-size: 0.84rem; }
+.sff-spec .price { color: var(--emer-d); font-weight: 900; font-size: 1.12rem; }
+
+/* ---------- FAQ ---------- */
+.sff-faq { max-width: 740px; margin: 0 auto; }
+.sff-faq details { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 0.7rem; overflow: hidden; box-shadow: var(--sh-s); }
+.sff-faq summary { list-style: none; cursor: pointer; display: flex; gap: 0.7em; align-items: flex-start; padding: 1.1rem 3rem 1.1rem 1.3rem; font-weight: 900; color: var(--ink); position: relative; }
+.sff-faq summary::-webkit-details-marker { display: none; }
+.sff-faq summary::before { content: "Q"; font-family: 'Oswald', sans-serif; color: var(--emerald); font-size: 1.2rem; }
+.sff-faq summary::after { content: "＋"; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--emerald); font-weight: 700; transition: transform 0.25s; }
+.sff-faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+.sff-faq .a { display: flex; gap: 0.7em; padding: 0 1.3rem 1.3rem; color: #4d5a51; font-size: 0.95rem; }
+.sff-faq .a::before { content: "A"; font-family: 'Oswald', sans-serif; color: var(--emer-d); font-weight: 700; font-size: 1.2rem; }
+.sff-faq .a p { margin: 0; }
+.sff-faq strong { background: linear-gradient(transparent 60%, var(--lime) 60%); }
+
+/* ---------- 流れ ---------- */
+.sff-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; counter-reset: sfflow; }
+.sff-flow .s { counter-increment: sfflow; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 1.7rem 0.9rem 1.2rem; text-align: center; box-shadow: var(--sh-s); position: relative; }
+.sff-flow .s::before { content: counter(sfflow); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin: 0 auto 0.6rem; border-radius: 50%; background: var(--emerald); color: #fff; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.1rem; }
+.sff-flow .s b { display: block; font-size: 0.96rem; font-weight: 900; }
+.sff-flow .s span { font-size: 0.78rem; color: var(--ink2); }
+.sff-flow-note { text-align: center; color: var(--ink2); font-size: 0.9rem; margin-top: 1.1rem; }
+@media (max-width: 680px) { .sff-flow { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- 料金 ---------- */
+.sff-price { max-width: 640px; margin: 0 auto; border-radius: var(--r); overflow: hidden; box-shadow: var(--sh-s); border: 1px solid var(--line); }
+.sff-price table { width: 100%; border-collapse: collapse; background: var(--paper); }
+.sff-price thead th { background: var(--pitch); color: #fff; padding: 14px; font-weight: 900; }
+.sff-price td { padding: 14px 16px; border-top: 1px solid var(--line); line-height: 1.7; }
+.sff-price td:first-child { font-weight: 900; color: var(--ink); width: 42%; }
+.sff-price td small { color: var(--ink2); font-size: 0.84rem; }
+.sff-price tr:nth-child(even) td { background: #f5f7f3; }
+.sff-price-note { max-width: 640px; margin: 1rem auto 0; text-align: center; font-size: 0.86rem; color: var(--ink2); line-height: 1.8; }
+
+/* ---------- 写真プレースホルダ ---------- */
+.sff-photo { background: repeating-linear-gradient(45deg, #e7ebe5 0 16px, #dde3da 16px 32px); border: 2px dashed #c2cabd; border-radius: var(--r); padding: 3rem 1.2rem; text-align: center; color: #79857a; font-size: 0.9rem; line-height: 1.8; margin: 2.4rem 0 0; }
+
+/* ---------- 写真バンド ---------- */
+.sff-band { margin: 2.4rem 0 0; border-radius: var(--r); overflow: hidden; box-shadow: var(--sh); position: relative; }
+.sff-band img { display: block; width: 100%; height: clamp(240px, 42vw, 440px); object-fit: cover; }
+.sff-band figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.6rem clamp(1.2rem, 4vw, 2rem) 1.1rem; background: linear-gradient(transparent, rgba(10,44,31,0.82)); color: #fff; font-weight: 900; font-size: clamp(0.96rem, 2.6vw, 1.18rem); line-height: 1.5; }
+.sff-band figcaption b { color: var(--lime); }
+
+/* ---------- 最終CTA ---------- */
+.sff-final {
+  position: relative; overflow: hidden; border-radius: var(--r); text-align: center; color: #fff;
+  background:
+    radial-gradient(ellipse 60% 55% at 15% 0%, rgba(22,168,90,0.4), transparent 60%),
+    linear-gradient(160deg, var(--pitch), var(--pitch2));
+  box-shadow: var(--sh); padding: clamp(2.6rem, 7vw, 4rem) 1.5rem; margin-top: 4.5rem;
+}
+.sff-final::before { content: ""; position: absolute; left: 50%; top: -160px; transform: translateX(-50%); width: 340px; height: 340px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.08); pointer-events: none; }
+.sff-final > * { position: relative; z-index: 1; }
+.sff-final h3 { font-weight: 900; font-size: clamp(1.5rem, 5.2vw, 2.1rem); margin: 0 0 0.9rem; line-height: 1.5; }
+.sff-final h3 em { font-style: normal; color: var(--lime); }
+.sff-final p { color: #d8e6dd; margin: 0 0 1.9rem; }
+.sff-final .tel { margin-top: 1.7rem; font-size: 0.9rem; color: #a9c4b5; }
+.sff-final .tel b { color: #fff; font-size: 1.1rem; }
+
+/* ---------- スポット決済 ---------- */
+.sff-spot { max-width: 600px; margin: 1.8rem auto 0; background: var(--paper); border: 2px solid var(--emerald); border-radius: var(--r); box-shadow: var(--sh-s); padding: clamp(1.4rem, 4vw, 1.9rem); text-align: center; }
+.sff-spot .sft { font-weight: 900; font-size: 1.05rem; color: var(--emer-d); margin-bottom: 0.3rem; }
+.sff-spot p { margin: 0 0 1.1rem; font-size: 0.92rem; color: #4d5a51; line-height: 1.8; }
+
+/* ---------- 開催カレンダー ---------- */
+.sff-cal { max-width: 760px; margin: 0 auto; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--sh-s); padding: clamp(0.5rem, 2vw, 0.9rem); overflow: hidden; }
+.sff-cal iframe { width: 100%; border: none; min-height: 900px; overflow: hidden; display: block; position: relative; z-index: 1; }
+
+/* 開催カレンダーの読込中スケルトン（GASの二重iframeで待ち時間が出るため） */
+.sff-cal-shell { position: relative; min-height: 900px; }
+.sff-cal-skeleton {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding-top: 80px; gap: 14px; background: var(--paper); border-radius: 12px;
+  transition: opacity 0.3s ease;
+}
+.sff-cal-skeleton.is-hidden { opacity: 0; pointer-events: none; }
+.sff-cal-spinner {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 3px solid rgba(22,168,90,0.2); border-top-color: var(--emerald);
+  animation: sff-spin 0.8s linear infinite;
+}
+@keyframes sff-spin { to { transform: rotate(360deg); } }
+.sff-cal-skeleton p { color: var(--ink2); font-size: 0.9rem; margin: 0; }
+.sff-cal-bars { width: min(560px, 88%); display: grid; gap: 10px; margin-top: 8px; }
+.sff-cal-bars i {
+  display: block; height: 44px; border-radius: 10px;
+  background: linear-gradient(90deg, #eef1ec 25%, #e2e7df 37%, #eef1ec 63%);
+  background-size: 400% 100%; animation: sff-shimmer 1.3s ease infinite;
+}
+@keyframes sff-shimmer { 0% { background-position: 100% 50% } 100% { background-position: 0 50% } }
+@media (prefers-reduced-motion: reduce) {
+  .sff-cal-spinner, .sff-cal-bars i { animation: none; }
+}
+
+/* 写真バンド直後に共感カードが続くときの間隔 */
+.sff-band + .sff-empathy { margin-top: 0.9rem; }
+</style>
+
+<div class="sff">
+
+
+<section class="sff-hero">
+  <span class="eyebrow">SOCIAL FOOTBALL<span>精神障がい者フットサル ／ 金沢</span></span>
+  <h1>違いを超えて、<br><em>本気で、蹴る。</em></h1>
+  <p class="hlead">ソーシャルフットボールは、精神障がいのある人のために生まれたフットサル。<br><b>でも、入れるのはその人たちだけじゃない。</b>障がいのある方も、ない方も、子どもも大人も一緒に。<br>見学だけでも大丈夫。あなたのペースで、はじめよう。</p>
+  <div class="sff-chips">
+    <span class="sff-chip">精神障がい者フットサル</span>
+    <span class="sff-chip">障がいの有無を問わず <b>誰でも</b></span>
+    <span class="sff-chip">木曜（月3回） <b>17:00〜19:00</b></span>
+    <span class="sff-chip">あめるんパーク <b>全面人工芝</b></span>
+  </div>
+  <div class="sff-cta">
+    <a class="sff-btn sff-btn--lime" href="/taiken">見学・体験を申し込む</a>
+    <a class="sff-btn sff-btn--line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで相談する</a>
+    <a class="sff-btn sff-btn--ghost" href="#calendar-view">📅 開催スケジュールを見る</a>
+  </div>
+  <p class="welcome">🔰 <b>未経験・初心者、大歓迎。</b>まずは見学だけでもどうぞ。</p>
+</section>
+
+
+<div class="sff-impact rv">
+  <div class="i"><div class="n">未経験</div><div class="l">大歓迎・経験ゼロでOK</div></div>
+  <div class="i"><div class="n">見学だけ</div><div class="l">でもOK・動かなくて大丈夫</div></div>
+  <div class="i"><div class="n">1,500円〜</div><div class="l">まず1回お試し（スポット参加）</div></div>
+</div>
+
+
+<div class="sff-beginner rv">
+  <div class="bh">
+    <span class="lab">For Beginners</span>
+    <b>はじめてでも、大丈夫。</b>
+  </div>
+  <div class="bb">
+    <p class="blead">「下手だったらどうしよう」「場違いじゃないかな」——その不安、いりません。<br><b>ここにいる多くの人が、未経験から始めました。</b></p>
+    <ul>
+      <li>サッカー・フットサル経験ゼロでOK</li>
+      <li>運動が苦手・体力に自信がなくてもOK</li>
+      <li>まずは「見学」だけでも大丈夫</li>
+      <li>1回だけのお試し参加（1,500円）から</li>
+      <li>道具は最初、手持ちのウェアでOK</li>
+      <li>ひとり参加でもスタッフがサポート</li>
+    </ul>
+    <div class="bcta">
+      <a class="sff-btn sff-btn--primary" href="/taiken">まずは見学・体験を申し込む</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">What is Social Football</span>
+  <h2 class="sff-h2">「ソーシャルフットボール」<br>って、なんだろう。</h2>
+</div>
+<div class="sff-about rv">
+  <span class="lab">Calcio Sociale</span>
+  <h3>支えられる側じゃない。<em>ピッチに立つ、プレーヤーだ。</em></h3>
+  <p>ソーシャルフットボールは、<strong style="color:#fff">精神障がいのある人のためのフットサル</strong>。その名はイタリアの「calcio sociale（カルチョ・ソチアーレ）」に由来し、年齢・性別・障がいなど<strong style="color:#fff">あらゆる“違い”を超えて、社会でつながる</strong>ことを目指すフットボール文化です。日本ソーシャルフットボール協会のもと全国大会も開かれる、れっきとしたスポーツ。ここでは誰もが「患者」ではなく、一人の<strong style="color:#fff">プレーヤー</strong>としてピッチに立ちます。そして、その輪に入れるのは当事者だけではありません。<strong style="color:#fff">障がいのある人も、ない人も</strong>、同じ仲間として、同じピッチへ。</p>
+  <div class="pillars">
+    <div class="pillar"><div class="pn">SOCIAL</div><b>つながる</b><span>違いを超えて、社会とつながる入口になる。</span></div>
+    <div class="pillar"><div class="pn">RECOVERY</div><b>回復を後押し</b><span>ボールを追ううちに、心と体が少しずつ動き出す。</span></div>
+    <div class="pillar"><div class="pn">DIGNITY</div><b>自分らしく</b><span>支えられる側ではなく、プレーヤーとして本気で。</span></div>
+  </div>
+  <p class="origin">※ ソーシャルフットボール＝精神障がいのある人のフットサル。日本ソーシャルフットボール協会（2013年設立）のもと、全国大会（2024年で第5回）が開催されています。</p>
+</div>
+
+<figure class="sff-band rv">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/68fb4d0948cc249a1be701c0ac128408.png" alt="人工芝の上でボールを足元に置くオレンジのユニフォームのプレーヤー" loading="lazy">
+  <figcaption>ここでは誰もが、<b>一人のプレーヤー。</b></figcaption>
+</figure>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">For You</span>
+  <h2 class="sff-h2">こんな方の、<span class="hl">最初の一歩に。</span></h2>
+</div>
+<div class="sff-empathy rv">
+  <div class="e">精神的な不調や<strong>ひきこもりで、外に出る機会が減っている</strong></div>
+  <div class="e">学校に行きづらい。<strong>安心できる居場所がほしい</strong></div>
+  <div class="e">運動不足を解消したいけど、<strong>いきなり激しいのは不安</strong></div>
+  <div class="e">フットサルは未経験。でも<strong>本気で体を動かしてみたい</strong></div>
+  <div class="e">就労・社会復帰に向けて、<strong>生活リズムを整えたい</strong></div>
+  <div class="e">同じ仲間と、<strong>チームでひとつの目標に向かいたい</strong></div>
+</div>
+<div class="sff-empathy-note rv">「やってみたい」——その<em>一歩</em>だけで、もう十分な入口です。</div>
+
+<figure class="sff-band rv">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/10d6f39c9b33961faa1aaa8d4372bcf0.png" alt="オレンジのユニフォームで人工芝コートでフットサルをする多世代のプレーヤー" loading="lazy">
+  <figcaption>障がいの有無を超えて、<b>同じピッチで本気に。</b></figcaption>
+</figure>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Who Plays Here</span>
+  <h2 class="sff-h2">どんな仲間が、<span class="mk">ここにいる。</span></h2>
+  <p class="sff-lead">集まるのは、年齢も背景もさまざまな人たち。<br>その多くは、<strong>自立に挑戦しながら病気と向き合い、就労して自分の生活を築こうとしている</strong>——そんな“前を向く仲間”です。</p>
+</div>
+<figure class="sff-band rv">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/79113a34cbd74b2fcc604df436679211.png" alt="人工芝コートに集まる、オレンジのユニフォームを着た多世代の参加者たち" loading="lazy">
+  <figcaption>老若男女、<b>いろんな仲間が集まる。</b></figcaption>
+</figure>
+<div class="sff-empathy rv">
+  <div class="e">グループホームや<strong>就労支援施設から通う</strong>方</div>
+  <div class="e"><strong>自宅から、自分の足で</strong>通う方</div>
+  <div class="e"><strong>自立に挑戦しながら</strong>、病気と向き合う方</div>
+  <div class="e">就労して、<strong>自分の生活を築こうとする</strong>方</div>
+  <div class="e">学校に行きづらい<strong>子ども（小学生も）</strong></div>
+  <div class="e"><strong>障がいのない地域の方・ゲスト</strong>も一緒に</div>
+</div>
+<div class="sff-empathy-note rv">障がいのある方も、ない方も。老若男女、いろんな人が同じピッチに立つ。<br>それが<em>ソーシャル</em>フットボールです。</div>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Change</span>
+  <h2 class="sff-h2">ボールが、<span class="mk">人を変えていく。</span></h2>
+  <p class="sff-lead">最初は、投薬の影響で表情がかたく、動くのも辛そうな方もいます。<br>でも、ピッチに立ち続けるうちに——。</p>
+</div>
+<div class="sff-change rv">
+  <div class="card before">
+    <h4>Before</h4>
+    <ul>
+      <li>下を向いて、動くのも辛そう</li>
+      <li>表情がかたく、言葉も少ない</li>
+      <li>家から、なかなか出られない</li>
+    </ul>
+  </div>
+  <div class="arrow">➜</div>
+  <div class="card after">
+    <h4>After</h4>
+    <ul>
+      <li>少しずつ活動的に、前を向くように</li>
+      <li>表情がやわらぎ、笑顔が増える</li>
+      <li>全国大会の舞台に挑んだ人も</li>
+    </ul>
+  </div>
+</div>
+<div class="sff-empathy-note rv">無理に「同じようにやって」とは言いません。<em>慣れていくだけの余白</em>が、ここにはあります。</div>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Reason</span>
+  <h2 class="sff-h2">安心して、本気になれる<span class="mk">3つの理由</span></h2>
+</div>
+<div class="sff-reasons rv">
+  <div class="sff-reason">
+    <div class="ic">🩺</div>
+    <span class="tag">Pro Staff</span>
+    <h4>心の状態に寄り添える<br>専門のコーチたち</h4>
+    <p>指導するのは<strong>精神・発達障がいに知見のあるコーチたち</strong>。障がい者ケアの専門資格を持ち、なおかつサッカー指導もできるスタッフが、その日の体調や一人ひとりの特性に合わせて進めます。</p>
+  </div>
+  <div class="sff-reason">
+    <div class="ic">🤝</div>
+    <span class="tag">Inclusive</span>
+    <h4>障がいの有無を超え<br>同じピッチに立つ</h4>
+    <p>精神障がいのある方だけでなく、自閉症スペクトラムの方、学校に行きづらい子ども、そして<strong>障がいのない地域の方も</strong>。子どもから大人まで、さまざまな年齢・背景の人が同じピッチでボールを追います。</p>
+  </div>
+  <div class="sff-reason">
+    <div class="ic">🚪</div>
+    <span class="tag">First Step</span>
+    <h4>見学から、ゲームまで<br>あなたのペースで</h4>
+    <p>「歩くのもしんどい」という方も、そのペースを尊重します。<strong>まずは見学して慣れるところから</strong>。途中で休む・早く抜けるのも自由。慣れたら、ミニゲームで本気の楽しさを。</p>
+  </div>
+</div>
+
+
+<div class="sff-road rv">
+  <span class="lab">Road to the Nationals</span>
+  <h3>この金沢のピッチは、<em>全国へ</em>つながっている。</h3>
+  <p>ここから、<strong style="color:#fff">北陸初のソーシャルフットボールチームの一員として全国大会に挑戦した参加者</strong>もいます。ソーシャルフットボールには全国大会があり、その先にはアジア・世界へと続く舞台も。<br>もちろん、本気で目指すのも、楽しく続けるのも自由。あなたの「やってみたい」が、どこまでも伸びていける場所です。</p>
+  <p class="small">※ 競技志向は強制ではありません。まずは「楽しい」「通えた」を大切にしています。</p>
+</div>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Staff</span>
+  <h2 class="sff-h2">支えるのは、<span class="mk">専門家のチーム。</span></h2>
+</div>
+<div class="sff-staff rv">
+  <span class="big">「サッカーが教えられる」だけじゃない。<em>心の状態に寄り添える</em>コーチたち。</span>
+  <p>指導するのは、<strong>精神・発達障がいに知見のあるコーチたち</strong>。障がい者ケアの専門資格を持ち、サッカー指導もできるスタッフが、一人ひとりの「今日の調子」に合わせて進めます。フットサルの指導者はジェネシスより派遣。だから、初めての方も、運動が苦手な方も、安心して本気になれます。</p>
+</div>
+
+
+<div class="sff-collab rv">
+  <div class="lab">In Collaboration with</div>
+  <a href="https://genesis-neighbors.co.jp/company/" target="_blank" rel="noopener" aria-label="ジェネシス株式会社 公式サイト">
+    <img class="logo" src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/genesis-logo-500.png" alt="ジェネシス株式会社" loading="lazy">
+  </a>
+  <p>フットサルの指導は <b>ジェネシス株式会社</b> の専門スタッフと連携。<br>STARTUS <span class="x">×</span> ジェネシスの <b>コラボ教室</b> です。</p>
+</div>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Time Table</span>
+  <h2 class="sff-h2">ある日の、<span class="mk">2時間。</span></h2>
+</div>
+<ul class="sff-tl rv">
+  <li><span class="t">17:00</span><div class="c"><b>集合・受付</b><span>今日もよろしくお願いします</span></div></li>
+  <li><span class="t">17:10</span><div class="c"><b>ウォーミングアップ</b><span>体をゆっくり起こすところから</span></div></li>
+  <li><span class="t">17:30</span><div class="c"><b>部分練習</b><span>パスやドリブルなど、基礎の動き</span></div></li>
+  <li><span class="t">18:00</span><div class="c"><b>ゲーム（ミニゲーム）</b><span>いちばん盛り上がる、本気の時間</span></div></li>
+  <li><span class="t">18:50</span><div class="c"><b>クールダウン・片付け</b><span>整理運動をして「また来週！」</span></div></li>
+</ul>
+<p class="sff-tl-note">体調や気分に波があってもOK。見学だけ・途中で休む・早めに抜けるのも自由です。</p>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Outline</span>
+  <h2 class="sff-h2">教室<span class="mk">概要</span></h2>
+</div>
+<div class="sff-spec rv">
+  <table>
+    <tr><td>対象</td><td>精神・発達障がいのある方／不登校・ひきこもりの方／運動不足の方／社会復帰・就労を目指す方／フットサルを楽しみたい方<br><small>※ 障がいの有無・年齢を問わず参加できます（子ども〜大人）</small></td></tr>
+    <tr><td>開催日</td><td>木曜 17:00〜19:00<br><small>※ 月3回・通年開催</small></td></tr>
+    <tr><td>会場</td><td>あめるんパーク 1F のびのびの広場（全面人工芝）<br><small>金沢市駅西新町23番地1 ／ <a href="https://maps.app.goo.gl/CiqTkgtxiKyqXCfX9" target="_blank" rel="noopener">Googleマップで見る</a><br>外部の人が入りにくい落ち着いた空間で、集中して取り組めます。きれいな施設で更衣室も完備。</small></td></tr>
+    <tr><td>運営</td><td>精神・発達障がいに知見のある、障がい者ケアの専門資格を持つコーチ陣<br><small>※ フットサル指導者はジェネシスより派遣</small></td></tr>
+    <tr><td>位置づけ</td><td>ソーシャルフットボール（精神障がい者フットサル）教室／インクルーシブスポーツ<br><small>※ STARTUS他教室の振替先としても選択できます</small></td></tr>
+    <tr><td>参加費</td><td><span class="price">月会費 3,300円</span> <small>（障がいの有無にかかわらず一律／下記料金表参照）</small></td></tr>
+  </table>
+</div>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">FAQ</span>
+  <h2 class="sff-h2">よくある<span class="mk">質問</span></h2>
+</div>
+<div class="sff-faq rv">
+  <details>
+    <summary>サッカー経験も運動経験もありませんが、参加できますか？</summary>
+    <div class="a"><p>もちろん大歓迎です。「歩くのがやっと」という方も、<strong>まずは見学して慣れるところから</strong>始められます。すぐに同じようにとは言いません。あなたのペースで大丈夫です。</p></div>
+  </details>
+  <details>
+    <summary>見学だけでも大丈夫ですか？</summary>
+    <div class="a"><p>はい。<strong>見て、慣れるところからスタート</strong>できます。その日の体調や気分に合わせて、途中で休んだり、早めに抜けたりするのも自由です。<strong>事前にLINEまたはフォームでご連絡いただける</strong>と、当日スムーズにご案内できます。</p></div>
+  </details>
+  <details>
+    <summary>障害者手帳や診断名は必要ですか？</summary>
+    <div class="a"><p>必須ではありません。<strong>障がいのある方も、ない方も</strong>一緒に参加するインクルーシブな教室です。気になることがあれば、お気軽にご相談ください。</p></div>
+  </details>
+  <details>
+    <summary>子どもも参加できますか？</summary>
+    <div class="a"><p>はい。実際に<strong>小学生も参加</strong>しています。子どもから大人まで、幅広い年齢の方が一緒にプレーしています。</p></div>
+  </details>
+  <details>
+    <summary>服装や持ち物は何が必要ですか？</summary>
+    <div class="a"><p>動きやすい服装（フットサルに適した服装が望ましいですが、<strong>最初は手持ちのトレーニングウェアでOK</strong>）と、<strong>屋内用のフットサルシューズ</strong>をご用意ください。飲み物（夏場は1〜2Lあると安心）・タオル・着替えもお持ちください。会場には<strong>更衣室があります</strong>。詳しい服装は現場のスタッフに気軽にお尋ねください。</p></div>
+  </details>
+  <details>
+    <summary>体調が不安な日や、発作などの心配がある場合は？</summary>
+    <div class="a"><p>無理せず見学・途中休憩で大丈夫です。入会時の<strong>身体状況報告欄に、障がいの内容や配慮してほしいこと</strong>をご記入ください。発作など特別な対応が必要な可能性がある場合は、<strong>その対応策もあわせてお書きいただける</strong>と、より安全に楽しんでいただけます。</p></div>
+  </details>
+  <details>
+    <summary>まず1回だけ試すことはできますか？</summary>
+    <div class="a"><p>はい。<strong>スポット参加（1回1,500円）</strong>でお試しいただけます。続けたくなったら、あらためて入会のお手続きへどうぞ。</p></div>
+  </details>
+</div>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Step</span>
+  <h2 class="sff-h2">見学から入会までの<span class="mk">流れ</span></h2>
+</div>
+<div class="sff-flow rv">
+  <div class="s"><b>見学・体験</b><span>まずはピッチを見に来る</span></div>
+  <div class="s"><b>入会フォーム</b><span>続けたくなったらWebから</span></div>
+  <div class="s"><b>口座振替申込書</b><span>次回参加時にスタッフへ提出</span></div>
+  <div class="s"><b>活動スタート</b><span>あなたのペースで！</span></div>
+</div>
+<p class="sff-flow-note">※ 申込フォームの「身体状況報告欄」に、配慮してほしいことをご記入ください。<br>※ すでに他のSTARTUS教室の会員の方は、追加教室としてフォームから申請できます。</p>
+
+
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Price</span>
+  <h2 class="sff-h2">料金<span style="font-size:0.62em; font-weight:700; color:var(--ink2);">（すべて税込）</span></h2>
+</div>
+<div class="sff-price rv">
+  <table>
+    <thead><tr><th>項目</th><th>金額</th></tr></thead>
+    <tbody>
+      <tr><td>月会費</td><td><strong>3,300円／月</strong><br><small>障がいの有無にかかわらず一律（木曜・月3回）</small></td></tr>
+      <tr><td>スポット参加</td><td><strong>1,500円／回</strong><br><small>1回だけのお試し参加</small></td></tr>
+      <tr><td>入会手数料</td><td>5,500円<br><small>※同一世帯家族の2人目以降は2,750円</small></td></tr>
+      <tr><td>年度会費</td><td>2,750円（障がいのある方）／5,500円（障がいのない方）<br><small>1年度に1回</small></td></tr>
+      <tr><td>スポーツ安全保険<br><small>（年度に1回）</small></td><td>800円〜2,000円／年<br><small><a href="https://kanazawa-ssc.jp/入会案内・会則#insurance" target="_blank" rel="noopener">加入区分の詳細はこちら</a></small></td></tr>
+    </tbody>
+  </table>
+</div>
+<p class="sff-price-note">※この教室は <strong>STARTUS他教室の振替先</strong> としても選択できます。<br>※上記はすべて税込です。参加形態や会場により別途使用料が発生する場合があります。<br>※2025年8月1日時点の情報です。最新情報や詳細はスタッフにお問い合わせください。<br>※詳しいルールは <a href="https://kanazawa-ssc.jp/%e5%85%a5%e4%bc%9a%e6%a1%88%e5%86%85%e3%83%bb%e4%bc%9a%e5%89%87">会則ページ</a> をご覧ください。</p>
+
+
+<div class="sff-spot rv">
+  <div class="sft">💳 スポット参加（1回）の決済</div>
+  <p>「まず1回だけ試したい」方はこちら。クレジットカードでオンライン決済いただけます。</p>
+  <a class="sff-btn sff-btn--primary" href="https://startus-system.startus.workers.dev/spot/?program=socialfootball" target="_blank" rel="noopener">💳 スポット参加のお申込み ￥1,500</a>
+</div>
+
+
+<div id="calendar-view" style="padding-top: 80px; margin-top: -80px;"></div>
+<div class="sff-head rv">
+  <span class="sff-eyebrow">Schedule</span>
+  <h2 class="sff-h2">開催<span class="mk">スケジュール</span></h2>
+  <p class="sff-lead">タップで各回の詳細を確認できます。</p>
+</div>
+<div class="sff-cal rv">
+  <div class="sff-cal-shell">
+    <div class="sff-cal-skeleton" id="sff-cal-skeleton">
+      <div class="sff-cal-spinner"></div>
+      <p>スケジュールを読み込んでいます…</p>
+      <div class="sff-cal-bars"><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <iframe id="stx-cal-frame" src="https://script.google.com/macros/s/AKfycbwos3AnwtT3S-UUx5muSHhScg3sLESEyUnB9HdaVc6LbqoX9D1kH0JX1EaM_qs1arUEzg/exec?class=socialfootball&amp;wide_day=3&amp;taiken_btn=1" scrolling="no" onload="var s=document.getElementById('sff-cal-skeleton'); if(s) s.classList.add('is-hidden');"></iframe>
+  </div>
+</div>
+
+
+<div class="sff-final rv">
+  <h3>まずは、ピッチを<em>見に来てください。</em><br>動かなくても、大丈夫。</h3>
+  <p>ボールが人を変えていく——その空気は、ピッチに立てばきっと伝わります。</p>
+  <div class="sff-cta">
+    <a class="sff-btn sff-btn--lime" href="/taiken">見学・体験を申し込む</a>
+    <a class="sff-btn sff-btn--line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで相談する</a>
+  </div>
+  <p class="tel">お電話でも：<b>076-287-3789</b>（受付 10:00〜16:00）<br>NPO法人かなざわ総合スポーツクラブ STARTUS</p>
+</div>
+
+</div>
+
+<script>
+(function () {
+  // セクションのやわらか出現
+  var els = document.querySelectorAll('.sff .rv');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el){ io.observe(el); });
+  } else {
+    els.forEach(function (el){ el.classList.add('in'); });
+  }
+  // 開催カレンダー iframe の高さ調整（GAS側から postMessage で高さが届く）
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'stx-resize') {
+      var f = document.getElementById('stx-cal-frame');
+      if (f) f.style.height = e.data.height + 'px';
+      var s = document.getElementById('sff-cal-skeleton');
+      if (s) s.classList.add('is-hidden');
+    }
+  });
+})();
+</script>

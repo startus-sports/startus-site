@@ -349,7 +349,7 @@ function ClassesSection() {
       desc: '障がいの有無・年齢を問わず参加できるフットボール教室。屋内人工芝のあめるんパークで毎週開催。スポット参加もOK。',
       classes: ['ソーシャルフットボール（木 17:00〜18:00・あめるんパーク）'],
       price: '月額 ¥3,300（スポット ¥1,500/回）',
-      href: null,
+      href: '/socialfootball',
       available: true,
     },
     {

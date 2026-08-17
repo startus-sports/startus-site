@@ -1,0 +1,1133 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Oswald:wght@500;600&display=swap');
+
+.ijlp {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', meiryo, sans-serif;
+  color: #2b2b2b;
+  line-height: 1.9;
+  font-size: 16px;
+}
+.ijlp * { box-sizing: border-box; }
+.ijlp img { max-width: 100%; height: auto; }
+
+/* ---------- 共通：セクション見出し ---------- */
+.ij-head { margin: 4.5rem 0 1.8rem; text-align: center; }
+.ij-head .en {
+  display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  color: #eb6600;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.ij-head .ja {
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1.45;
+  margin: 0;
+  color: #1d1d1d;
+}
+.ij-head .ja .mk {
+  background: linear-gradient(transparent 62%, #ffd9a8 62%);
+  padding: 0 0.1em;
+}
+.ij-head::after {
+  content: "";
+  display: block;
+  width: 54px; height: 4px;
+  border-radius: 2px;
+  background: #eb6600;
+  margin: 1rem auto 0;
+}
+.ij-lead { text-align: center; max-width: 640px; margin: 0 auto 2rem; }
+
+/* ---------- スクロール出現 ---------- */
+.ij-reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.ij-reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ij-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- ヒーロー ---------- */
+.ij-hero {
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 45% at 18% 8%, rgba(255, 196, 110, 0.28), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 85% 12%, rgba(120, 160, 255, 0.18), transparent 60%),
+    linear-gradient(165deg, #16203f 0%, #1f2d5a 55%, #2a3b6d 100%);
+  border-radius: 20px;
+  padding: clamp(3rem, 8vw, 5rem) 1.5rem 4.2rem;
+  text-align: center;
+  color: #fff;
+  margin: 1.2rem 0 0;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(13, 18, 38, 0.35);
+}
+.ij-hero::before {
+  content: "";
+  position: absolute;
+  left: -10%; right: -10%; bottom: -36px;
+  height: 120px;
+  background: repeating-linear-gradient(90deg,
+    #c8401f 0 90px, #e8e6e1 90px 96px);
+  transform: rotate(-2.5deg);
+  opacity: 0.92;
+}
+.ij-hero::after {
+  content: "";
+  position: absolute;
+  top: -40%; left: 50%;
+  width: 140%; height: 90%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center top, rgba(255,255,255,0.14), transparent 65%);
+  pointer-events: none;
+}
+.ij-hero .inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.ij-hero .inner > * {
+  width: 100%;
+  max-width: 100%;
+  float: none !important;
+  clear: both;
+  text-align: center;
+}
+.ij-hero .inner > .ij-tag {
+  width: auto;
+  max-width: none;
+}
+.ij-hero .catch,
+.ij-hero .sub {
+  display: block;
+  float: none !important;
+  column-span: all;
+}
+.ij-hero .ij-tag {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  color: #ffc46e;
+  border: 1px solid rgba(255, 196, 110, 0.5);
+  border-radius: 50px;
+  padding: 0.35em 1.4em 0.35em 1.75em;
+  margin-bottom: 1.6rem;
+}
+.ij-hero .catch {
+  font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.7rem, 6vw, 2.9rem);
+  line-height: 1.55;
+  margin: 0 0 1.1rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.45);
+}
+.ij-hero .catch em {
+  font-style: normal;
+  color: #ffb35c;
+}
+.ij-hero .catch .q {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  color: #ffc46e;
+  font-size: 0.85em;
+  font-weight: 600;
+  margin: 0 0.05em;
+}
+.ij-hero .sub {
+  font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+  color: #d9e2f7;
+  line-height: 2.1;
+  margin-bottom: 1.8rem;
+  font-weight: 500;
+}
+.ij-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin-bottom: 2rem; }
+.ij-chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(2px);
+  border-radius: 50px;
+  padding: 0.35em 1.1em;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+.ij-chip b { color: #ffc46e; font-weight: 800; }
+
+/* ---------- ボタン ---------- */
+.ij-cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; justify-content: center; align-items: center; position: relative; z-index: 2; }
+.ij-btn {
+  position: relative;
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: 60px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+.ij-btn:hover { transform: translateY(-3px) scale(1.02); }
+.ij-btn-primary {
+  background: linear-gradient(135deg, #ff7a1a, #e8550f);
+  color: #ffffff !important;
+  box-shadow: 0 8px 22px rgba(235, 102, 0, 0.45);
+}
+.ij-btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.45), transparent);
+  transform: skewX(-20deg);
+  animation: ij-shine 3.2s ease-in-out infinite;
+}
+@keyframes ij-shine {
+  0%, 60% { left: -80%; }
+  85%, 100% { left: 130%; }
+}
+@media (prefers-reduced-motion: reduce) { .ij-btn-primary::after { animation: none; } }
+.ij-btn-ghost {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.65);
+  color: #fff !important;
+}
+.ij-btn-line {
+  background: #06c755;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(6, 199, 85, 0.35);
+}
+
+/* ---------- 数字ストリップ ---------- */
+.ij-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: #f0ddc8;
+  border: 1px solid #f0ddc8;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 2.2rem 0 0;
+  box-shadow: 0 10px 26px rgba(120, 70, 10, 0.08);
+}
+.ij-stat { background: #fffdf9; text-align: center; padding: 1.4rem 0.6rem 1.2rem; }
+.ij-stat .label { font-size: 0.78rem; font-weight: 700; color: #9a6a35; letter-spacing: 0.08em; }
+.ij-stat .num {
+  font-family: 'Oswald', 'Noto Sans JP', sans-serif;
+  font-size: clamp(1.7rem, 5vw, 2.4rem);
+  font-weight: 600;
+  color: #e8550f;
+  line-height: 1.2;
+}
+.ij-stat .num small { font-size: 0.5em; font-weight: 700; color: #b3622a; }
+
+/* ---------- 共感チェック ---------- */
+.ij-empathy {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #f3e3d0;
+  box-shadow: 0 10px 30px rgba(120, 70, 10, 0.07);
+  padding: 2rem clamp(1.2rem, 4vw, 2.4rem);
+}
+.ij-empathy li {
+  list-style: none;
+  position: relative;
+  padding: 0.85em 0 0.85em 2.4em;
+  border-bottom: 1px dashed #ecd9c2;
+  font-weight: 500;
+}
+.ij-empathy li:last-child { border-bottom: none; }
+.ij-empathy li::before {
+  content: "";
+  position: absolute;
+  left: 0.2em; top: 1.15em;
+  width: 1.25em; height: 1.25em;
+  border-radius: 6px;
+  background: #eb6600;
+  clip-path: polygon(14% 44%, 0 65%, 42% 100%, 100% 16%, 80% 0%, 40% 64%);
+}
+.ij-empathy ul { margin: 0; padding: 0; }
+.ij-empathy strong { background: linear-gradient(transparent 64%, #ffe2bd 64%); }
+.ij-empathy .closing {
+  margin: 1.4rem -0.4rem 0;
+  background: #fff3e5;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  font-weight: 800;
+  color: #b34a00;
+  text-align: center;
+  font-size: 1.02rem;
+}
+
+/* ---------- 理由：ジグザグ ---------- */
+.ij-reason-row {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0 0 2.6rem;
+}
+.ij-reason-row .num {
+  flex: 0 0 auto;
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(4.2rem, 12vw, 7rem);
+  font-weight: 600;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 2px #f1bd8a;
+  margin-right: -0.45em;
+  margin-top: -0.12em;
+  z-index: 0;
+  user-select: none;
+}
+.ij-reason-row .body {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #f3e3d0;
+  border-left: 6px solid #eb6600;
+  box-shadow: 0 10px 26px rgba(120, 70, 10, 0.08);
+  padding: 1.6rem clamp(1.2rem, 3.5vw, 2rem);
+  flex: 1 1 auto;
+}
+.ij-reason-row.alt { flex-direction: row-reverse; }
+.ij-reason-row.alt .num { margin-right: 0; margin-left: -0.45em; }
+.ij-reason-row.alt .body { border-left: 1px solid #f3e3d0; border-right: 6px solid #eb6600; }
+.ij-reason-row .body h4 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.15rem, 3.4vw, 1.4rem);
+  font-weight: 900;
+  color: #1d1d1d;
+  line-height: 1.5;
+}
+.ij-reason-row .body h4 .tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #eb6600;
+  border: 1px solid #eb6600;
+  border-radius: 4px;
+  padding: 0.1em 0.7em;
+  vertical-align: 0.25em;
+  margin-right: 0.7em;
+}
+.ij-reason-row .body p { margin: 0; font-size: 0.97rem; color: #444; }
+.ij-reason-row .body strong { background: linear-gradient(transparent 64%, #ffe2bd 64%); font-weight: 800; }
+
+/* ---------- 電子計測器セクション ---------- */
+.ij-timing {
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 0%, rgba(255, 196, 110, 0.18), transparent 60%),
+    linear-gradient(160deg, #15172b 0%, #1d2240 100%);
+  border-radius: 20px;
+  padding: clamp(2rem, 5vw, 3rem);
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(13, 18, 38, 0.32);
+  overflow: hidden;
+  position: relative;
+}
+.ij-timing .ij-timing-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
+}
+.ij-timing .ij-timing-photos img,
+.ij-timing .ij-timing-photos .ph {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 196, 110, 0.3);
+  background: #0c0f1e;
+}
+.ij-timing .ij-timing-photos .ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #7a83a8;
+  text-align: center;
+  padding: 1rem;
+  background: repeating-linear-gradient(45deg, #15172b 0 14px, #1c2042 14px 28px);
+}
+.ij-timing h3 {
+  font-size: clamp(1.2rem, 3.6vw, 1.55rem);
+  font-weight: 900;
+  margin: 0 0 1rem;
+  color: #ffc46e;
+  text-align: center;
+  line-height: 1.5;
+}
+.ij-timing h3 .digit {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2em;
+  color: #ffd685;
+  letter-spacing: 0.04em;
+}
+.ij-timing p {
+  margin: 0 0 1rem;
+  font-size: 0.98rem;
+  color: #d9e2f7;
+  line-height: 2;
+  font-weight: 500;
+}
+.ij-timing .feats {
+  list-style: none;
+  margin: 0 0 1.2rem;
+  padding: 0;
+}
+.ij-timing .feats li {
+  position: relative;
+  padding: 0.7em 0 0.7em 1.8em;
+  border-bottom: 1px dashed rgba(255, 196, 110, 0.25);
+  font-size: 0.95rem;
+  color: #e6ecf9;
+  line-height: 1.8;
+}
+.ij-timing .feats li:last-child { border-bottom: none; }
+.ij-timing .feats li::before {
+  content: "▶";
+  position: absolute;
+  left: 0; top: 0.85em;
+  color: #ffc46e;
+  font-size: 0.7em;
+}
+.ij-timing .feats b { color: #ffc46e; font-weight: 800; }
+.ij-timing .closing {
+  margin: 1.2rem 0 0;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  font-size: 1.02rem;
+  padding: 1rem;
+  background: rgba(255, 196, 110, 0.12);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 196, 110, 0.3);
+}
+
+/* ---------- ゴールデンエイジ豆知識 ---------- */
+.ij-tips {
+  max-width: 680px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #fff8ef 0%, #fff3e0 100%);
+  border-radius: 18px;
+  padding: clamp(1.6rem, 4vw, 2.2rem);
+  border: 1px dashed #f0c889;
+  position: relative;
+}
+.ij-tips::before {
+  content: "💡 TIPS";
+  position: absolute;
+  top: -12px; left: 24px;
+  background: #eb6600;
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  padding: 0.3em 1.1em;
+  border-radius: 50px;
+  font-weight: 700;
+}
+.ij-tips h4 {
+  margin: 0.3rem 0 0.8rem;
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  font-weight: 900;
+  color: #1d1d1d;
+  line-height: 1.5;
+}
+.ij-tips h4 .mk { background: linear-gradient(transparent 62%, #ffd9a8 62%); }
+.ij-tips p { margin: 0 0 0.8rem; font-size: 0.96rem; color: #444; line-height: 2; }
+.ij-tips p:last-child { margin-bottom: 0; }
+.ij-tips strong { color: #b34a00; font-weight: 800; }
+
+/* ---------- 概要テーブル ---------- */
+.ij-spec {
+  max-width: 680px; margin: 0 auto;
+  background: #fff8e1; border-radius: 16px; padding: clamp(1.2rem, 4vw, 1.8rem);
+  border: 1px solid #f5e0a8;
+}
+.ij-spec table { width: 100%; border-collapse: collapse; font-size: 0.96rem; }
+.ij-spec td { padding: 0.85em 0; vertical-align: top; line-height: 1.7; }
+.ij-spec td:first-child { width: 92px; color: #9a6a35; font-weight: 700; }
+.ij-spec tr + tr td { border-top: 1px dashed #e6c66a; }
+.ij-spec .price { color: #e8550f; font-weight: 900; font-size: 1.1rem; }
+.ij-spec small { font-size: 0.82rem; color: #888; }
+
+/* ---------- 60分タイムライン ---------- */
+.ij-timeline { list-style: none; margin: 0 auto; padding: 0; max-width: 560px; position: relative; }
+.ij-timeline::before {
+  content: "";
+  position: absolute;
+  left: 86px; top: 12px; bottom: 12px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(#ffb35c, #eb6600);
+}
+.ij-timeline li { position: relative; display: flex; gap: 1.6rem; padding: 0 0 1.5em; }
+.ij-timeline li:last-child { padding-bottom: 0; }
+.ij-timeline .t {
+  flex: 0 0 70px;
+  text-align: right;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #e8550f;
+  line-height: 1.6;
+}
+.ij-timeline li::before {
+  content: "";
+  position: absolute;
+  left: 80px; top: 0.48em;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #eb6600;
+  z-index: 1;
+}
+.ij-timeline .c { flex: 1; padding-left: 1rem; }
+.ij-timeline .c b { display: block; font-size: 1rem; color: #222; }
+.ij-timeline .c span { font-size: 0.88rem; color: #666; }
+.ij-timeline-note { text-align: center; font-size: 0.92rem; color: #555; margin-top: 1.4rem; }
+
+/* ---------- コーチ ---------- */
+.ij-coach {
+  background:
+    radial-gradient(ellipse 70% 60% at 90% 10%, rgba(255,255,255,0.25), transparent 60%),
+    linear-gradient(135deg, #ff8c2e, #e8550f);
+  border-radius: 20px;
+  color: #fff;
+  padding: clamp(1.8rem, 5vw, 2.8rem);
+  box-shadow: 0 14px 34px rgba(232, 85, 15, 0.35);
+}
+.ij-coach p { margin: 0 0 1rem; font-size: clamp(1rem, 2.8vw, 1.12rem); font-weight: 700; line-height: 2.15; }
+.ij-coach p:last-child { margin-bottom: 0; }
+.ij-coach .big { font-size: clamp(1.2rem, 3.5vw, 1.5rem); font-weight: 900; display: block; margin-bottom: 0.7rem; }
+.ij-coach .big em { font-style: normal; background: linear-gradient(transparent 62%, rgba(255,255,255,0.35) 62%); }
+.ij-coach .nickname {
+  display: inline-block;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 0.05em 0.5em;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+/* ---------- FAQ アコーディオン ---------- */
+.ij-faq { max-width: 720px; margin: 0 auto; }
+.ij-faq details {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+.ij-faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8em;
+  padding: 1.05rem 3rem 1.05rem 1.2rem;
+  font-weight: 800;
+  color: #222;
+  position: relative;
+  font-size: 0.98rem;
+}
+.ij-faq summary::-webkit-details-marker { display: none; }
+.ij-faq summary::before {
+  content: "Q";
+  flex: 0 0 auto;
+  font-family: 'Oswald', sans-serif;
+  color: #eb6600;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.ij-faq summary::after {
+  content: "＋";
+  position: absolute;
+  right: 1.1rem; top: 50%;
+  transform: translateY(-50%);
+  color: #eb6600;
+  font-weight: 700;
+  font-size: 1.15rem;
+  transition: transform 0.25s;
+}
+.ij-faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+.ij-faq .a {
+  display: flex;
+  gap: 0.8em;
+  padding: 0 1.2rem 1.2rem;
+  font-size: 0.94rem;
+  color: #444;
+}
+.ij-faq .a::before {
+  content: "A";
+  flex: 0 0 auto;
+  font-family: 'Oswald', sans-serif;
+  color: #1976d2;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.ij-faq .a p { margin: 0; }
+.ij-faq .a strong { background: linear-gradient(transparent 64%, #ffe2bd 64%); }
+
+/* ---------- 体験の流れ ---------- */
+.ij-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.8rem; counter-reset: ijflow; }
+.ij-flow .step {
+  counter-increment: ijflow;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  padding: 1.5rem 0.9rem 1.1rem;
+  text-align: center;
+  position: relative;
+}
+.ij-flow .step::before {
+  content: counter(ijflow, decimal-leading-zero);
+  display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #eb6600;
+  line-height: 1;
+  margin-bottom: 0.45rem;
+}
+.ij-flow .step b { display: block; font-size: 0.93rem; color: #222; }
+.ij-flow .step span { font-size: 0.78rem; color: #777; }
+.ij-flow-note { text-align: center; font-size: 0.9rem; color: #555; margin-top: 1.1rem; }
+
+/* ---------- 写真バンド（横長アクセント） ---------- */
+.ij-photo-band {
+  margin: 2.6rem 0 0;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.18);
+}
+.ij-photo-band img,
+.ij-photo-band .ph {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 36vw, 400px);
+  object-fit: cover;
+}
+.ij-photo-band .ph {
+  background: repeating-linear-gradient(45deg, #f5f5f5 0 14px, #ededed 14px 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem;
+}
+.ij-photo-band .cap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 1.6rem clamp(1.2rem, 4vw, 2rem) 1.2rem;
+  background: linear-gradient(transparent, rgba(13, 18, 38, 0.78));
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(0.98rem, 2.6vw, 1.18rem);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  line-height: 1.6;
+}
+.ij-photo-band .cap b { color: #ffc46e; }
+
+/* ---------- ギャラリー ---------- */
+.ij-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.7rem;
+  margin: 1.4rem 0 0;
+}
+.ij-gallery img,
+.ij-gallery .ph {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: center 30%;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+.ij-gallery .ph {
+  background: repeating-linear-gradient(45deg, #f5f5f5 0 14px, #ededed 14px 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0.6rem;
+}
+
+/* ---------- 独自レポート（FB用紙）セクション ---------- */
+.ij-report {
+  background: linear-gradient(160deg, #fff8ef 0%, #fff 100%);
+  border-radius: 20px;
+  padding: clamp(2rem, 5vw, 2.8rem);
+  box-shadow: 0 10px 30px rgba(120, 70, 10, 0.08);
+  border: 1px solid #f5e0bd;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 2.6rem);
+  align-items: center;
+}
+.ij-report-photos {
+  position: relative;
+  height: 380px;
+  max-width: 360px;
+  margin: 0 auto;
+  width: 100%;
+}
+.ij-report-photo {
+  position: absolute;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(120, 70, 10, 0.22);
+  border: 5px solid #fff;
+  width: 220px;
+  transition: transform 0.4s;
+}
+.ij-report-photo.p1 { top: 0; left: 0; transform: rotate(-5deg); z-index: 1; }
+.ij-report-photo.p2 { top: 80px; right: 0; transform: rotate(4deg); z-index: 2; }
+.ij-report-photos:hover .ij-report-photo.p1 { transform: rotate(-8deg) translate(-8px, -4px); }
+.ij-report-photos:hover .ij-report-photo.p2 { transform: rotate(7deg) translate(8px, -4px); }
+/* 1枚画像で見せるバリアント */
+.ij-report-photos.solo { height: auto; max-width: 460px; }
+.ij-report-photos.solo .ij-report-photo {
+  position: relative;
+  top: 0; left: 0;
+  width: 100%;
+  transform: rotate(-2deg);
+  margin-top: 1.6rem;
+}
+.ij-report-photos.solo:hover .ij-report-photo { transform: rotate(-3deg) translateY(-4px); }
+.ij-report-badge {
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ffc46e, #eb6600);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  border-radius: 50px;
+  padding: 0.4em 1.1em;
+  z-index: 10;
+  box-shadow: 0 6px 16px rgba(232,85,15,0.4);
+  white-space: nowrap;
+}
+.ij-report-text h4 {
+  font-size: clamp(1.15rem, 3.4vw, 1.4rem);
+  font-weight: 900;
+  margin: 0 0 1rem;
+  line-height: 1.5;
+  color: #1d1d1d;
+}
+.ij-report-text h4 .mk { background: linear-gradient(transparent 64%, #ffe2bd 64%); }
+.ij-report-text .feats { list-style: none; margin: 0; padding: 0; }
+.ij-report-text .feats li {
+  padding: 0.75em 0 0.75em 1.8em;
+  position: relative;
+  border-bottom: 1px dashed #ecd9c2;
+  font-size: 0.96rem;
+}
+.ij-report-text .feats li:last-child { border-bottom: none; }
+.ij-report-text .feats li::before {
+  content: "✓";
+  position: absolute;
+  left: 0; top: 0.7em;
+  color: #eb6600;
+  font-weight: 900;
+}
+.ij-report-text .feats b { color: #b34a00; font-weight: 800; }
+.ij-report-note {
+  margin-top: 1.2rem;
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.7;
+}
+
+/* ---------- 最終CTA ---------- */
+.ij-final {
+  position: relative;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 0%, rgba(255, 196, 110, 0.22), transparent 60%),
+    linear-gradient(160deg, #16203f 0%, #1f2d5a 100%);
+  border-radius: 20px;
+  color: #fff;
+  text-align: center;
+  padding: clamp(2.4rem, 7vw, 3.8rem) 1.4rem;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(13, 18, 38, 0.32);
+}
+.ij-final::before {
+  content: "";
+  position: absolute;
+  left: -10%; right: -10%; bottom: -42px;
+  height: 110px;
+  background: repeating-linear-gradient(90deg, #c8401f 0 90px, #e8e6e1 90px 96px);
+  transform: rotate(2deg);
+  opacity: 0.9;
+}
+.ij-final h4 {
+  position: relative;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: clamp(1.4rem, 4.6vw, 2rem);
+  font-weight: 800;
+  margin: 0 0 0.9rem;
+  z-index: 1;
+}
+.ij-final p { position: relative; color: #d9e2f7; margin: 0 0 1.7rem; z-index: 1; }
+.ij-final .tel { font-size: 0.9rem; color: #b9c6e6; margin-top: 1.6rem; }
+.ij-final .tel b { color: #fff; font-size: 1.1rem; letter-spacing: 0.05em; }
+
+@media (max-width: 560px) {
+  .ij-timeline::before { left: 74px; }
+  .ij-timeline li::before { left: 68px; }
+  .ij-timeline .t { flex-basis: 58px; }
+  .ij-reason-row, .ij-reason-row.alt { flex-direction: column; }
+  .ij-reason-row .num, .ij-reason-row.alt .num { margin: 0 0 -0.5em 0.2em; }
+  .ij-reason-row.alt .body { border-right: 1px solid #f3e3d0; border-left: 6px solid #eb6600; }
+  .ij-report { grid-template-columns: 1fr; gap: 2.5rem; }
+  .ij-report-photos { height: 340px; max-width: 320px; }
+  .ij-report-photo { width: 190px; }
+  .ij-timing .ij-timing-photos { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="ijlp">
+
+
+<div class="ij-hero">
+  <div class="inner">
+    <span class="ij-tag">RIKUJO IZUMI ・ JUNIOR</span>
+    <p class="catch">「<span class="q">なぜ?</span>」が<br><em>「そうか!」</em>に変わる60分。</p>
+    <p class="sub">小学4年生〜中学生のための、本格陸上ジュニアクラス。<br>金沢市営陸上競技場で、走り方の<strong style="color:#ffc46e">原理原則</strong>から体系的に学ぶ。<br>やまティーコーチと、サポートコーチが、ひとりも取りこぼさない。</p>
+    <div class="ij-chips">
+      <div class="ij-chip">対象 <b>小4〜中学生</b></div>
+      <div class="ij-chip">木曜 <b>18:00〜19:00</b></div>
+      <div class="ij-chip">会場 <b>金沢市営陸上競技場</b></div>
+    </div>
+    <div class="ij-cta-row">
+      <a class="ij-btn ij-btn-primary" href="/taiken">体験を申し込む</a>
+      <a class="ij-btn ij-btn-line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで申し込む</a>
+      <a class="ij-btn ij-btn-ghost" href="#calendar-view">開催日を見る</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="ij-stats ij-reveal">
+  <div class="ij-stat"><div class="label">対象</div><div class="num">小4<small>〜</small>中3</div></div>
+  <div class="ij-stat"><div class="label">開催</div><div class="num">月3回<small>木曜</small></div></div>
+  <div class="ij-stat"><div class="label">時間</div><div class="num">60<small>分</small></div></div>
+  <div class="ij-stat"><div class="label">月会費（税込）</div><div class="num">6,600<small>円〜</small></div></div>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">For You</span>
+  <p class="ja">こんなお子さん、<span class="mk">いませんか？</span></p>
+</div>
+<div class="ij-empathy ij-reveal">
+  <ul>
+    <li>もっと<strong>速く走れるようになりたい</strong></li>
+    <li>中学の部活動に向けて、<strong>走りの土台を作っておきたい</strong></li>
+    <li>跳ぶ・投げるも含めて、<strong>陸上をちゃんと基礎から学びたい</strong></li>
+    <li>がんばっているのに、<strong>自分の動きが合っているか分からない</strong></li>
+    <li>「できた!」と実感できる<strong>手応えのある習い事</strong>を探している</li>
+  </ul>
+  <div class="closing">速い子のための教室ではありません。今の速さは問いません。<br>「やってみたい」が入口です。初心者大歓迎。</div>
+</div>
+
+
+<div class="ij-photo-band ij-reveal">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/izumijunior1.png" alt="本物の競技場を全力で駆け抜ける子どもたち" loading="lazy">
+  <div class="cap"><b>走る・跳ぶ・投げる、ぜんぶ。</b>本物の競技場で、本気で遊ぶ。</div>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Reason</span>
+  <p class="ja">陸上 泉ジュニア教室の<span class="mk">3つの強み</span></p>
+</div>
+
+<div class="ij-reason-row ij-reveal">
+  <div class="num">01</div>
+  <div class="body">
+    <h4><span class="tag">原理原則から</span>やまティーコーチの「体系指導」。</h4>
+    <p>教えるのは、陸上指導に定評のある <strong>山本 勝裕（やまティー）コーチ</strong>。やみくもに走らせるのではなく、「<strong>この動きは、こうだからこうなる</strong>」と、走りの原理原則を体系的に説明します。だから子ども自身が「<strong>なぜそうするのか</strong>」を理解した上で、自分の動きに落とし込めます。</p>
+  </div>
+</div>
+
+<div class="ij-reason-row alt ij-reveal">
+  <div class="num">02</div>
+  <div class="body">
+    <h4><span class="tag">成長の見える化</span>毎回もらえる、練習プリント＆FBシート。</h4>
+    <p>毎回の練習で、その日の<strong>メニュー・狙い・自分の記録</strong>が書かれたプリントをお渡しします。定期的に行う体力測定・タイム計測の結果は<strong>フィードバックシート（FBシート）</strong>として視覚化。「<strong>なんとなく速くなった</strong>」を、「<strong>ここがこれだけ伸びた</strong>」に変えます。</p>
+  </div>
+</div>
+
+<div class="ij-reason-row ij-reveal">
+  <div class="num">03</div>
+  <div class="body">
+    <h4><span class="tag">ひとりも取りこぼさない</span>やまティー＋サポートコーチの、2人体制。</h4>
+    <p>やまティーコーチに加え、<strong>サポートコーチ</strong>が現場に入ります。「あっているのか／間違っているのか」を、<strong>その場で</strong>子どもに伝える。2人がかりで一人ひとりの動きを見るから、見落としがありません。</p>
+  </div>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Snapshot</span>
+  <p class="ja">教室の<span class="mk">景色</span>。</p>
+</div>
+<p class="ij-lead ij-reveal">スタートを切る瞬間、夢中で動く子、笑い合うコーチと仲間。<br>1回1回の練習が、ちいさな挑戦の積み重ねです。</p>
+<div class="ij-gallery ij-reveal">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/PXL_20260618_094938999.jpg" alt="本気でスタートを切る子どもたち" loading="lazy">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/PXL_20260618_094937935.jpg" alt="トラックを駆け抜ける一瞬" loading="lazy">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/PXL_20260618_093819012.jpg" alt="全力で走る子どもたち" loading="lazy">
+  <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/PXL_20260618_092249792.PORTRAIT.ORIGINAL.jpg" alt="ステッピングドリルで動きづくり" loading="lazy">
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Timing</span>
+  <p class="ja">電子計測器で測る、<span class="mk">本物の自己ベスト。</span></p>
+</div>
+
+<div class="ij-timing ij-reveal">
+  <div class="ij-timing-photos">
+    <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/PXL_20260305_095554574.jpg" alt="陸上競技と同じ電子計測器" loading="lazy">
+    <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/PXL_20260305_095815829.jpg" alt="電子計測器を駆け抜ける瞬間" loading="lazy">
+  </div>
+  <h3>子どもの「速くなりたい」を、<br><span class="digit">0.01秒</span>の精度で捉える。</h3>
+  <p>陸上 泉ジュニア教室では、本物の競技場と同じ<strong>電子計測器</strong>を使ってタイム計測を行います。ストップウォッチでは拾いきれないわずかな成長まで、正確に数値化。「先週より速くなった気がする」を、気のせいで終わらせません。</p>
+  <ul class="feats">
+    <li>フォームを変えた効果が、<b>0.01秒単位でデータに返ってくる</b></li>
+    <li>体感ではなく<b>数字で成長を実感</b>できるから、本人も納得</li>
+    <li>自己ベストを更新した瞬間、その数字が<b>一生の自信</b>になる</li>
+  </ul>
+  <div class="closing">競技場と同じ環境で測るから、正確で、本気になれる。<br>本物の競技場で練習する、陸上 泉ジュニア教室だからこそ。</div>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Golden Age</span>
+  <p class="ja">いま、<span class="mk">いちばん伸びる時期。</span></p>
+</div>
+
+<div class="ij-tips ij-reveal">
+  <h4>小学校中学年〜中学生は、<span class="mk">「ゴールデンエイジ」</span>。</h4>
+  <p>9〜12歳ごろは、神経系の発達がピークを迎える「<strong>ゴールデンエイジ</strong>」と呼ばれる時期。この時期に身につけた<strong>走る・跳ぶ・投げる</strong>の基本動作は、一生もののスキルになります。</p>
+  <p>陸上 泉ジュニア教室では、<strong>走・跳・投</strong>という陸上競技の三大基本動作に加え、<strong>敏捷性・リズム感・体の使い方</strong>まで、年間を通して幅広く扱います。将来サッカー・野球・バスケに進んでも生きる「<strong>運動の貯金</strong>」を、この教室で。</p>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Original Report</span>
+  <p class="ja">レッスン時に手渡される、<br><span class="mk">「見える化レポート」</span></p>
+</div>
+<p class="ij-lead ij-reveal">教室生にだけお渡しする、独自フォーマット。<br>練習内容・データ・コーチからのメッセージで、走りの成長を持ち帰れます。</p>
+
+<div class="ij-report ij-reveal">
+  <div class="ij-report-photos solo">
+    <div class="ij-report-badge">YAMATEE ORIGINAL</div>
+    <img class="ij-report-photo" src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2025/06/a195465cfa74370c2f6ddbd5eb2587f1.png" alt="やまティーオリジナル 練習プリント＆FBシート（体幹トレーニング・トラックワーク・100mスピード推移ほか）" loading="lazy">
+  </div>
+  <div class="ij-report-text">
+    <h4><span class="mk">「なんとなく速くなった」</span>を、<br>「ここが伸びた」に変える。</h4>
+    <ul class="feats">
+      <li><b>練習プリント</b>：毎回の練習メニュー・狙い・自分の記録</li>
+      <li><b>FBシート</b>：タイム推移・体力データを一枚に可視化</li>
+      <li><b>コーチからのコメント</b>：その子だけの「次の挑戦テーマ」</li>
+    </ul>
+    <p class="ij-report-note">※詳細フォーマットは入会生限定。<b>やまティーオリジナル</b>・無断複製不可。</p>
+  </div>
+</div>
+
+<div class="ij-cta-row ij-reveal" style="margin:2.5rem 0 1rem;">
+  <a class="ij-btn ij-btn-primary" href="/taiken">体験を申し込む</a>
+  <a class="ij-btn ij-btn-line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで申し込む</a>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Outline</span>
+  <p class="ja">教室<span class="mk">概要</span></p>
+</div>
+<div class="ij-spec ij-reveal">
+  <table>
+    <tr><td>教室名</td><td>陸上 泉（木・ジュニア）</td></tr>
+    <tr><td>対象</td><td>小学4年生 〜 中学生</td></tr>
+    <tr><td>曜日／時間</td><td>木曜 18:00〜19:00<br><small>※ ひと月3回・スケジュール制／プログラムにより終了時間が多少前後する場合があります</small></td></tr>
+    <tr><td>会場</td><td>金沢市営陸上競技場 ほか</td></tr>
+    <tr><td>指導者</td><td>山本 勝裕（やまティー）／サポートコーチ</td></tr>
+    <tr><td>月会費</td><td><span class="price">6,600円（税込）＋ 会場使用料</span></td></tr>
+  </table>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Coach</span>
+  <p class="ja">教えるのは、<span class="mk">「やまティー」コーチ</span>。</p>
+</div>
+<div class="ij-coach ij-reveal">
+  <p><span class="big">「先生」ではなく、<em>陸上を心から好きな大人</em>。</span>
+  やまティーコーチは、陸上の<strong style="background: linear-gradient(transparent 62%, rgba(255,255,255,0.35) 62%);">本質と原理原則</strong>を、子どもにわかる言葉で説いてくれます。膨大な知識と経験を、ひとつの動き・ひとつの声かけに込めて。</p>
+  <p>「もっとレベルアップしたい」「基礎から教えてほしい」「陸上をやってみたい」――そんな子たちが、この教室の門を叩きます。<span class="nickname">通称「やまティー塾」</span>。</p>
+</div>
+
+<div class="ij-head ij-reveal">
+  <span class="en">Time Table</span>
+  <p class="ja">ある日の<span class="mk">60分</span>。</p>
+</div>
+<ul class="ij-timeline ij-reveal">
+  <li><span class="t">18:00</span><div class="c"><b>集合・挨拶</b><span>今日もよろしくお願いします！</span></div></li>
+  <li><span class="t">18:05</span><div class="c"><b>ウォーミングアップ</b><span>まずは体をしっかり温める</span></div></li>
+  <li><span class="t">18:15</span><div class="c"><b>動きづくり（コーディネーション・ドリル）</b><span>スキップ・ラダー・ミニハードル</span></div></li>
+  <li><span class="t">18:30</span><div class="c"><b>メインプログラム</b><span>その日のテーマ：走／跳／投</span></div></li>
+  <li><span class="t">18:55</span><div class="c"><b>ふり返り・記録記入・解散</b><span>自分の動きを言葉にして終わる</span></div></li>
+</ul>
+<p class="ij-timeline-note">待ち時間を作らず、つねに体を動かし続ける60分。<br>成長期の体に無理をさせる追い込み練習はしません。<br><small>※ プログラムにより、終了時間が多少前後する場合があります。</small></p>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">FAQ</span>
+  <p class="ja">よくある<span class="mk">質問</span></p>
+</div>
+<div class="ij-faq ij-reveal">
+  <details>
+    <summary>陸上の経験がなくても大丈夫ですか？</summary>
+    <div class="a"><p>大歓迎です。むしろ「<strong>基礎から学びたい</strong>」「これから始めたい」というお子さんが多く参加しています。陸上経験ゼロでもまったく問題ありません。</p></div>
+  </details>
+  <details>
+    <summary>中学生も小学生と一緒のクラスですか？</summary>
+    <div class="a"><p>はい、合同で実施します。難易度を分けたプログラムを用意するので、それぞれの段階で成長できます。</p></div>
+  </details>
+  <details>
+    <summary>雨天時はどうなりますか？</summary>
+    <div class="a"><p><strong>同会場のスタンド下や、近隣の体育館等</strong>で実施します。中止にはなりません。</p></div>
+  </details>
+  <details>
+    <summary>体験はできますか？</summary>
+    <div class="a"><p>はい、いつでも体験可能です。ページ下部のカレンダーから日程を選んでお申し込みください。</p></div>
+  </details>
+  <details>
+    <summary>振替はできますか？</summary>
+    <div class="a"><p>可能です。他教室への振替もOKです。</p></div>
+  </details>
+  <details>
+    <summary>保護者の見学はできますか？</summary>
+    <div class="a"><p>はい、見学歓迎です。<strong>スタンドの上からご覧いただけます。</strong> お子さまが集中して取り組めるよう、温かく見守ってください。</p></div>
+  </details>
+</div>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Trial</span>
+  <p class="ja">体験の<span class="mk">流れ</span></p>
+</div>
+<div class="ij-flow ij-reveal">
+  <div class="step"><b>フォーム入力</b><span>参加希望日を選んで1分</span></div>
+  <div class="step"><b>スタッフから返信</b><span>メールでご連絡</span></div>
+  <div class="step"><b>詳細のご案内</b><span>集合場所・持ち物など</span></div>
+  <div class="step"><b>当日、走るだけ！</b><span>手ぶらの心でどうぞ</span></div>
+</div>
+<p class="ij-flow-note">持ち物：動きやすい服装・運動靴・タオル・飲み物</p>
+
+
+<div class="ij-head ij-reveal">
+  <span class="en">Price</span>
+  <p class="ja">料金<span style="font-size: 0.6em; font-weight: 700; color: #888;">（すべて税込）</span></p>
+</div>
+<div style="display: flex; justify-content: center; margin-top: 1rem;" class="ij-reveal">
+<div style="width: 100%; max-width: 600px;">
+<table style="border-collapse: collapse; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+<thead style="background-color: #f37021; color: #fff;">
+<tr>
+<th style="padding: 12px; text-align: center;">項目</th>
+<th style="padding: 12px; text-align: center;">金額</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #fff;">
+<td style="padding: 12px; text-align: left;">月会費</td>
+<td style="padding: 12px; text-align: center;"><strong>6,600円／月</strong>（木曜・月3回）＋会場使用料<br /><span style="font-size: 0.85em; color: #555;">※中学生も同じ月会費です</span></td>
+</tr>
+<tr style="background-color: #fff7f0;">
+<td style="padding: 12px; text-align: left;">入会手数料</td>
+<td style="padding: 12px; text-align: center;">5,500円<br /><span style="font-size: 0.85em; color: #555;">※<span>同一世帯家族の</span>2人目以降は2,750円</span></td>
+</tr>
+<tr style="background-color: #fff;">
+<td style="padding: 12px; text-align: left;">年度会費</td>
+<td style="padding: 12px; text-align: center;">5,500円／年</td>
+</tr>
+<tr style="background-color: #fff7f0;">
+<td style="padding: 12px; text-align: left;">スポーツ安全保険</td>
+<td style="padding: 12px; text-align: center;">800円～2,000円／年<br /> <span style="font-size: 0.85em;"> <a href="https://kanazawa-ssc.jp/入会案内・会則#insurance" target="_blank" style="color: #f37021;" rel="noopener"> 加入区分の詳細はこちら </a> </span></td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center; font-size: 0.9em; margin-top: 1rem;">※兄弟割引・複数教室割引あり（兄弟2人目 月会費20%OFF・3人目〜半額）。<br />※参加形態や会場により別途使用料が発生する場合があります。<br /> ※詳しいルールは <a href="https://kanazawa-ssc.jp/%e5%85%a5%e4%bc%9a%e6%a1%88%e5%86%85%e3%83%bb%e4%bc%9a%e5%89%87" style="color: #f37021; font-weight: bold;">会則ページ</a> をご覧ください。</p>
+</div>
+</div>
+
+
+
+<div class="ij-final ij-reveal" style="margin-top: 3.5rem;">
+  <h4>百聞は一見にしかず。<br>まずは1回、走りに来てください。</h4>
+  <p>やまティーコーチの体系指導と、サポートコーチとの距離の近さ、<br>そして本物の競技場で電子計測器が刻む<strong style="color:#ffc46e">自己ベストの瞬間</strong>は、<br>体験してはじめてわかります。</p>
+  <div class="ij-cta-row">
+    <a class="ij-btn ij-btn-primary" href="/taiken">体験を申し込む</a>
+    <a class="ij-btn ij-btn-line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで申し込む</a>
+  </div>
+  <p class="tel">お電話でも：<b>076-287-3789</b>（受付 10:00〜16:00）<br>NPO法人かなざわ総合スポーツクラブ STARTUS</p>
+</div>
+
+
+<div id="calendar-view" style="padding-top: 80px; margin-top: -80px;"></div>
+<h2 style="text-align: center; font-size: 1.4rem; font-weight: bold; margin: 40px 0 10px;">開催スケジュール</h2>
+<p style="text-align: center; font-size: 0.85rem; color: #888; margin-bottom: 20px;">タップで詳細を確認できます</p>
+<p><iframe width="300" height="150" style="width: 100%; border: none; min-height: 900px; overflow: hidden;" src="https://script.google.com/macros/s/AKfycbwos3AnwtT3S-UUx5muSHhScg3sLESEyUnB9HdaVc6LbqoX9D1kH0JX1EaM_qs1arUEzg/exec?class=izumi-j-rikujo&amp;wide_day=3&amp;taiken_btn=1" scrolling="no" id="ij-cal-frame" loading="lazy"></iframe></p>
+
+</div>
+
+<script>
+(function () {
+  // スクロール出現
+  var els = document.querySelectorAll('.ij-reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  }
+  // カレンダーiframeのリサイズ（GAS側からpostMessageで送られる高さを反映）
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'stx-resize') {
+      var f = document.getElementById('ij-cal-frame');
+      if (f) f.style.height = e.data.height + 'px';
+    }
+  });
+})();
+</script>

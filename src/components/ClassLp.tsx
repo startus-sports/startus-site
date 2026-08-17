@@ -7,12 +7,21 @@ import { loadLpContent } from '@/lib/lp-content'
  * hp-lp の教室紹介ページ（WordPress用HTML）をそのまま表示する共通コンポーネント。
  * LP側のCSSは .kjlp 配下にスコープされているため、サイト本体のスタイルとは干渉しない。
  */
-export default function ClassLp({ slug }: { slug: string }) {
+export default function ClassLp({
+  slug,
+  variant = 'rikujo',
+}: {
+  slug: string
+  /** 陸上教室は /rikujo に、それ以外はトップの教室一覧に戻す */
+  variant?: 'main' | 'rikujo'
+}) {
   const { html, script } = loadLpContent(slug)
+  const backHref = variant === 'rikujo' ? '/rikujo' : '/#classes'
+  const backLabel = variant === 'rikujo' ? 'ほかの陸上教室を見る' : 'ほかの教室を見る'
 
   return (
     <main className="bg-white">
-      <Header variant="rikujo" />
+      <Header variant={variant} />
 
       <div dangerouslySetInnerHTML={{ __html: html }} />
 
@@ -21,10 +30,10 @@ export default function ClassLp({ slug }: { slug: string }) {
           無料体験に申し込む
         </Link>
         <Link
-          href="/rikujo"
+          href={backHref}
           className="inline-flex items-center justify-center px-8 py-3 border-2 border-warm-200 text-brand-navy font-display font-bold rounded-full hover:bg-warm-50 transition-all"
         >
-          ほかの陸上教室を見る
+          {backLabel}
         </Link>
       </div>
 

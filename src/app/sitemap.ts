@@ -16,18 +16,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/hashiri-juku`,
+    // 教室紹介ページ（src/content/lp 配下のLP）
+    ...[
+      'hashiri-juku',
+      'kakekko-monday',
+      'kakekko-wednesday',
+      'nakamura-kakekko',
+      'izumi-junior',
+      'inclusive-rikujo',
+      'socialfootball',
+    ].map(slug => ({
+      url: `${baseUrl}/${slug}`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/kakekko-monday`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
+    })),
     {
       url: `${baseUrl}/taiken`,
       lastModified: new Date(),
