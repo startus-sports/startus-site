@@ -1,18 +1,3 @@
-<!-- ============================================================
-  走り塾（初中級）教室紹介ページ 本文用HTML（リッチLP版）
-  ※旧「陸上星稜教室」から改称（2026-07-14）。calendarタグは seiryo-rikujo → hashirijyuku-rikujo に変更済（DB classrooms.calendar_tag と一致させること）。
-  使い方：
-   - WordPress 投稿「走り塾 初中級」（旧タイトル「陸上星稜教室」→要変更）の本文に【テキスト（コード）モード】で貼り付け
-     （ビジュアルモードだと自動整形でレイアウトが崩れる恐れあり）
-   - house style は かけっこ塾LP（kakekko-juku/教室紹介ページ_かけっこ塾.html）と共通
-   - 新教室のため、実績グラフ・参加者の声・ニュース・5段階クラス表は未掲載
-     （データ・写真・声がたまり次第、かけっこ塾LPと同じ部品を追加可能）
-   - 「📸 TODO」のプレースホルダは写真が用意でき次第 <img> に差し替え
-   - 体験申込ボタンは 通常の体験申込ページ（/taiken）
-   - LINE申込ボタンは公式LINE（https://lin.ee/BQKtTDq）。URLを変える場合は全置換
-   - カレンダーiframeは GASのclass パラメータ未確定のため末尾にTODOコメントで保留
-============================================================ -->
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Oswald:wght@500;600&display=swap');
 
@@ -727,8 +712,7 @@
 
 <div class="kjlp">
 
-<!-- ============ 構造化データ（SEO: Course + FAQ）============
-  ※検索キーワード対策。表示には影響しない。FAQの文面は本文の<details>と一致させること。 -->
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -788,7 +772,7 @@
 }
 </script>
 
-<!-- ============ ヒーロー ============ -->
+
 <div class="kj-hero">
   <div class="inner">
     <span class="night-label">HASHIRIJUKU ・ NEW OPEN</span>
@@ -807,13 +791,13 @@
   </div>
 </div>
 
-<!-- ============ NEW OPEN リボン ============ -->
+
 <div class="kj-newbar kj-reveal">
   <span class="pill">NEW</span>
   <span>新教室「走り塾（初中級）」8月開講 ／ まずは無料体験会（7/27）へ！</span>
 </div>
 
-<!-- ============ 数字ストリップ ============ -->
+
 <div class="kj-stats kj-reveal">
   <div class="kj-stat"><div class="label">対象</div><div class="num">小5<small>〜</small>中3</div></div>
   <div class="kj-stat"><div class="label">開催ペース</div><div class="num">月<small>3回</small></div></div>
@@ -821,7 +805,7 @@
   <div class="kj-stat"><div class="label">月会費（税込）</div><div class="num">6,600<small>円</small></div></div>
 </div>
 
-<!-- ============ 無料体験会ハイライト ============ -->
+
 <div id="trial-info" style="padding-top: 80px; margin-top: -80px;"></div>
 <div class="kj-trialbox kj-reveal">
   <div class="tb-head">走り塾 無料体験会<small>次回 7/27（月）が最終回です</small></div>
@@ -844,7 +828,7 @@
   </div>
 </div>
 
-<!-- ============ ① 共感 ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">For You</span>
   <p class="ja">こんなお子さん、<span class="mk">いませんか？</span></p>
@@ -860,13 +844,13 @@
   <div class="closing">速い子のための教室ではありません。今の速さは問いません。<br>「やってみたい」が入口です。</div>
 </div>
 
-<!-- 中学生も対象であることを写真で訴求 -->
+
 <div class="kj-photo-band kj-reveal">
   <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/9f6dcebef55fd02ae74b6ad3e8972bca.png" alt="金沢の走り方・陸上教室で本物の競技場を走る小学生・中学生（走り塾 初中級／稲置学園総合運動場）" loading="lazy">
   <div class="cap"><b>小学生も、中学生も。</b>本気で走る、走りの教室。</div>
 </div>
 
-<!-- ============ ② 3つの強み ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">Reason</span>
   <p class="ja">走り塾の<span class="mk">3つの強み</span></p>
@@ -896,7 +880,7 @@
   </div>
 </div>
 
-<!-- ============ ②-extra 独自レポート(FB用紙) ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">Original Report</span>
   <p class="ja">レッスンで手渡しする<br><span class="mk">STARTUSオリジナル「見える化レポート」</span></p>
@@ -925,7 +909,7 @@
   <a class="kj-btn kj-btn-line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで申し込む</a>
 </div>
 
-<!-- ============ ③ 教室概要 ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">Outline</span>
   <p class="ja">教室<span class="mk">概要</span></p>
@@ -942,7 +926,7 @@
   </table>
 </div>
 
-<!-- ============ ④ コーチ ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">Coach</span>
   <p class="ja">コーチは、大学陸上部の<span class="mk">「先輩」</span>。</p>
@@ -955,7 +939,7 @@
   <img src="https://kanazawa-ssc.jp/joinus/wp-content/uploads/2026/06/seiryoimage2.png" alt="金沢星稜大学 陸上競技部の学生コーチと稲置学園総合運動場のトラックを走る小学生・中学生（走り塾 初中級）" loading="lazy" style="display:block;width:100%;height:auto;">
 </figure>
 
-<!-- ============ ⑤ タイムテーブル ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">Time Table</span>
   <p class="ja">ある日の<span class="mk">60分</span>。</p>
@@ -969,7 +953,7 @@
 </ul>
 <p class="kj-timeline-note">待ち時間を作らず、つねに体を動かし続ける60分。<br>成長期の体に無理をさせる追い込み練習はしません。</p>
 
-<!-- ============ ⑥ FAQ ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">FAQ</span>
   <p class="ja">よくある<span class="mk">質問</span></p>
@@ -1001,7 +985,7 @@
   </details>
 </div>
 
-<!-- ============ ⑦ 体験の流れ ============ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">Trial</span>
   <p class="ja">無料体験会の<span class="mk">流れ</span></p>
@@ -1014,7 +998,7 @@
 </div>
 <p class="kj-flow-note">持ち物：動きやすい服装・運動靴・タオル・飲み物</p>
 
-<!-- ▼▼▼料金表（共通費用） 開始 ▼▼▼ -->
+
 <div class="kj-head kj-reveal">
   <span class="en">Price</span>
   <p class="ja">料金<span style="font-size: 0.6em; font-weight: 700; color: #888;">（すべて税込）</span></p>
@@ -1050,9 +1034,9 @@
 <p style="text-align: center; font-size: 0.9em; margin-top: 1rem;">※兄弟割引・複数教室割引あり（兄弟2人目 月会費20%OFF・3人目〜半額）。<br />※参加形態や会場により別途使用料が発生する場合があります。<br /> ※詳しいルールは <a href="https://kanazawa-ssc.jp/%e5%85%a5%e4%bc%9a%e6%a1%88%e5%86%85%e3%83%bb%e4%bc%9a%e5%89%87" style="color: #f37021; font-weight: bold;">会則ページ</a> をご覧ください。</p>
 </div>
 </div>
-<!-- ▲▲▲料金表 終了 ▲▲▲ -->
 
-<!-- ============ 最終CTA ============ -->
+
+
 <div class="kj-final kj-reveal" style="margin-top: 3.5rem;">
   <h4>百聞は一見にしかず。<br>まずは1回、走りに来てください。</h4>
   <p>本物の競技場を走る気持ちよさと、星稜大の先輩コーチの距離の近さは、<br>体験すればわかります。</p>
@@ -1063,20 +1047,13 @@
   <p class="tel">お電話でも：<b>076-287-3789</b>（受付 10:00〜16:00）<br>NPO法人かなざわ総合スポーツクラブ STARTUS</p>
 </div>
 
-<!-- ============ カレンダー ============
-  GASカレンダー埋め込み。class=hashirijyuku-rikujo は管理システムDBの
-  classrooms.calendar_tag および GoogleカレンダーのイベントタグでもUNIONに使用。
-  もし「予定が表示されない」場合は:
-   1) 管理画面の classrooms に calendar_tag='hashirijyuku-rikujo' のレコードがあるか
-   2) Googleカレンダー側で走り塾（初中級）のイベントが hashirijyuku-rikujo タグで登録されているか
-  を確認すること。
-============================================================ -->
+
 <div id="calendar-view" style="padding-top: 80px; margin-top: -80px;"></div>
 <h2 style="text-align: center; font-size: 1.4rem; font-weight: bold; margin: 40px 0 10px;">開催スケジュール</h2>
 <p style="text-align: center; font-size: 0.85rem; color: #888; margin-bottom: 20px;">タップで詳細を確認できます</p>
 <p><iframe width="300" height="150" style="width: 100%; border: none; min-height: 900px; overflow: hidden;" src="https://script.google.com/macros/s/AKfycbwos3AnwtT3S-UUx5muSHhScg3sLESEyUnB9HdaVc6LbqoX9D1kH0JX1EaM_qs1arUEzg/exec?class=hashirijyuku-rikujo&amp;wide_day=0&amp;taiken_btn=1" scrolling="no" id="stx-cal-frame" loading="lazy"></iframe></p>
 
-</div><!-- /.kjlp -->
+</div>
 
 <script>
 (function () {
