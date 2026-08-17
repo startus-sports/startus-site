@@ -203,7 +203,8 @@ export const trackClasses: ClassData[] = [
     levelStars: 2,
     oneLiner: '大人の仲間と一緒に走る',
     recommendFor: 'マラソンを始めたい大人、健康維持のために走りたい方',
-    lessonContent: 'ウォーミングアップ → ペース走・LSD → グループラン → ストレッチ',
+    lessonContent: 'アップジョグ → 動きづくりドリル → メインメニュー（ペース走・インターバル等） → ストレッチ',
+    lpHref: '/otona-marathon',
   },
   {
     id: 'inclusive-running',

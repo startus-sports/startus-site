@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       'nakamura-kakekko',
       'izumi-junior',
       'inclusive-rikujo',
+      'otona-marathon',
       'socialfootball',
     ].map(slug => ({
       url: `${baseUrl}/${slug}`,

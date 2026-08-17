@@ -1,0 +1,756 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Oswald:wght@500;600&display=swap');
+
+.omjlp {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', meiryo, sans-serif;
+  color: #2b2b2b;
+  line-height: 1.9;
+  font-size: 16px;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+.omjlp * { box-sizing: border-box; }
+.omjlp img { max-width: 100%; height: auto; }
+
+/* WordPressテーマ干渉防止（本文pのtext-indent等を打ち消す） */
+.omjlp .omj-hero .catch,
+.omjlp .omj-hero .sub {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  text-indent: 0 !important;
+}
+
+/* ---------- スクロール出現 ---------- */
+.omjlp .omj-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.omjlp .omj-reveal.is-in { opacity: 1; transform: none; }
+
+/* ---------- 汎用セクション ---------- */
+.omjlp .omj-sec { margin: 46px 0; }
+.omjlp .omj-h2 {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: #17324a;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 0 6px;
+}
+.omjlp .omj-h2 b { color: #eb6600; }
+.omjlp .omj-lead {
+  text-align: center;
+  font-size: .92rem;
+  color: #6b6b6b;
+  margin: 0 0 22px;
+}
+
+/* ---------- ヒーロー ---------- */
+.omjlp .omj-hero {
+  background: linear-gradient(135deg, #17324a 0%, #21486a 100%);
+  border-radius: 20px;
+  padding: 38px 22px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.omjlp .omj-hero::after {
+  content: '';
+  position: absolute;
+  right: -60px; top: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(235,102,0,.14);
+}
+.omjlp .omj-hero .eyebrow {
+  display: inline-block;
+  background: rgba(255,255,255,.12);
+  color: #ffd7b0;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+.omjlp .omj-hero .catch {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+  line-height: 1.5;
+  color: #fff;
+  margin: 0 0 12px;
+  position: relative;
+}
+.omjlp .omj-hero .catch em { font-style: normal; color: #ffb066; }
+.omjlp .omj-hero .sub {
+  color: rgba(255,255,255,.78);
+  font-size: .92rem;
+  margin: 0 0 20px;
+  position: relative;
+}
+
+/* ---------- チップ ---------- */
+.omjlp .omj-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  position: relative;
+}
+.omjlp .omj-chip {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.22);
+  color: #fff;
+  font-size: .8rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.omjlp .omj-chip b { color: #ffb066; }
+
+/* ---------- CTAボタン ---------- */
+.omjlp .omj-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 22px;
+  position: relative;
+}
+.omjlp .omj-btn {
+  display: inline-block;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.omjlp .omj-btn:hover { transform: translateY(-2px); }
+.omjlp .omj-btn-primary {
+  background: #eb6600;
+  color: #fff !important;
+  box-shadow: 0 6px 16px rgba(235,102,0,.32);
+}
+.omjlp .omj-btn-ghost {
+  background: rgba(255,255,255,.1);
+  color: #fff !important;
+  border: 1.5px solid rgba(255,255,255,.4);
+}
+.omjlp .omj-btn-line {
+  background: #06c755;
+  color: #fff !important;
+  box-shadow: 0 6px 16px rgba(6,199,85,.28);
+}
+.omjlp .omj-cta-note {
+  text-align: center;
+  font-size: .78rem;
+  color: rgba(255,255,255,.5);
+  margin-top: 12px;
+  position: relative;
+}
+
+/* ---------- 数字ストリップ ---------- */
+.omjlp .omj-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 26px 0;
+}
+.omjlp .omj-stat {
+  background: #fff7f0;
+  border: 1px solid #f3e3d0;
+  border-radius: 14px;
+  padding: 14px 6px;
+  text-align: center;
+}
+.omjlp .omj-stat .label {
+  font-size: .68rem;
+  color: #9a6a35;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.omjlp .omj-stat .num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #eb6600;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+.omjlp .omj-stat .num small { font-size: .62rem; font-weight: 500; }
+@media (max-width: 600px) {
+  .omjlp .omj-stats { grid-template-columns: repeat(2, 1fr); }
+  .omjlp .omj-hero .catch { font-size: 1.45rem; }
+}
+
+/* ---------- チェックリスト ---------- */
+.omjlp .omj-checks {
+  background: #fff;
+  border: 2px solid #ffe2bd;
+  border-radius: 16px;
+  padding: 22px 20px;
+}
+.omjlp .omj-checks li {
+  list-style: none;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 12px;
+  font-size: .95rem;
+}
+.omjlp .omj-checks li:last-child { margin-bottom: 0; }
+.omjlp .omj-checks li::before {
+  content: '✓';
+  position: absolute;
+  left: 0; top: 0;
+  width: 21px; height: 21px;
+  background: #eb6600;
+  color: #fff;
+  border-radius: 50%;
+  font-size: .72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.omjlp .omj-checks ul { margin: 0; padding: 0; }
+
+/* ---------- 特徴カード ---------- */
+.omjlp .omj-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+.omjlp .omj-card {
+  background: #fff;
+  border: 1px solid #f0e2d2;
+  border-radius: 16px;
+  padding: 22px 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.omjlp .omj-card .no {
+  font-family: 'Oswald', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #eb6600;
+  letter-spacing: .1em;
+}
+.omjlp .omj-card h4 {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #17324a;
+  margin: 4px 0 8px;
+  line-height: 1.5;
+}
+.omjlp .omj-card p { font-size: .88rem; color: #555; margin: 0; }
+
+/* ---------- タイムライン ---------- */
+.omjlp .omj-timeline { border-left: 3px solid #ffe2bd; padding-left: 20px; margin-left: 8px; }
+.omjlp .omj-timeline li {
+  list-style: none;
+  position: relative;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.omjlp .omj-timeline li::before {
+  content: '';
+  position: absolute;
+  left: -27px; top: 7px;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: #eb6600;
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 0 2px #ffe2bd;
+}
+.omjlp .omj-timeline .t {
+  font-family: 'Oswald', sans-serif;
+  font-size: .88rem;
+  color: #eb6600;
+  font-weight: 600;
+  flex-shrink: 0;
+  width: 52px;
+}
+.omjlp .omj-timeline .c b { display: block; font-size: .95rem; color: #17324a; }
+.omjlp .omj-timeline .c span { font-size: .84rem; color: #6b6b6b; }
+.omjlp .omj-timeline ul { margin: 0; padding: 0; }
+
+/* ---------- 表 ---------- */
+.omjlp .omj-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.omjlp .omj-table th {
+  background: #17324a;
+  color: #fff;
+  padding: 11px 10px;
+  font-weight: 700;
+  font-size: .84rem;
+}
+.omjlp .omj-table td { padding: 11px 12px; border-bottom: 1px solid #f0e2d2; }
+.omjlp .omj-table tr:nth-child(even) td { background: #fff7f0; }
+.omjlp .omj-table td:first-child { font-weight: 700; color: #17324a; white-space: nowrap; }
+.omjlp .omj-table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+
+/* ---------- メニュータグ ---------- */
+.omjlp .omj-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.omjlp .omj-tag {
+  background: #fff7f0;
+  border: 1px solid #f3e3d0;
+  color: #b34a00;
+  font-size: .84rem;
+  font-weight: 700;
+  padding: 7px 15px;
+  border-radius: 999px;
+}
+
+/* ---------- コールアウト ---------- */
+.omjlp .omj-callout {
+  background: linear-gradient(135deg, #fff7f0 0%, #fff 100%);
+  border: 2px solid #ffe2bd;
+  border-radius: 16px;
+  padding: 24px 22px;
+}
+.omjlp .omj-callout h4 {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #17324a;
+  margin: 0 0 10px;
+}
+.omjlp .omj-callout p { font-size: .9rem; color: #555; margin: 0 0 10px; }
+.omjlp .omj-rpe { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.omjlp .omj-rpe div {
+  flex: 1 1 150px;
+  background: #fff;
+  border: 1px solid #f0e2d2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: .82rem;
+}
+.omjlp .omj-rpe b { color: #eb6600; font-family: 'Oswald', sans-serif; font-size: .95rem; }
+
+/* ---------- コーチ ---------- */
+.omjlp .omj-coach {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #f0e2d2;
+  border-radius: 16px;
+  padding: 20px;
+}
+.omjlp .omj-coach .avatar {
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  background: #17324a;
+  color: #fff;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.omjlp .omj-coach .name { font-weight: 800; color: #17324a; font-size: 1rem; }
+.omjlp .omj-coach .role { font-size: .78rem; color: #eb6600; font-weight: 700; }
+.omjlp .omj-coach .desc { font-size: .86rem; color: #555; margin-top: 6px; }
+
+/* ---------- FAQ ---------- */
+.omjlp .omj-faq { border-top: 1px solid #f0e2d2; }
+.omjlp .omj-faq-item { border-bottom: 1px solid #f0e2d2; padding: 16px 4px; }
+.omjlp .omj-faq-item .q {
+  font-weight: 700;
+  color: #17324a;
+  font-size: .95rem;
+  position: relative;
+  padding-left: 26px;
+}
+.omjlp .omj-faq-item .q::before {
+  content: 'Q';
+  position: absolute;
+  left: 0; top: 0;
+  color: #eb6600;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+}
+.omjlp .omj-faq-item .a {
+  font-size: .88rem;
+  color: #555;
+  margin-top: 7px;
+  padding-left: 26px;
+}
+
+/* ---------- 最終CTA ---------- */
+.omjlp .omj-final {
+  background: linear-gradient(135deg, #17324a 0%, #21486a 100%);
+  border-radius: 20px;
+  padding: 34px 22px;
+  text-align: center;
+}
+.omjlp .omj-final h3 {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #fff;
+  margin: 0 0 8px;
+}
+.omjlp .omj-final p { color: rgba(255,255,255,.72); font-size: .88rem; margin: 0 0 4px; }
+
+/* ---------- スポット決済 ---------- */
+.omjlp .omj-spot {
+  background: #fff;
+  border: 2px dashed #ffc46e;
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+}
+.omjlp .omj-spot .ttl { font-weight: 800; color: #eb6600; font-size: 1rem; margin-bottom: 4px; }
+.omjlp .omj-spot .price {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  color: #17324a;
+  font-weight: 600;
+}
+.omjlp .omj-spot p { font-size: .85rem; color: #666; margin: 6px 0 14px; }
+
+/* ---------- 写真プレースホルダ ---------- */
+.omjlp .omj-photo-placeholder {
+  background: repeating-linear-gradient(45deg, #f5f5f5 0 14px, #ededed 14px 28px);
+  border-radius: 14px;
+  min-height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+/* ---------- 開催カレンダー ---------- */
+.omjlp .stx-cal-shell { position: relative; min-height: 200px; }
+.omjlp .stx-cal-skeleton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #fff7f0;
+  border-radius: 14px;
+  color: #9a6a35;
+  font-size: .85rem;
+  z-index: 2;
+  transition: opacity .3s ease;
+}
+.omjlp .stx-cal-skeleton.is-hidden { opacity: 0; pointer-events: none; }
+.omjlp .stx-cal-spinner {
+  width: 30px; height: 30px;
+  border: 3px solid #ffe2bd;
+  border-top-color: #eb6600;
+  border-radius: 50%;
+  animation: omj-spin .8s linear infinite;
+}
+@keyframes omj-spin { to { transform: rotate(360deg); } }
+.omjlp .stx-cal-bars { display: flex; gap: 5px; }
+.omjlp .stx-cal-bars i {
+  width: 26px; height: 7px;
+  background: #ffe2bd;
+  border-radius: 4px;
+  animation: omj-pulse 1.2s ease-in-out infinite;
+}
+.omjlp .stx-cal-bars i:nth-child(2) { animation-delay: .1s; }
+.omjlp .stx-cal-bars i:nth-child(3) { animation-delay: .2s; }
+.omjlp .stx-cal-bars i:nth-child(4) { animation-delay: .3s; }
+.omjlp .stx-cal-bars i:nth-child(5) { animation-delay: .4s; }
+@keyframes omj-pulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
+</style>
+
+<div class="omjlp">
+
+  
+  <div class="omj-hero omj-reveal">
+    <span class="eyebrow">NPO法人 かなざわ総合スポーツクラブ</span>
+    <p class="catch">走れる体を、<em>無理なく</em>。<br>大人のマラソン塾</p>
+    <p class="sub">
+      金沢市営陸上競技場で毎週木曜の夜。<br>
+      サブ5・完走を目指す方から、健康のために走りたい方まで。
+    </p>
+    <div class="omj-chips">
+      <div class="omj-chip">対象 <b>中学生〜大人</b></div>
+      <div class="omj-chip">毎週木曜 <b>19:30〜21:00</b></div>
+      <div class="omj-chip">月会費 <b>3,300円</b></div>
+    </div>
+    <div class="omj-cta-row">
+      <a class="omj-btn omj-btn-primary" href="/taiken">無料体験を申し込む</a>
+      <a class="omj-btn omj-btn-ghost" href="#schedule">開催日を見る</a>
+    </div>
+    <p class="omj-cta-note">体験当日のご入会で入会手数料（5,500円）が無料になります</p>
+  </div>
+
+  
+  <div class="omj-stats omj-reveal">
+    <div class="omj-stat"><div class="label">月会費（税込）</div><div class="num">3,300<small>円</small></div></div>
+    <div class="omj-stat"><div class="label">開催</div><div class="num">毎週<small>木曜</small></div></div>
+    <div class="omj-stat"><div class="label">1回の練習</div><div class="num">90<small>分</small></div></div>
+    <div class="omj-stat"><div class="label">スポット参加</div><div class="num">1,500<small>円/回</small></div></div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">こんな方に<b>向いています</b></p>
+    <p class="omj-lead">走力も目標もばらばらです。今の自分に合うところから始められます。</p>
+    <div class="omj-checks">
+      <ul>
+        <li><b>フルマラソンを完走したい</b>／サブ5（5時間以内）を目指したい</li>
+        <li>一人で走ると続かない。<b>毎週走る習慣</b>をつくりたい</li>
+        <li>走るとすぐ<b>膝や足が痛くなる</b>。フォームから見直したい</li>
+        <li>何をどれくらい走ればいいのか、<b>練習の組み立て方</b>がわからない</li>
+        <li>同じ目標の<b>仲間と一緒に</b>走りたい</li>
+      </ul>
+    </div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">大人のマラソン塾の<b>3つの特徴</b></p>
+    <p class="omj-lead">速い人に合わせる教室ではありません。</p>
+    <div class="omj-cards">
+      <div class="omj-card">
+        <div class="no">POINT 01</div>
+        <h4>置いていかれません</h4>
+        <p>練習の中心は「会話ができる程度」のEペース。走力に差があっても、それぞれのペースで同じメニューに取り組めるよう組み立てています。人と競わされることはありません。</p>
+      </div>
+      <div class="omj-card">
+        <div class="no">POINT 02</div>
+        <h4>ケガをしないことが最優先</h4>
+        <p>走り込みより先に、動きづくりのドリルと補強を大切にしています。「がんばりすぎて故障し、走れなくなる」のが大人のランナーにとって一番の遠回りだからです。</p>
+      </div>
+      <div class="omj-card">
+        <div class="no">POINT 03</div>
+        <h4>1年の流れが決まっています</h4>
+        <p>季節ごとに強化するテーマが決まっているので、行き当たりばったりになりません。秋の金沢マラソンに向けて、逆算した積み上げができます。</p>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">1回の練習の<b>流れ</b></p>
+    <p class="omj-lead">19:30〜21:00／全体で約90分</p>
+    <div class="omj-timeline">
+      <ul>
+        <li>
+          <span class="t">19:30</span>
+          <div class="c"><b>集合・アップジョグ</b><span>その日の体調を確認しながら、ゆっくり走り出します。</span></div>
+        </li>
+        <li>
+          <span class="t">19:45</span>
+          <div class="c"><b>動きづくりドリル</b><span>股関節まわり、足の振り、スキップ系のドリル。走るための体をつくります。</span></div>
+        </li>
+        <li>
+          <span class="t">20:00</span>
+          <div class="c"><b>メインメニュー</b><span>その日のテーマに沿った練習。ペース走・ビルドアップ・インターバルなど。</span></div>
+        </li>
+        <li>
+          <span class="t">20:45</span>
+          <div class="c"><b>クールダウン・ストレッチ</b><span>次の練習に疲れを残さないために。ここまで含めて練習です。</span></div>
+        </li>
+      </ul>
+    </div>
+    <p style="text-align:center;font-size:.82rem;color:#888;margin-top:8px;">※ 内容は季節・天候・参加者の状態により調整します。</p>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">主な<b>練習メニュー</b></p>
+    <p class="omj-lead">同じことの繰り返しにならないよう、目的の違うメニューを組み合わせます。</p>
+    <div class="omj-tags">
+      <span class="omj-tag">Eペース走</span>
+      <span class="omj-tag">ビルドアップ走</span>
+      <span class="omj-tag">閾値（LT）走</span>
+      <span class="omj-tag">400mインターバル</span>
+      <span class="omj-tag">1000m×n本</span>
+      <span class="omj-tag">坂ダッシュ</span>
+      <span class="omj-tag">ファルトレク</span>
+      <span class="omj-tag">12分間走（体力測定）</span>
+      <span class="omj-tag">サーキット・補強</span>
+      <span class="omj-tag">フォーム動画撮影</span>
+    </div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <div class="omj-callout">
+      <h4>「今日はどれくらいの強さで走るのか」を全員で揃えます</h4>
+      <p>
+        大人のランナーは、体力も経験もばらばらです。そこで当教室では、時計のペースではなく
+        <b>RPE（自覚的運動強度／ボルグスケール 6〜20）</b>で強度を共有しています。
+        「キロ何分で」ではなく「きつさで13くらい」と伝えるので、速い人も、これから走り始める人も、
+        同じ目的の練習ができます。
+      </p>
+      <div class="omj-rpe">
+        <div><b>11〜12</b><br>楽である〜ややきつい手前。会話しながら走れる強度</div>
+        <div><b>13〜14</b><br>ややきつい。マラソンのレースペースに近い感覚</div>
+        <div><b>15〜16</b><br>きつい。閾値走・インターバルで使う強度</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">1年の<b>組み立て</b></p>
+    <p class="omj-lead">秋の金沢マラソンを一つの目標に、季節ごとにテーマを変えていきます。</p>
+    <div class="omj-table-wrap">
+      <table class="omj-table">
+        <thead>
+          <tr><th>時期</th><th>テーマ</th><th>主に取り組むこと</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4〜6月</td><td>オフ期</td><td>スピードの土台づくり。インターバル・レペティションなど短めで速い刺激を入れる</td></tr>
+          <tr><td>7〜8月</td><td>梅雨・夏</td><td>暑さ対策。無理に距離を踏まず、暑さに体を慣らす</td></tr>
+          <tr><td>9〜10月</td><td>秋</td><td>距離・スタミナ。フルマラソンを想定した長めの練習へ</td></tr>
+          <tr><td>11〜3月</td><td>シーズン</td><td>レース対策・ピーキング・調整。大会に向けて仕上げる</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <div class="omj-photo-placeholder">練習風景の写真</div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">担当<b>コーチ</b></p>
+    <p class="omj-lead">大人のランナーを長く見てきたコーチが担当します。</p>
+    <div class="omj-coach">
+      <div class="avatar">Q</div>
+      <div>
+        <div class="name">松井 久（Qちゃん）</div>
+        <div class="role">ベテランコーチ</div>
+        <div class="desc">走る・跳ぶ・投げるを楽しく指導するベテランコーチ。大人のマラソン塾では、一人ひとりの体調と目標に合わせた声かけを大切にしています。</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="schedule" style="padding-top:80px;margin-top:-80px;"></div>
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">開催<b>スケジュール</b></p>
+    <p class="omj-lead">タップで詳細を確認できます</p>
+    <div class="stx-cal-shell">
+      <div class="stx-cal-skeleton" id="stx-cal-skeleton">
+        <div class="stx-cal-spinner"></div>
+        <p>スケジュールを読み込んでいます…</p>
+        <div class="stx-cal-bars"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <iframe width="300" height="150" style="width:100%;border:none;min-height:900px;overflow:hidden;position:relative;z-index:1;" src="https://script.google.com/macros/s/AKfycbwos3AnwtT3S-UUx5muSHhScg3sLESEyUnB9HdaVc6LbqoX9D1kH0JX1EaM_qs1arUEzg/exec?class=otonamarathon-rikujo&amp;wide_day=3&amp;taiken_btn=1" scrolling="no" id="stx-cal-frame" onload="var s=document.getElementById('stx-cal-skeleton'); if(s) s.classList.add('is-hidden');"></iframe>
+    </div>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2"><b>料金</b>について</p>
+    <p class="omj-lead">すべて税込です。</p>
+    <div class="omj-table-wrap" style="margin-bottom:18px;">
+      <table class="omj-table">
+        <tbody>
+          <tr><td>月会費</td><td><strong style="color:#eb6600;font-size:1.1rem;">3,300円／月</strong>（毎週木曜）</td></tr>
+          <tr><td>入会手数料</td><td>5,500円<br><span style="font-size:.85em;color:#666;">※同一世帯家族の2人目以降は2,750円</span></td></tr>
+          <tr><td>年度会費</td><td>5,500円／年</td></tr>
+          <tr><td>スポーツ安全保険</td><td>800円〜2,000円／年<br><span style="font-size:.85em;"><a href="https://kanazawa-ssc.jp/入会案内・会則#insurance" target="_blank" rel="noopener" style="color:#f37021;">加入区分の詳細はこちら</a></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="omj-spot">
+      <div class="ttl">💳 スポット参加（1回のみ）</div>
+      <div class="price">1,500<span style="font-size:.95rem;">円／回</span></div>
+      <p>入会せずに1回だけ参加したい方向け。クレジットカードでオンライン決済いただけます。</p>
+      <a class="omj-btn omj-btn-primary" href="https://startus-system.startus.workers.dev/spot/?program=otonamarathon" target="_blank" rel="noopener">スポット参加を申し込む</a>
+    </div>
+
+    <p style="text-align:center;font-size:.85rem;color:#666;margin-top:14px;">
+      ※参加形態や会場により別途使用料が発生する場合があります。<br>
+      ※詳しいルールは <a href="https://kanazawa-ssc.jp/%e5%85%a5%e4%bc%9a%e6%a1%88%e5%86%85%e3%83%bb%e4%bc%9a%e5%89%87" style="color:#f37021;font-weight:bold;">会則ページ</a> をご覧ください。
+    </p>
+  </div>
+
+  
+  <div class="omj-sec omj-reveal">
+    <p class="omj-h2">よくある<b>ご質問</b></p>
+    <div class="omj-faq">
+      <div class="omj-faq-item">
+        <div class="q">ほとんど走ったことがありません。ついていけますか？</div>
+        <div class="a">大丈夫です。練習の中心は会話ができる程度のペースで、走力に差があってもそれぞれのペースで取り組めるように組み立てています。まずは無料体験で雰囲気を見てください。</div>
+      </div>
+      <div class="omj-faq-item">
+        <div class="q">大会に出る予定はありませんが参加できますか？</div>
+        <div class="a">もちろん参加できます。健康維持のため、週1回走る習慣をつくるために通われている方もいます。目標は人それぞれで構いません。</div>
+      </div>
+      <div class="omj-faq-item">
+        <div class="q">年齢層はどれくらいですか？</div>
+        <div class="a">幅広い年代の方が参加されています。中学生から参加可能ですが、実際には社会人・シニア世代の方が中心です。</div>
+      </div>
+      <div class="omj-faq-item">
+        <div class="q">雨の日はどうなりますか？</div>
+        <div class="a">天候や会場の状況により、屋内施設での実施や内容変更になる場合があります。開催の可否は事前にご案内します。</div>
+      </div>
+      <div class="omj-faq-item">
+        <div class="q">持ち物は何が必要ですか？</div>
+        <div class="a">動きやすい服装、ランニングシューズ、タオル、飲み物をご用意ください。特別な道具は必要ありません。</div>
+      </div>
+      <div class="omj-faq-item">
+        <div class="q">毎週参加できないのですが大丈夫ですか？</div>
+        <div class="a">問題ありません。お仕事の都合で隔週の方もいます。1回だけ試したい場合はスポット参加（1,500円）もご利用いただけます。</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="omj-final omj-reveal">
+    <h3>まずは一度、走ってみませんか</h3>
+    <p>無料体験は1回。持ち物は動きやすい服装とシューズだけです。</p>
+    <div class="omj-cta-row">
+      <a class="omj-btn omj-btn-primary" href="/taiken">無料体験を申し込む</a>
+      <a class="omj-btn omj-btn-line" href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener">LINEで相談する</a>
+    </div>
+    <p class="omj-cta-note">体験当日のご入会で入会手数料（5,500円）が無料になります</p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  // スクロール出現
+  var els = document.querySelectorAll('.omj-reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  }
+  // カレンダーiframeのリサイズ（GAS側からpostMessageで送られる高さを反映）
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'stx-resize') {
+      var f = document.getElementById('stx-cal-frame');
+      if (f) f.style.height = e.data.height + 'px';
+      var s = document.getElementById('stx-cal-skeleton');
+      if (s) s.classList.add('is-hidden');
+    }
+  });
+})();
+</script>
