@@ -15,9 +15,12 @@ export type Classroom = {
   trial_open?: boolean | null
 }
 
+// 教室マスタ(classrooms)は memo / email_guide など内部項目まで持つため、
+// 公開フォームからは公開用ビュー public_classrooms を読む。
+// ビュー側で is_active = TRUE / deleted_at IS NULL を絞り済み。
 export async function fetchClassrooms(): Promise<Classroom[]> {
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/classrooms?select=name,category,display_order,calendar_tag,trial_open&is_active=eq.true&order=display_order.asc`,
+    `${SUPABASE_URL}/rest/v1/public_classrooms?select=name,category,display_order,calendar_tag,trial_open&order=display_order.asc`,
     { headers }
   )
   if (!res.ok) throw new Error('教室リストの取得に失敗しました')
