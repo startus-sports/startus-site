@@ -40,7 +40,7 @@ function Hero() {
 
         <div className="flex justify-center gap-8 md:gap-12 mb-8">
           {[
-            { num: '17', label: '教室' },
+            { num: '16', label: '教室' },
             { num: '5', label: '会場' },
             { num: '週6', label: '日開催' },
           ].map(({ num, label }) => (
