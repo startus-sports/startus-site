@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { trackEvent } from '@/lib/gtag'
+import type { NewsItem } from '@/lib/news'
 
 // ============================================================
 // Header / Navigation
@@ -167,14 +168,9 @@ function NoticeBanner() {
 // ============================================================
 // News Section
 // ============================================================
-function NewsSection() {
-  const news: { date: string; tag: string; title: string; href?: string }[] = [
-    { date: '2026.08', tag: 'お知らせ', title: '夏季休業（8/11〜8/16）を終了しました。8/17より通常どおり開講しています' },
-    { date: '2026.08', tag: 'お知らせ', title: '新教室「走り塾（初中級）」開講（小5〜中学生・月曜／稲置学園総合運動場）', href: '/hashiri-juku' },
-    { date: '2026.08', tag: 'お知らせ', title: '「月曜かけっこ塾」開講（小学3〜6年生・毎週月曜 19:30〜）', href: '/kakekko-monday' },
-    { date: '2026.07', tag: 'イベント', title: '夏休みかけっこ短期教室を開催しました' },
-    { date: '2026.04', tag: 'お知らせ', title: '体験→即入会でおトク！当日入会特典がはじまりました' },
-  ]
+function NewsSection({ news }: { news: NewsItem[] }) {
+  // WordPress側が取得できなかったときはセクションごと出さない
+  if (news.length === 0) return null
 
   const tagColors: Record<string, string> = {
     'イベント': 'bg-blue-50 text-blue-600',
@@ -188,27 +184,24 @@ function NewsSection() {
       <h2 className="section-title mb-6">お知らせ</h2>
 
       <div className="space-y-2">
-        {news.map(({ date, tag, title, href }) => {
-          const inner = (
-            <>
-              <span className="text-xs text-gray-400 w-16 flex-shrink-0 pt-0.5">{date}</span>
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${tagColors[tag] ?? 'bg-gray-100 text-gray-500'}`}>
-                {tag}
-              </span>
-              <p className="text-sm text-brand-navy font-medium leading-relaxed">
-                {title}
-                {href && <span className="text-brand-orange font-bold ml-1 whitespace-nowrap">詳しく見る →</span>}
-              </p>
-            </>
-          )
-          const className = 'flex items-start gap-4 p-4 bg-warm-50 rounded-xl hover:bg-warm-100 transition-colors'
-
-          return href ? (
-            <Link key={title} href={href} className={className}>{inner}</Link>
-          ) : (
-            <div key={title} className={className}>{inner}</div>
-          )
-        })}
+        {news.map(({ date, tag, title, href }) => (
+          <a
+            key={href}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-start gap-4 p-4 bg-warm-50 rounded-xl hover:bg-warm-100 transition-colors"
+          >
+            <span className="text-xs text-gray-400 w-16 flex-shrink-0 pt-0.5">{date}</span>
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${tagColors[tag] ?? 'bg-gray-100 text-gray-500'}`}>
+              {tag}
+            </span>
+            <p className="text-sm text-brand-navy font-medium leading-relaxed">
+              {title}
+              <span className="text-brand-orange font-bold ml-1 whitespace-nowrap">詳しく見る →</span>
+            </p>
+          </a>
+        ))}
       </div>
     </section>
   )
@@ -1035,13 +1028,13 @@ function Footer() {
 // ============================================================
 // Main HomeLP
 // ============================================================
-export default function HomeLP() {
+export default function HomeLP({ news }: { news: NewsItem[] }) {
   return (
     <main>
       <Header />
       <Hero />
       <NoticeBanner />
-      <NewsSection />
+      <NewsSection news={news} />
       <SnsSection />
       <ClassesSection />
       <EnrollmentFlow />
