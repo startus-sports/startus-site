@@ -51,12 +51,11 @@ export const venues = [
   { id: 'inoki', name: '稲置学園総合運動場', shortName: '稲置学園', color: '#993C1D', lat: 36.5790, lng: 136.6977, area: '東部', address: '石川県金沢市御所町2-46（冬季は金沢星稜大学体育館）' },
   { id: 'sporec', name: '健民スポレクプラザ', shortName: 'スポレク', color: '#534AB7', lat: 36.5550, lng: 136.6269, area: '泉野', address: '金沢市西泉6丁目188番地' },
   { id: 'sogo', name: '金沢市総合体育館', shortName: '市総合', color: '#A32D2D', lat: 36.5400, lng: 136.6502, area: '中心部', address: '金沢市泉野出町3-8-1' },
-  // 以下は住所データが無く、地図の座標のみ確認できている会場
-  { id: 'takaodai', name: '金沢市立高尾台中学校', shortName: '高尾台中', color: '#1F6F8B', lat: 36.5235489, lng: 136.6333834, area: '南部', address: '' },
-  { id: 'ougidai', name: '金沢市立扇台小学校', shortName: '扇台小', color: '#6B8E23', lat: 36.5227106, lng: 136.6254225, area: '南部', address: '' },
-  { id: 'yonaizumi', name: '金沢市立米泉小学校', shortName: '米泉小', color: '#B5651D', lat: 36.5455773, lng: 136.6278662, area: '泉野', address: '' },
+  { id: 'takaodai', name: '金沢市立高尾台中学校', shortName: '高尾台中', color: '#1F6F8B', lat: 36.5235489, lng: 136.6333834, area: '南部', address: '石川県金沢市高尾台1丁目128' },
+  { id: 'ougidai', name: '金沢市立扇台小学校', shortName: '扇台小', color: '#6B8E23', lat: 36.5227106, lng: 136.6254225, area: '南部', address: '石川県金沢市馬替1丁目34' },
+  { id: 'yonaizumi', name: '金沢市立米泉小学校', shortName: '米泉小', color: '#B5651D', lat: 36.5455773, lng: 136.6278662, area: '泉野', address: '石川県金沢市米泉町4丁目133-2' },
   { id: 'seiryo', name: '金沢星稜大学サブアリーナ', shortName: '星稜大', color: '#7A4B9B', lat: 36.5830498, lng: 136.6830272, area: '東部', address: '石川県金沢市御所町丑10-1' },
-  { id: 'amerun', name: 'あめるんパーク（金沢市屋内交流広場）', shortName: 'あめるんパーク', color: '#2E8B84', lat: 36.5961247, lng: 136.6589778, area: '北部', address: '' },
+  { id: 'amerun', name: 'あめるんパーク（金沢市屋内交流広場）', shortName: 'あめるんパーク', color: '#2E8B84', lat: 36.5961247, lng: 136.6589778, area: '北部', address: '石川県金沢市磯部町ロ23番地1' },
 ] as const
 
 export const trackClasses: ClassData[] = [

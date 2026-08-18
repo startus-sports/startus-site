@@ -11,9 +11,7 @@ import type { VenueId } from './classes-data'
  *   - 対象年齢 … kanazawa-ssc.jp の教室詳細ページ
  *     （マスタの target 列が全教室で空欄のため。2026-08-18 時点の内容）
  *
- * 会場は地図の座標で特定できているものに venueId を付けている。
- * 高尾台中学校・扇台小学校・米泉小学校・あめるんパークは番地までの住所が
- * 手元に無いため、会場ページでは住所を出さず地図リンクのみ表示する。
+ * 会場は地図の座標と住所が確認できているものに venueId を付けている。
  */
 export type OtherClassData = {
   id: string
