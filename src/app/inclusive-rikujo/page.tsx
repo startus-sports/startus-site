@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import ClassLp from '@/components/ClassLp'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/inclusive-rikujo' },
   title: 'インクルーシブランニング教室',
   description:
     '金沢市営陸上競技場で開講する、障がいの有無にかかわらず誰でも参加できるランニング教室。パラ・一般どちらのクラスもあり、月会費のほかスポット（1回）参加も可能です。',

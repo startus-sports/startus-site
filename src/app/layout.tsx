@@ -5,6 +5,9 @@ import './globals.css'
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
 export const metadata: Metadata = {
+  // canonical を各ページで相対指定できるようにする基点
+  metadataBase: new URL('https://startus-kanazawa.org'),
+  alternates: { canonical: '/' },
   title: {
     default: 'STARTUS sports academy | かなざわ総合スポーツクラブ',
     template: '%s | STARTUS sports academy',

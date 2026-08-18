@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/tokushoho' },
   title: '特定商取引法に基づく表記 | STARTUS sports academy',
   description: 'NPO法人かなざわ総合スポーツクラブSTARTUSの特定商取引法に基づく表記。',
   robots: { index: true },

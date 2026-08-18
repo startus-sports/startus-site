@@ -3,6 +3,7 @@ import Header from '@/components/Header'
 import TaikenForm from './TaikenForm'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/taiken' },
   title: '体験申込フォーム | STARTUS sports academy',
   description: 'STARTUSの教室を無料で体験できます。体験後の当日入会で入会金無料＋Tシャツプレゼント！',
 }

@@ -3,7 +3,8 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
-  title: 'クラブについて | STARTUS sports academy',
+  alternates: { canonical: '/about' },
+  title: 'クラブについて',
   description: 'NPO法人かなざわ総合スポーツクラブSTARTUSの理念・ポリシー・沿革・会員数推移。スポーツの力で「元気とうるおいある生活」を創造します。',
   openGraph: {
     title: 'クラブについて | STARTUS',

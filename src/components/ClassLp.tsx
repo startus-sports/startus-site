@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Script from 'next/script'
 import Header from '@/components/Header'
 import { loadLpContent } from '@/lib/lp-content'
+import ClassLpJsonLd from '@/components/ClassLpJsonLd'
 
 /**
  * hp-lp の教室紹介ページ（WordPress用HTML）をそのまま表示する共通コンポーネント。
@@ -16,12 +17,15 @@ export default function ClassLp({
   variant?: 'main' | 'rikujo'
 }) {
   const { html, script } = loadLpContent(slug)
+  const hasOwnJsonLd = html.includes('application/ld+json')
   const backHref = variant === 'rikujo' ? '/rikujo' : '/#classes'
   const backLabel = variant === 'rikujo' ? 'ほかの陸上教室を見る' : 'ほかの教室を見る'
 
   return (
     <main className="bg-white">
       <Header variant={variant} />
+
+      {!hasOwnJsonLd && <ClassLpJsonLd slug={slug} />}
 
       <div dangerouslySetInnerHTML={{ __html: html }} />
 
