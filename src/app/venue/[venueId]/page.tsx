@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Header from '@/components/Header'
-import { venues, trackClasses, venuesWithClasses } from '@/lib/classes-data'
+import { venues, venuesWithClasses, getVenueClasses } from '@/lib/classes-data'
 
 const SITE = 'https://startus-kanazawa.org'
 
@@ -17,7 +17,7 @@ export async function generateMetadata(
   const venue = venues.find(v => v.id === venueId)
   if (!venue) return {}
 
-  const classes = trackClasses.filter(c => c.venueId === venue.id)
+  const classes = getVenueClasses(venue.id)
   const days = [...new Set(classes.map(c => c.day))].join('・')
 
   return {
@@ -39,7 +39,7 @@ export default async function VenuePage(
   const venue = venues.find(v => v.id === venueId)
   if (!venue) notFound()
 
-  const classes = trackClasses.filter(c => c.venueId === venue.id)
+  const classes = getVenueClasses(venue.id)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -113,7 +113,7 @@ export default async function VenuePage(
               <p className="text-xs text-gray-500 mb-2">
                 {cls.day}曜 {cls.time} ｜ 対象 {cls.age}
               </p>
-              <p className="text-sm text-gray-600 leading-relaxed mb-3">{cls.oneLiner}</p>
+              <p className="text-sm text-gray-600 leading-relaxed mb-3">{cls.oneLiner ?? `${cls.age}を対象にした教室です。`}</p>
               <div className="flex flex-wrap gap-3 text-sm">
                 {cls.lpHref && (
                   <Link href={cls.lpHref} className="text-brand-orange font-bold hover:underline">

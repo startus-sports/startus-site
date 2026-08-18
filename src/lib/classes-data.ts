@@ -1,3 +1,5 @@
+import { otherClasses } from './other-classes'
+
 export type ClassLevel = 'beginner' | 'basic' | 'intermediate' | 'advanced' | 'marathon' | 'parent' | 'inclusive' | 'adult'
 
 export type ClassData = {
@@ -6,7 +8,7 @@ export type ClassData = {
   shortName: string
   sport: 'track' | 'badminton' | 'dance' | 'tennis' | 'other'
   venue: string
-  venueId: 'shiei' | 'nakamura' | 'seibu' | 'inoki' | 'sporec' | 'sogo'
+  venueId: VenueId
   day: string
   time: string
   age: string
@@ -37,6 +39,8 @@ export const levelConfig: Record<ClassLevel, { label: string; stars: 1 | 2 | 3; 
   inclusive:    { label: 'インクルーシブ', stars: 1, color: '#06B6D4', bgColor: '#ECFEFF' },
   adult:        { label: '大人向け',   stars: 2, color: '#6B7280', bgColor: '#F9FAFB' },
 }
+
+export type VenueId = 'shiei' | 'nakamura' | 'seibu' | 'inoki' | 'sporec' | 'sogo'
 
 export const venues = [
   { id: 'shiei', name: '金沢市営陸上競技場', shortName: '市営陸上', color: '#185FA5', lat: 36.5409, lng: 136.6439, area: '中心部', address: '石川県金沢市弥生3丁目5-1' },
@@ -504,8 +508,37 @@ export function getClassesByVenueAndDay(venueId: string, day: string): ClassData
  * 教室が1つ以上ある会場だけを返す。
  * 会場ページは中身が無いと薄いページになってしまうため、生成対象をここで絞る。
  */
+export type VenueClass = {
+  id: string
+  name: string
+  day: string
+  time: string
+  age: string
+  price: number
+  oneLiner?: string
+  priceNote?: string
+  lpHref?: string
+}
+
+/** 会場ページ用。陸上とそれ以外をまとめて、その会場で開催している教室を返す */
+export function getVenueClasses(venueId: string): VenueClass[] {
+  const track = trackClasses
+    .filter(c => c.venueId === venueId)
+    .map(c => ({
+      id: c.id, name: c.name, day: c.day, time: c.time,
+      age: c.age, price: c.price, oneLiner: c.oneLiner, lpHref: c.lpHref,
+    }))
+  const other = otherClasses
+    .filter(c => c.venueId === venueId)
+    .map(c => ({
+      id: c.id, name: c.name, day: c.day, time: c.time,
+      age: c.age, price: c.price, priceNote: c.priceNote,
+    }))
+  return [...track, ...other]
+}
+
 export function venuesWithClasses() {
-  return venues.filter(v => trackClasses.some(c => c.venueId === v.id))
+  return venues.filter(v => getVenueClasses(v.id).length > 0)
 }
 
 export function getClassesByVenue(venueId: string): ClassData[] {

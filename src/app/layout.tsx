@@ -4,6 +4,11 @@ import './globals.css'
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
+// Search Console の「HTMLタグ」方式で所有権を確認するための値。
+// Vercel の環境変数に入れれば反映される（未設定ならタグ自体を出力しない）。
+// GA4 が入っているので「Googleアナリティクス」方式が使えればこれは不要。
+const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+
 export const metadata: Metadata = {
   // canonical を各ページで相対指定できるようにする基点
   metadataBase: new URL('https://startus-kanazawa.org'),
@@ -13,6 +18,9 @@ export const metadata: Metadata = {
     template: '%s | STARTUS sports academy',
   },
   description: '金沢で約30のスポーツ教室を運営。かけっこから陸上・バドミントン・チアまで、専門コーチが一人ひとりに寄り添います。無料体験受付中。',
+  ...(GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: GOOGLE_SITE_VERIFICATION } }
+    : {}),
   openGraph: {
     type: 'website',
     locale: 'ja_JP',
