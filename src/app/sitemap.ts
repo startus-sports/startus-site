@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { venuesWithClasses } from '@/lib/classes-data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://startus-kanazawa.org'
@@ -31,6 +32,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
+    })),
+    // 会場ページ（会場名での検索を拾う）
+    ...venuesWithClasses().map(v => ({
+      url: `${baseUrl}/venue/${v.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
     })),
     {
       url: `${baseUrl}/taiken`,

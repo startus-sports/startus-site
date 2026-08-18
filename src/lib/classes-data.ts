@@ -500,6 +500,14 @@ export function getClassesByVenueAndDay(venueId: string, day: string): ClassData
   return trackClasses.filter(c => c.venueId === venueId && c.day.includes(day.replace('・日', '').replace('土・', '')))
 }
 
+/**
+ * 教室が1つ以上ある会場だけを返す。
+ * 会場ページは中身が無いと薄いページになってしまうため、生成対象をここで絞る。
+ */
+export function venuesWithClasses() {
+  return venues.filter(v => trackClasses.some(c => c.venueId === v.id))
+}
+
 export function getClassesByVenue(venueId: string): ClassData[] {
   return trackClasses.filter(c => c.venueId === venueId)
 }

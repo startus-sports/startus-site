@@ -3,6 +3,7 @@ import Script from 'next/script'
 import Header from '@/components/Header'
 import { loadLpContent } from '@/lib/lp-content'
 import ClassLpJsonLd from '@/components/ClassLpJsonLd'
+import ClassFacts from '@/components/ClassFacts'
 
 /**
  * hp-lp の教室紹介ページ（WordPress用HTML）をそのまま表示する共通コンポーネント。
@@ -28,6 +29,8 @@ export default function ClassLp({
       {!hasOwnJsonLd && <ClassLpJsonLd slug={slug} />}
 
       <div dangerouslySetInnerHTML={{ __html: html }} />
+
+      <ClassFacts slug={slug} />
 
       <div className="max-w-3xl mx-auto px-5 py-10 flex flex-col sm:flex-row gap-3 justify-center">
         <Link href="/taiken" className="btn-primary text-center">
