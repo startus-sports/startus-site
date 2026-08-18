@@ -40,7 +40,9 @@ export const levelConfig: Record<ClassLevel, { label: string; stars: 1 | 2 | 3; 
   adult:        { label: '大人向け',   stars: 2, color: '#6B7280', bgColor: '#F9FAFB' },
 }
 
-export type VenueId = 'shiei' | 'nakamura' | 'seibu' | 'inoki' | 'sporec' | 'sogo'
+export type VenueId =
+  | 'shiei' | 'nakamura' | 'seibu' | 'inoki' | 'sporec' | 'sogo'
+  | 'takaodai' | 'ougidai' | 'yonaizumi' | 'seiryo' | 'amerun'
 
 export const venues = [
   { id: 'shiei', name: '金沢市営陸上競技場', shortName: '市営陸上', color: '#185FA5', lat: 36.5409, lng: 136.6439, area: '中心部', address: '石川県金沢市弥生3丁目5-1' },
@@ -49,6 +51,12 @@ export const venues = [
   { id: 'inoki', name: '稲置学園総合運動場', shortName: '稲置学園', color: '#993C1D', lat: 36.5790, lng: 136.6977, area: '東部', address: '石川県金沢市御所町2-46（冬季は金沢星稜大学体育館）' },
   { id: 'sporec', name: '健民スポレクプラザ', shortName: 'スポレク', color: '#534AB7', lat: 36.5550, lng: 136.6269, area: '泉野', address: '金沢市西泉6丁目188番地' },
   { id: 'sogo', name: '金沢市総合体育館', shortName: '市総合', color: '#A32D2D', lat: 36.5400, lng: 136.6502, area: '中心部', address: '金沢市泉野出町3-8-1' },
+  // 以下は住所データが無く、地図の座標のみ確認できている会場
+  { id: 'takaodai', name: '金沢市立高尾台中学校', shortName: '高尾台中', color: '#1F6F8B', lat: 36.5235489, lng: 136.6333834, area: '南部', address: '' },
+  { id: 'ougidai', name: '金沢市立扇台小学校', shortName: '扇台小', color: '#6B8E23', lat: 36.5227106, lng: 136.6254225, area: '南部', address: '' },
+  { id: 'yonaizumi', name: '金沢市立米泉小学校', shortName: '米泉小', color: '#B5651D', lat: 36.5455773, lng: 136.6278662, area: '泉野', address: '' },
+  { id: 'seiryo', name: '金沢星稜大学サブアリーナ', shortName: '星稜大', color: '#7A4B9B', lat: 36.5830498, lng: 136.6830272, area: '東部', address: '石川県金沢市御所町丑10-1' },
+  { id: 'amerun', name: 'あめるんパーク（金沢市屋内交流広場）', shortName: 'あめるんパーク', color: '#2E8B84', lat: 36.5961247, lng: 136.6589778, area: '北部', address: '' },
 ] as const
 
 export const trackClasses: ClassData[] = [
@@ -133,7 +141,7 @@ export const trackClasses: ClassData[] = [
     venueId: 'shiei',
     day: '木',
     time: '17:00〜18:00',
-    age: '小学生',
+    age: '小1〜小3',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
     instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
@@ -218,7 +226,7 @@ export const trackClasses: ClassData[] = [
     venue: '金沢市営陸上競技場',
     venueId: 'shiei',
     day: '月',
-    time: '19:30〜21:00',
+    time: '18:30〜20:00',
     age: '小学〜大人',
     price: 3300,
     instructor: '橋本 祐之 他',
@@ -284,7 +292,7 @@ export const trackClasses: ClassData[] = [
     venueId: 'seibu',
     day: '水',
     time: '17:00〜18:00',
-    age: '小学生',
+    age: '小1〜小3',
     price: 6600,
     instructor: '松井 久（Qちゃん）',
     instructorTitle: '子どもに大人気！楽しさ重視のベテランコーチ',
@@ -327,7 +335,7 @@ export const trackClasses: ClassData[] = [
     venueId: 'sporec',
     day: '火',
     time: '17:00〜18:00',
-    age: '年中〜小学生',
+    age: '幼児〜小3',
     price: 6600,
     instructor: '須田 崇',
     instructorTitle: '基礎から応用まで丁寧に指導',
@@ -348,7 +356,7 @@ export const trackClasses: ClassData[] = [
     venueId: 'sporec',
     day: '火',
     time: '18:00〜19:00',
-    age: '小学生',
+    age: '小4〜小6',
     price: 6600,
     instructor: '須田 崇',
     instructorTitle: '基礎から応用まで丁寧に指導',

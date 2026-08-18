@@ -11,9 +11,9 @@ import type { VenueId } from './classes-data'
  *   - 対象年齢 … kanazawa-ssc.jp の教室詳細ページ
  *     （マスタの target 列が全教室で空欄のため。2026-08-18 時点の内容）
  *
- * venueId は住所が分かっている会場にだけ設定する。
- * 高尾台中学校・扇台小学校・米泉小学校・金沢星稜大学サブアリーナ・
- * あめるんパークは住所データが無いため会場ページを作っていない。
+ * 会場は地図の座標で特定できているものに venueId を付けている。
+ * 高尾台中学校・扇台小学校・米泉小学校・あめるんパークは番地までの住所が
+ * 手元に無いため、会場ページでは住所を出さず地図リンクのみ表示する。
  */
 export type OtherClassData = {
   id: string
@@ -37,6 +37,7 @@ export const otherClasses: OtherClassData[] = [
     name: 'バドミントン高尾台（ジュニア）',
     category: 'バドミントン',
     venue: '高尾台中学校',
+    venueId: 'takaodai',
     day: '土',
     time: '18:00〜19:30',
     age: '小学生以上',
@@ -48,6 +49,7 @@ export const otherClasses: OtherClassData[] = [
     name: 'バドミントン高尾台（ビギナー）',
     category: 'バドミントン',
     venue: '高尾台中学校',
+    venueId: 'takaodai',
     day: '土',
     time: '19:30〜21:00',
     age: '中学生以上',
@@ -59,6 +61,7 @@ export const otherClasses: OtherClassData[] = [
     name: 'バドミントン扇台',
     category: 'バドミントン',
     venue: '扇台小学校 体育館',
+    venueId: 'ougidai',
     day: '木',
     time: '17:30〜19:00',
     age: '小学生以上',
@@ -70,6 +73,7 @@ export const otherClasses: OtherClassData[] = [
     name: '親子バドミントン（日）高尾台',
     category: 'バドミントン',
     venue: '高尾台中学校',
+    venueId: 'takaodai',
     day: '日',
     time: '隔週 19:00〜20:30',
     age: '小学生以上の子と保護者',
@@ -83,6 +87,7 @@ export const otherClasses: OtherClassData[] = [
     name: 'テニス塾',
     category: 'テニス',
     venue: '金沢星稜大学サブアリーナ',
+    venueId: 'seiryo',
     day: '水',
     time: '19:00〜20:30',
     age: '小学生〜中学生',
@@ -96,6 +101,7 @@ export const otherClasses: OtherClassData[] = [
     name: 'キンボールスポーツ',
     category: 'キンボールスポーツ',
     venue: '高尾台中学校 体育館',
+    venueId: 'takaodai',
     day: '日',
     time: '19:00〜21:00',
     age: '小学生以上',
@@ -146,6 +152,7 @@ export const otherClasses: OtherClassData[] = [
     name: 'キッズチアリーディング（水）米泉',
     category: 'バレエ・ダンス・チア',
     venue: '米泉小学校 体育館',
+    venueId: 'yonaizumi',
     day: '水',
     time: '19:00〜20:00',
     age: '年中〜小学生',
@@ -172,6 +179,7 @@ export const otherClasses: OtherClassData[] = [
     name: 'ソーシャルフットボール（精神障がい者フットサル）',
     category: 'サッカー・フットボール',
     venue: 'あめるんパーク1F のびのび広場（全面人工芝）',
+    venueId: 'amerun',
     day: '木',
     time: '17:00〜19:00',
     age: '小学生以上（障がいの有無を問わず参加できます）',

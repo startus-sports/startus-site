@@ -48,7 +48,7 @@ export default async function VenuePage(
     url: `${SITE}/venue/${venue.id}`,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: venue.address,
+      ...(venue.address ? { streetAddress: venue.address } : {}),
       addressLocality: '金沢市',
       addressRegion: '石川県',
       addressCountry: 'JP',
@@ -86,7 +86,7 @@ export default async function VenuePage(
 
         <div className="bg-warm-50 border border-warm-200 rounded-2xl p-5 mb-8">
           <h2 className="font-bold text-brand-navy text-sm mb-2">会場の場所</h2>
-          <p className="text-sm text-gray-600">{venue.address}</p>
+          {venue.address && <p className="text-sm text-gray-600">{venue.address}</p>}
           <a
             href={`https://www.google.com/maps/search/?api=1&query=${venue.lat},${venue.lng}`}
             target="_blank"
@@ -113,6 +113,9 @@ export default async function VenuePage(
               <p className="text-xs text-gray-500 mb-2">
                 {cls.day}曜 {cls.time} ｜ 対象 {cls.age}
               </p>
+              {cls.priceNote && (
+                <p className="text-xs text-gray-400 mb-2">※ {cls.priceNote}</p>
+              )}
               <p className="text-sm text-gray-600 leading-relaxed mb-3">{cls.oneLiner ?? `${cls.age}を対象にした教室です。`}</p>
               <div className="flex flex-wrap gap-3 text-sm">
                 {cls.lpHref && (

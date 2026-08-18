@@ -729,6 +729,12 @@ function FaqSection() {
           </details>
         ))}
       </div>
+
+      <p className="text-center mt-6">
+        <Link href="/faq" className="text-sm text-brand-orange font-bold hover:underline">
+          費用・体験・対象年齢など、入会前のよくある質問をもっと見る →
+        </Link>
+      </p>
     </section>
   )
 }
