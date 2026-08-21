@@ -194,7 +194,7 @@ export default function ClassFinder() {
                 onClick={() => setSport(sport === s ? null : s)}
                 className={`${chip(sport === s)} inline-flex items-center gap-1.5`}
               >
-                <SportIcon name={s} className="w-4 h-4" />
+                <SportIcon name={s} className="w-5 h-5" />
                 {SPORT_LABELS[s]}
               </button>
             ))}
