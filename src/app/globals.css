@@ -7,6 +7,11 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
   }
+  /* sticky header が h-14(56px) あるため、#classes などへ飛ぶと
+     見出しがヘッダーの下に隠れていた */
+  [id] {
+    scroll-margin-top: 4.5rem;
+  }
   body {
     @apply font-body text-brand-navy bg-white;
   }

@@ -6,6 +6,10 @@ import Image from 'next/image'
 import { trackEvent } from '@/lib/gtag'
 import { submitContact } from '@/lib/supabase'
 import { venuesWithClasses, getVenueClasses } from '@/lib/classes-data'
+import SportIcon, { type SportIconKey } from '@/components/SportIcon'
+import ClassFinder from '@/components/ClassFinder'
+import ParentVoices from '@/components/ParentVoices'
+import StickyCTA from '@/components/StickyCTA'
 import type { NewsItem } from '@/lib/news'
 
 // ============================================================
@@ -24,11 +28,11 @@ function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-warm-200 shadow-sm">
-      <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="font-display font-bold text-brand-navy leading-tight">
             <span className="text-brand-orange text-lg">STARTUS</span>
-            <span className="text-[10px] text-gray-400 block font-normal">かなざわ総合スポーツクラブ</span>
+            <span className="text-xs text-gray-600 block font-normal">かなざわ総合スポーツクラブ</span>
           </div>
         </Link>
 
@@ -43,21 +47,28 @@ function Header() {
           </Link>
         </nav>
 
-        <button
-          className="md:hidden p-2 text-brand-navy"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="メニュー"
-        >
-          {menuOpen ? (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" />
-            </svg>
-          ) : (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
-            </svg>
-          )}
-        </button>
+        {/* スマホではヘッダーがロゴとハンバーガーだけで、
+            スクロール中に申込ボタンが画面上から消えていた */}
+        <div className="flex md:hidden items-center gap-2">
+          <Link href="/taiken" className="bg-brand-orange text-white text-xs font-bold px-3.5 py-2 rounded-full">
+            体験申込
+          </Link>
+          <button
+            className="p-2 text-brand-navy"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="メニュー"
+          >
+            {menuOpen ? (
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
@@ -91,11 +102,11 @@ function Hero() {
       <div className="absolute bottom-[-60px] left-[-30px] w-48 h-48 rounded-full bg-brand-orange opacity-[0.05]" />
       <div className="absolute top-1/2 right-8 -translate-y-1/2 w-80 h-80 rounded-full bg-white opacity-[0.02]" />
 
-      <div className="relative max-w-5xl mx-auto px-5 py-14 md:py-20">
+      <div className="relative max-w-6xl mx-auto px-5 py-14 md:py-20">
         <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           {/* Text */}
           <div className="text-center md:text-left">
-            <span className="inline-block bg-white/10 text-white/80 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide">
+            <span className="inline-block bg-white/15 text-white/90 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide">
               NPO法人 かなざわ総合スポーツクラブ
             </span>
 
@@ -104,7 +115,7 @@ function Hero() {
               <span className="text-brand-orange">もっと輝こう</span>。
             </h1>
 
-            <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto md:mx-0">
+            <p className="text-white/80 text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto md:mx-0">
               金沢市で約30のスポーツ教室を運営。
               かけっこから陸上・バドミントン・チアまで、
               専門コーチが一人ひとりに寄り添います。
@@ -118,7 +129,7 @@ function Hero() {
               ].map(({ num, label }) => (
                 <div key={label} className="text-center md:text-left">
                   <div className="font-display text-brand-orange text-2xl md:text-3xl font-bold">{num}</div>
-                  <div className="text-white/50 text-xs mt-0.5">{label}</div>
+                  <div className="text-white/70 text-xs mt-0.5">{label}</div>
                 </div>
               ))}
             </div>
@@ -131,7 +142,7 @@ function Hero() {
                 教室を見る
               </a>
             </div>
-            <p className="text-white/30 text-xs mt-3">体験当日の入会で入会金(¥5,500)が無料</p>
+            <p className="text-white/70 text-xs mt-3">体験当日の入会で入会金(¥5,500)が無料</p>
           </div>
 
           {/* Visual */}
@@ -143,6 +154,7 @@ function Hero() {
               width={1408}
               height={768}
               priority
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="relative rounded-3xl shadow-2xl ring-1 ring-white/10 object-cover w-full h-56 md:h-80"
             />
             <div className="absolute -bottom-3 left-4 md:left-6 bg-white rounded-full shadow-lg px-4 py-2 flex items-center gap-2">
@@ -181,7 +193,7 @@ function NewsSection({ news }: { news: NewsItem[] }) {
   }
 
   return (
-    <section className="px-5 py-12 max-w-5xl mx-auto">
+    <section className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">最新情報</p>
       <h2 className="section-title mb-6">お知らせ</h2>
 
@@ -194,8 +206,8 @@ function NewsSection({ news }: { news: NewsItem[] }) {
             rel="noopener noreferrer"
             className="flex items-start gap-4 p-4 bg-warm-50 rounded-xl hover:bg-warm-100 transition-colors"
           >
-            <span className="text-xs text-gray-400 w-16 flex-shrink-0 pt-0.5">{date}</span>
-            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${tagColors[tag] ?? 'bg-gray-100 text-gray-500'}`}>
+            <span className="text-xs text-gray-600 w-16 flex-shrink-0 pt-0.5">{date}</span>
+            <span className={`text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap ${tagColors[tag] ?? 'bg-gray-100 text-gray-500'}`}>
               {tag}
             </span>
             <p className="text-sm text-brand-navy font-medium leading-relaxed">
@@ -251,7 +263,7 @@ function SnsSection() {
 
   return (
     <section className="px-5 py-12 bg-warm-50">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <p className="section-label">フォローする</p>
         <h2 className="section-title mb-2">SNS・公式アカウント</h2>
         <p className="text-sm text-gray-500 mb-6">最新情報・お問い合わせはSNSでも受け付けています。</p>
@@ -270,7 +282,7 @@ function SnsSection() {
               </div>
               <div>
                 <div className="font-bold text-sm text-brand-navy">{name}</div>
-                <div className="text-xs text-gray-400 mt-0.5 leading-relaxed">{desc}</div>
+                <div className="text-xs text-gray-600 mt-0.5 leading-relaxed">{desc}</div>
               </div>
             </a>
           ))}
@@ -284,12 +296,24 @@ function SnsSection() {
 // Classes Section - all sports
 // ============================================================
 function ClassesSection() {
-  const [activeTab, setActiveTab] = useState<string>('all')
-
-  const categories = [
+  // 以前は8枚中6枚が href なしで、クリックしても何も起きない行き止まりだった。
+  // 非陸上の教室は /class/[slug] のカテゴリページを新設したので全カードが遷移先を持つ。
+  // 「その他の教室」カードは price と リンク欄に同じ「詳細はお問い合わせを」が
+  // 二重表示されていたため廃止し、下のLINEブロックに集約した。
+  const categories: {
+    id: string
+    icon: SportIconKey
+    name: string
+    tag: string
+    tagColor: string
+    desc: string
+    classes: string[]
+    price: string
+    href: string
+  }[] = [
     {
       id: 'track',
-      icon: '🏃',
+      icon: 'track',
       name: '陸上・マラソン',
       tag: '人気No.1',
       tagColor: 'bg-brand-orange/10 text-brand-orange',
@@ -297,154 +321,132 @@ function ClassesSection() {
       classes: ['かけっこ塾（年長〜中学生・水/月）', 'ジュニア陸上（小1〜中学）', '走り塾 初中級（小5〜中学生・2026年8月開講）', 'るぶげる親子陸上塾', 'インクルーシブ陸上・大人のマラソン塾'],
       price: '月額 ¥3,300〜¥9,900',
       href: '/rikujo',
-      available: true,
     },
     {
       id: 'badminton',
-      icon: '🏸',
+      icon: 'badminton',
       name: 'バドミントン',
       tag: '初心者歓迎',
-      tagColor: 'bg-blue-50 text-blue-600',
+      tagColor: 'bg-blue-50 text-blue-700',
       desc: 'ジュニアからビギナー、親子参加まで。高尾台中学校・扇台小学校で開催中。',
       classes: ['高尾台ジュニア（土 18:00〜19:30）', '高尾台ビギナー（土 19:30〜21:00）', '扇台（木 17:30〜19:00）', '親子バドミントン（日・高尾台）'],
       price: '月額 ¥6,600',
-      href: null,
-      available: true,
+      href: '/class/badminton',
     },
     {
       id: 'tennis',
-      icon: '🎾',
+      icon: 'tennis',
       name: 'テニス',
       tag: '屋内コート',
-      tagColor: 'bg-green-50 text-green-600',
+      tagColor: 'bg-green-50 text-green-700',
       desc: '金沢星稜大学サブアリーナで開催。天候を気にせず本格レッスン。',
       classes: ['テニス塾（水 19:00〜20:30）'],
       price: '月額 ¥9,900',
-      href: null,
-      available: true,
+      href: '/class/tennis',
     },
     {
       id: 'dance',
-      icon: '💃',
+      icon: 'dance',
       name: 'バレエ・ダンス・チア',
       tag: '表現力UP',
-      tagColor: 'bg-pink-50 text-pink-600',
+      tagColor: 'bg-pink-50 text-pink-700',
       desc: 'バレエ・ヒップホップ・チアリーディング・ダンス。金沢市総合体育館スタジオなどで開催中。',
       classes: ['キッズバレエ（金 17:00〜18:00）', 'キッズヒップホップ（金 18:00〜19:00）', 'キッズチアリーディング（金・泉野／水・米泉）', 'キッズダンス（火 18:00〜19:00）'],
       price: '月額 ¥6,600',
-      href: null,
-      available: true,
+      href: '/class/dance',
     },
     {
       id: 'soccer',
-      icon: '⚽',
+      icon: 'soccer',
       name: 'ソーシャルフットボール',
       tag: '誰でも参加OK',
-      tagColor: 'bg-cyan-50 text-cyan-600',
+      tagColor: 'bg-cyan-50 text-cyan-700',
       desc: '障がいの有無・年齢を問わず参加できるフットボール教室。屋内人工芝のあめるんパークで毎週開催。スポット参加もOK。',
       classes: ['ソーシャルフットボール（木 17:00〜18:00・あめるんパーク）'],
       price: '月額 ¥3,300（スポット ¥1,500/回）',
       href: '/socialfootball',
-      available: true,
     },
     {
       id: 'kinball',
-      icon: '🔵',
+      icon: 'kinball',
       name: 'キンボールスポーツ',
       tag: '親子・家族OK',
-      tagColor: 'bg-purple-50 text-purple-600',
+      tagColor: 'bg-purple-50 text-purple-700',
       desc: '大きなボールを使う誰でも参加できるスポーツ。高尾台中学校体育館で開催中。',
       classes: ['キンボールスポーツ（日 19:00〜21:00）'],
       price: '月額 ¥4,100',
-      href: null,
-      available: true,
+      href: '/class/kinball',
     },
     {
       id: 'skating',
-      icon: '⛸️',
+      icon: 'skating',
       name: 'アイススケート',
       tag: '通年開催',
-      tagColor: 'bg-cyan-50 text-cyan-600',
+      tagColor: 'bg-cyan-50 text-cyan-700',
       desc: '健民スポレクプラザのアイスリンクで開催。石川県スケート連盟の指導員が指導。※無料体験の対象外です。',
       classes: ['アイススケート教室（土 9:30〜11:30）'],
       price: '月額 ¥8,800',
-      href: null,
-      available: true,
-    },
-    {
-      id: 'other',
-      icon: '🎯',
-      name: 'その他の教室',
-      tag: '',
-      tagColor: 'bg-gray-100 text-gray-600',
-      desc: 'げんきワンレッスン（木曜）など。詳細はお気軽にお問い合わせください。',
-      classes: ['げんきワンレッスン（木）'],
-      price: '詳細はお問い合わせを',
-      href: null,
-      available: true,
+      href: '/class/skating',
     },
   ]
 
   return (
     <section id="classes" className="px-5 py-12 bg-warm-50">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <p className="section-label">定期教室</p>
         <h2 className="section-title mb-2">約30のスポーツ教室</h2>
         <p className="text-sm text-gray-500 mb-6">年齢・目的・レベルに合わせた豊富なラインアップ。まずは無料体験から。</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {categories.map(({ id, icon, name, tag, tagColor, desc, classes, price, href, available }) => (
-            <div
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {categories.map(({ id, icon, name, tag, tagColor, desc, classes, price, href }) => (
+            // カード全体をリンクにする。以前は右下の12pxテキストだけがタップ領域だった
+            <Link
               key={id}
-              className={`bg-white rounded-2xl p-5 border-2 transition-all ${
-                available ? 'border-brand-orange/30 hover:border-brand-orange hover:shadow-md' : 'border-warm-200'
-              }`}
+              href={href}
+              className="group flex flex-col bg-white rounded-2xl p-5 border-2 border-brand-orange/30 hover:border-brand-orange hover:shadow-md transition-all"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{icon}</span>
-                  <h3 className={`font-display font-bold text-base ${available ? 'text-brand-navy' : 'text-gray-400'}`}>
+              <div className="flex items-start justify-between gap-2 mb-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="w-10 h-10 rounded-xl bg-brand-orange-light text-brand-orange flex items-center justify-center flex-shrink-0">
+                    <SportIcon name={icon} className="w-6 h-6" />
+                  </span>
+                  <h3 className="font-display font-bold text-base text-brand-navy group-hover:text-brand-orange transition-colors">
                     {name}
                   </h3>
                 </div>
-                <div className="flex flex-col items-end gap-1">
-                  {!available && (
-                    <span className="text-[10px] bg-gray-100 text-gray-400 font-bold px-2 py-0.5 rounded-full">準備中</span>
-                  )}
-                  {tag && available && (
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${tagColor}`}>{tag}</span>
-                  )}
-                </div>
+                {tag && (
+                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${tagColor}`}>
+                    {tag}
+                  </span>
+                )}
               </div>
 
-              <p className={`text-xs leading-relaxed mb-3 ${available ? 'text-gray-500' : 'text-gray-400'}`}>{desc}</p>
+              <p className="text-xs text-gray-600 leading-relaxed mb-3">{desc}</p>
 
-              <div className="space-y-1 mb-3">
+              {/* 教室名の一覧はスマホでは畳む。8カテゴリ分を縦に並べるとスクロールが
+                  3〜4画面になるため。内容はカテゴリページ側で全部見られる */}
+              <div className="hidden md:block space-y-1 mb-3">
                 {classes.map(c => (
-                  <div key={c} className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <span className={`w-1 h-1 rounded-full flex-shrink-0 ${available ? 'bg-brand-orange' : 'bg-gray-300'}`} />
+                  <div key={c} className="flex items-start gap-1.5 text-xs text-gray-600">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0 bg-brand-orange mt-1.5" />
                     {c}
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-warm-200">
-                <span className={`text-xs font-bold ${available ? 'text-brand-navy' : 'text-gray-400'}`}>{price}</span>
-                {available && href ? (
-                  <Link href={href} className="text-xs text-brand-orange font-bold hover:underline">
-                    詳しく見る →
-                  </Link>
-                ) : (
-                  <span className="text-[10px] text-gray-400">詳細はお問い合わせを</span>
-                )}
+              <div className="mt-auto flex items-center justify-between gap-2 pt-3 border-t border-warm-200">
+                <span className="text-xs font-bold text-brand-navy">{price}</span>
+                <span className="text-xs text-brand-orange font-bold whitespace-nowrap">詳しく見る →</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         <div className="mt-6 bg-white border border-warm-200 rounded-2xl p-5 text-center">
           <p className="text-sm text-brand-navy font-bold mb-1">上記以外の教室もあります</p>
-          <p className="text-xs text-gray-500 mb-3">全教室の最新スケジュール・空き状況は公式LINEでお気軽にご確認ください。</p>
+          <p className="text-xs text-gray-600 mb-3">
+            げんきワンレッスン（木曜）など。全教室の最新スケジュール・空き状況は公式LINEでお気軽にご確認ください。
+          </p>
           <a
             href="https://lin.ee/BQKtTDq"
             target="_blank"
@@ -494,7 +496,7 @@ function EnrollmentFlow() {
   ]
 
   return (
-    <section id="flow" className="px-5 py-12 max-w-5xl mx-auto">
+    <section id="flow" className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">入会の流れ</p>
       <h2 className="section-title mb-2">かんたん4ステップ</h2>
       <p className="text-sm text-gray-500 mb-8">はじめての方も安心。ご不明な点はお気軽にご相談ください。</p>
@@ -511,7 +513,7 @@ function EnrollmentFlow() {
               </div>
               <h3 className="font-bold text-sm text-brand-navy mb-2">{title}</h3>
               <p className="text-xs text-gray-500 leading-relaxed mb-2">{desc}</p>
-              <span className="inline-block text-[10px] bg-white border border-brand-orange/20 text-brand-orange font-bold px-2 py-0.5 rounded-full">
+              <span className="inline-block text-xs bg-white border border-brand-orange/20 text-brand-orange font-bold px-2 py-0.5 rounded-full">
                 {note}
               </span>
             </div>
@@ -536,23 +538,30 @@ function EnrollmentFlow() {
 function FeeSection() {
   return (
     <section className="px-5 py-12 bg-warm-50">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <p className="section-label">料金</p>
         <h2 className="section-title mb-2">わかりやすい月額制</h2>
         <p className="text-sm text-gray-500 mb-6">月額¥3,300〜。兄弟割引あり（2人目は月会費20%OFF・3人目以降は半額）。</p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           {[
-            { label: '一般教室', price: '¥6,600', note: '/月', sub: '陸上・バドミントン等' },
-            { label: '親子・特別', price: '¥9,900', note: '/月', sub: '親子参加の陸上教室' },
-            { label: 'インクルーシブ', price: '¥3,300', note: '/月', sub: '障がいの有無を問わず' },
-            { label: 'マラソン等', price: '¥3,300', note: '/月', sub: '中学生〜大人対象' },
-          ].map(({ label, price, note, sub }) => (
-            <div key={label} className="bg-white rounded-xl p-4 text-center border border-warm-200">
-              <div className="text-[10px] text-gray-400 mb-1">{label}</div>
-              <div className="font-display font-bold text-xl text-brand-navy">{price}</div>
-              <div className="text-[10px] text-gray-400">{note}</div>
-              <div className="text-[9px] text-gray-300 mt-1 leading-tight">{sub}</div>
+            { label: '一般教室', price: '¥6,600', sub: '陸上・バドミントン等' },
+            { label: '親子・特別', price: '¥9,900', sub: '親子参加の陸上教室' },
+            { label: 'インクルーシブ', price: '¥3,300', sub: '障がいの有無を問わず' },
+            { label: 'マラソン等', price: '¥3,300', sub: '中学生〜大人対象' },
+          ].map(({ label, price, sub }) => (
+            <div
+              key={label}
+              className="bg-white rounded-xl p-4 border border-warm-200 flex sm:flex-col items-center sm:items-stretch justify-between gap-3 sm:text-center"
+            >
+              <div>
+                <div className="text-sm font-bold text-brand-navy sm:mb-0.5">{label}</div>
+                <div className="text-xs text-gray-600 leading-tight">{sub}</div>
+              </div>
+              <div className="font-display font-bold text-xl text-brand-navy whitespace-nowrap">
+                {price}
+                <span className="text-xs text-gray-600 font-normal">/月</span>
+              </div>
             </div>
           ))}
         </div>
@@ -568,7 +577,7 @@ function FeeSection() {
               <div key={item} className="flex items-center justify-between px-4 py-3">
                 <div>
                   <span className="font-bold text-brand-navy">{item}</span>
-                  {note && <span className="text-[10px] text-gray-400 block">{note}</span>}
+                  {note && <span className="text-xs text-gray-600 block">{note}</span>}
                 </div>
                 <span className="font-display font-bold text-brand-navy">{price}</span>
               </div>
@@ -594,7 +603,7 @@ function AboutSection() {
   ]
 
   return (
-    <section id="about" className="px-5 py-12 max-w-5xl mx-auto">
+    <section id="about" className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">クラブについて</p>
       <h2 className="section-title mb-2">NPO法人 かなざわ総合スポーツクラブ</h2>
       <p className="text-sm text-gray-500 mb-8">スポーツの力で、地域を元気に。</p>
@@ -623,7 +632,7 @@ function AboutSection() {
             { label: '対象年齢', value: '乳幼児〜大人' },
           ].map(({ label, value }) => (
             <div key={label} className="bg-warm-50 rounded-xl p-3 text-center">
-              <div className="text-[10px] text-gray-400 mb-0.5">{label}</div>
+              <div className="text-xs text-gray-600 mb-0.5">{label}</div>
               <div className="font-display font-bold text-base text-brand-navy">{value}</div>
             </div>
           ))}
@@ -662,7 +671,10 @@ function AboutSection() {
 // Instructor Section
 // ============================================================
 function InstructorSection() {
-  const instructors = [
+  // photo に public/ 配下のパス（例: '/img/instructors/matsui.jpg'）を入れると
+  // 顔写真に切り替わる。未設定の間は姓の1文字を丸アバターで表示する。
+  // 子どもを預ける判断で顔が見えないのは不利なので、写真が用意でき次第ここに追加する。
+  const instructors: { name: string; role: string; sport: string; color: string; photo?: string }[] = [
     { name: '松井 久', role: 'ベテランコーチ（Qちゃん）', sport: '陸上・マラソン', color: '#2A7B5B' },
     { name: '山本 勝裕', role: '理論派コーチ（やまティー）', sport: '陸上・親子陸上', color: '#185FA5' },
     { name: '須田 崇', role: '陸上コーチ', sport: '陸上（基礎〜応用）', color: '#993C1D' },
@@ -671,27 +683,38 @@ function InstructorSection() {
 
   return (
     <section className="px-5 py-12 bg-warm-50">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <p className="section-label">指導者紹介</p>
         <h2 className="section-title mb-2">専門の指導者が在籍</h2>
         <p className="text-sm text-gray-500 mb-6">各教室に専門の指導者が在籍。安心してお任せください。</p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-          {instructors.map(({ name, role, sport, color }) => (
+          {instructors.map(({ name, role, sport, color, photo }) => (
             <div key={name} className="bg-white rounded-2xl p-5 text-center border border-warm-200">
-              <div
-                className="w-14 h-14 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-display font-bold text-xl shadow-md"
-                style={{ backgroundColor: color }}
-              >
-                {name[0]}
-              </div>
+              {photo ? (
+                <Image
+                  src={photo}
+                  alt={`${name}コーチ`}
+                  width={112}
+                  height={112}
+                  sizes="56px"
+                  className="w-14 h-14 rounded-full mx-auto mb-3 object-cover shadow-md"
+                />
+              ) : (
+                <div
+                  className="w-14 h-14 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-display font-bold text-xl shadow-md"
+                  style={{ backgroundColor: color }}
+                >
+                  {name[0]}
+                </div>
+              )}
               <div className="font-bold text-sm text-brand-navy">{name}</div>
-              <div className="text-[10px] text-brand-orange font-bold mt-0.5">{role}</div>
-              <div className="text-[10px] text-gray-400 mt-1">{sport}</div>
+              <div className="text-xs text-brand-orange font-bold mt-0.5">{role}</div>
+              <div className="text-xs text-gray-600 mt-1">{sport}</div>
             </div>
           ))}
         </div>
-        <p className="text-xs text-gray-400 text-center">※ かけっこ塾・走り塾（初中級）では金沢星稜大学陸上競技部の学生コーチも指導しています</p>
+        <p className="text-xs text-gray-600 text-center">※ かけっこ塾・走り塾（初中級）では金沢星稜大学陸上競技部の学生コーチも指導しています</p>
       </div>
     </section>
   )
@@ -713,12 +736,12 @@ function FaqSection() {
   ]
 
   return (
-    <section className="px-5 py-12 max-w-5xl mx-auto">
+    <section className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">よくある質問</p>
       <h2 className="section-title mb-6">Q&A</h2>
       <div className="grid md:grid-cols-2 gap-3">
-        {faqs.map(({ q, a }) => (
-          <details key={q} className="group bg-warm-50 rounded-xl overflow-hidden">
+        {faqs.map(({ q, a }, i) => (
+          <details key={q} open={i === 0} className="group bg-warm-50 rounded-xl overflow-hidden">
             <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-brand-navy flex items-start justify-between list-none gap-2">
               <span>Q. {q}</span>
               <svg className="w-4 h-4 text-brand-orange transition-transform group-open:rotate-180 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -872,7 +895,7 @@ function ContactSection() {
   }
 
   return (
-    <section id="contact" className="px-5 py-12 max-w-5xl mx-auto">
+    <section id="contact" className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">お問い合わせ</p>
       <h2 className="section-title mb-2">お気軽にご連絡ください</h2>
       <p className="text-sm text-gray-500 mb-8">ご不明な点はどんな小さなことでもお気軽にどうぞ。</p>
@@ -1029,12 +1052,12 @@ function ContactSection() {
 function Footer() {
   return (
     <footer className="bg-brand-navy px-5 py-10">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="md:flex md:justify-between md:items-start mb-8">
           <div className="mb-6 md:mb-0">
             <div className="font-display text-white font-bold text-xl mb-0.5">STARTUS</div>
-            <div className="text-white/40 text-xs mb-3">sports academy</div>
-            <p className="text-white/30 text-[10px] leading-relaxed">
+            <div className="text-white/60 text-xs mb-3">sports academy</div>
+            <p className="text-white/60 text-xs leading-relaxed">
               特定非営利活動法人 かなざわ総合スポーツクラブ<br />
               〒921-8022 金沢市中村町26-43 VIDA金沢2階<br />
               TEL 076-287-3789（10:00〜16:00）
@@ -1045,22 +1068,24 @@ function Footer() {
             <div>
               <div className="text-white/60 font-bold mb-2">教室</div>
               <div className="space-y-1.5">
-                <Link href="/rikujo" className="block text-white/40 hover:text-white/70 transition-colors">陸上・マラソン教室</Link>
-                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">バドミントン</a>
-                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">テニス</a>
-                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">ダンス・チア</a>
-                <a href="#classes" className="block text-white/40 hover:text-white/70 transition-colors">ソーシャルフットボール</a>
+                <Link href="/rikujo" className="block text-white/60 hover:text-white transition-colors">陸上・マラソン教室</Link>
+                <Link href="/class/badminton" className="block text-white/60 hover:text-white transition-colors">バドミントン</Link>
+                <Link href="/class/tennis" className="block text-white/60 hover:text-white transition-colors">テニス</Link>
+                <Link href="/class/dance" className="block text-white/60 hover:text-white transition-colors">バレエ・ダンス・チア</Link>
+                <Link href="/class/kinball" className="block text-white/60 hover:text-white transition-colors">キンボールスポーツ</Link>
+                <Link href="/class/skating" className="block text-white/60 hover:text-white transition-colors">アイススケート</Link>
+                <Link href="/socialfootball" className="block text-white/60 hover:text-white transition-colors">ソーシャルフットボール</Link>
               </div>
             </div>
             <div>
               <div className="text-white/60 font-bold mb-2">クラブ情報</div>
               <div className="space-y-1.5">
-                <Link href="/about" className="block text-white/40 hover:text-white/70 transition-colors">クラブについて</Link>
-                <a href="#flow" className="block text-white/40 hover:text-white/70 transition-colors">入会の流れ</a>
-                <a href="#venue" className="block text-white/40 hover:text-white/70 transition-colors">会場案内</a>
-                <a href="#contact" className="block text-white/40 hover:text-white/70 transition-colors">お問い合わせ</a>
-                <Link href="/taiken" className="block text-white/40 hover:text-white/70 transition-colors">体験申込</Link>
-                <Link href="/tokushoho" className="block text-white/40 hover:text-white/70 transition-colors">特定商取引法に基づく表記</Link>
+                <Link href="/about" className="block text-white/60 hover:text-white transition-colors">クラブについて</Link>
+                <a href="#flow" className="block text-white/60 hover:text-white transition-colors">入会の流れ</a>
+                <a href="#venue" className="block text-white/60 hover:text-white transition-colors">会場案内</a>
+                <a href="#contact" className="block text-white/60 hover:text-white transition-colors">お問い合わせ</a>
+                <Link href="/taiken" className="block text-white/60 hover:text-white transition-colors">体験申込</Link>
+                <Link href="/tokushoho" className="block text-white/60 hover:text-white transition-colors">特定商取引法に基づく表記</Link>
               </div>
             </div>
           </div>
@@ -1078,14 +1103,14 @@ function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-8 h-8 rounded-full ${bg} hover:opacity-80 transition-opacity flex items-center justify-center text-white text-[9px] font-bold`}
+                className={`w-8 h-8 rounded-full ${bg} hover:opacity-80 transition-opacity flex items-center justify-center text-white text-xs font-bold`}
                 aria-label={label}
               >
                 {label}
               </a>
             ))}
           </div>
-          <p className="text-white/20 text-[10px] text-center">
+          <p className="text-white/50 text-xs text-center">
             © {new Date().getFullYear()} NPO法人 かなざわ総合スポーツクラブ STARTUS All rights reserved.
           </p>
         </div>
@@ -1101,18 +1126,30 @@ export default function HomeLP({ news }: { news: NewsItem[] }) {
   return (
     <main>
       <Header />
-      <Hero />
+
+      {/* 特典はファーストビューに置く（以前はHeroの下で埋もれていた） */}
       <NoticeBanner />
-      <NewsSection news={news} />
-      <SnsSection />
+      <Hero />
+
+      {/* 初見の人が知りたい順: どの教室か → 評判 → いくら → どう入るか → 誰が教えるか → どこで */}
+      <ClassFinder />
       <ClassesSection />
-      <EnrollmentFlow />
+      <ParentVoices className="bg-warm-50" />
       <FeeSection />
-      <AboutSection />
+      <EnrollmentFlow />
       <InstructorSection />
-      <FaqSection />
       <VenueSection />
+      <FaqSection />
+
+      {/* ここから下は既存会員・検討が進んだ人向け。
+          以前は「お知らせ」「SNS」がHero直後にあり、一番離脱しにくい位置を
+          コンバージョンに寄与しないセクションで消費していた */}
+      <NewsSection news={news} />
+      <AboutSection />
+      <SnsSection />
       <ContactSection />
+
+      <StickyCTA />
       <Footer />
     </main>
   )

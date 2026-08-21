@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { venuesWithClasses } from '@/lib/classes-data'
+import { classCategories } from '@/lib/class-categories'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://startus-kanazawa.org'
@@ -29,6 +30,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       'socialfootball',
     ].map(slug => ({
       url: `${baseUrl}/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    })),
+    // 種目カテゴリページ（「金沢 バドミントン 教室」等の検索を拾う）
+    ...classCategories.map(c => ({
+      url: `${baseUrl}/class/${c.slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
