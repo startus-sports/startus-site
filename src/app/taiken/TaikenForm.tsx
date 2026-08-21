@@ -41,6 +41,8 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
   const [omoi, setOmoi] = useState('')
   const [routes, setRoutes] = useState<string[]>([])
   const [routeDetail, setRouteDetail] = useState('')
+  const [referrerName, setReferrerName] = useState('')
+  const [referrerClass, setReferrerClass] = useState('')
   const [question, setQuestion] = useState('')
 
   const [submitting, setSubmitting] = useState(false)
@@ -109,7 +111,15 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
   }
 
   function toggleRoute(r: string) {
-    setRoutes(prev => prev.includes(r) ? prev.filter(x => x !== r) : [...prev, r])
+    setRoutes(prev => {
+      const next = prev.includes(r) ? prev.filter(x => x !== r) : [...prev, r]
+      // 「友人・知人」を外したら紹介者欄の入力値を消す（欄が閉じたまま送信されるのを防ぐ）
+      if (r === '友人・知人' && !next.includes(r)) {
+        setReferrerName('')
+        setReferrerClass('')
+      }
+      return next
+    })
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -179,6 +189,8 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
           omoi,
           route: routeStr,
           route_detail: routeDetail,
+          referrer_name: referrerName,
+          referrer_class: referrerClass,
           note: question,
         }),
         sendEmail({
@@ -200,6 +212,8 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
           omoi1: omoi,
           route: routeStr,
           text1: routeDetail,
+          referrer_name: referrerName,
+          referrer_class: referrerClass,
           question1: question,
         }),
       ])
@@ -464,6 +478,27 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
             </label>
           ))}
         </div>
+
+        {/* 友だち紹介キャンペーン（「友人・知人」を選んだときだけ表示） */}
+        {routes.includes('友人・知人') && (
+          <div className="mt-3 rounded-xl border-2 border-brand-orange/40 bg-orange-50/60 p-4">
+            <p className="text-sm font-bold text-brand-orange">お友だち紹介キャンペーン</p>
+            <p className="mt-1 text-xs leading-relaxed text-gray-600">
+              当クラブの会員からのご紹介の場合は、下記にご記入ください。<br />
+              ご入会されると、<strong>紹介者とご本人の翌月の月会費が50%割引</strong>になります。
+            </p>
+            <div className={`${subLabelClass} mt-3`}>紹介者のお名前</div>
+            <input type="text" className={inputClass} value={referrerName}
+              onChange={e => setReferrerName(e.target.value)} placeholder="例：スタータス 太郎" />
+            <div className={`${subLabelClass} mt-2`}>紹介者の教室名</div>
+            <input type="text" className={inputClass} value={referrerClass}
+              onChange={e => setReferrerClass(e.target.value)} placeholder="例：かけっこ塾 火曜クラス" />
+            <p className="mt-2 text-[11px] leading-relaxed text-gray-500">
+              ※ 割引はご入会から3ヶ月間の継続在籍が条件です（転勤等のやむを得ない事情を除く）。<br />
+              ※ ご家族からの紹介は対象外です。
+            </p>
+          </div>
+        )}
 
         <div className={`${subLabelClass} mt-3`}>その他の経路・詳細</div>
         <input type="text" className={inputClass} value={routeDetail}
