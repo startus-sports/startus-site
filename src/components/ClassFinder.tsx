@@ -5,9 +5,10 @@ import Link from 'next/link'
 import { trackClasses, venues } from '@/lib/classes-data'
 import { otherClasses } from '@/lib/other-classes'
 import { classCategories } from '@/lib/class-categories'
+import SportIcon, { type SportIconKey } from '@/components/SportIcon'
 
 /**
- * 「だれが・いつ・どこで」で教室を絞り込むファインダー。
+ * 「なにを・だれが・いつ・どこで」で教室を絞り込むファインダー。
  *
  * 背景:
  *   約30教室あるのにトップページには絞り込み手段が無く、
@@ -17,7 +18,7 @@ import { classCategories } from '@/lib/class-categories'
  *
  * 対象年齢の判定について:
  *   age は '年長〜中学生' のような自由文字列なので、パースはせず
- *   実データに存在する18パターンを AGE_BUCKETS の対応表で明示的に割り当てている。
+ *   実データに存在するパターンを AGE_BUCKETS の対応表で明示的に割り当てている。
  *   パースで取りこぼして「該当なし」を出すと、本当は通える教室を隠すことになるため。
  *   新しい age 文字列が増えたらここに追記する（未登録は全年齢扱いで必ず表示される）。
  */
@@ -57,9 +58,38 @@ const AGE_BUCKETS: Record<string, AgeBucket[]> = {
 
 const DAY_OPTIONS = ['月', '火', '水', '木', '金', '土', '日'] as const
 
+/** 種目チップの表示順とラベル。SportIcon のキーと揃えている */
+const SPORT_ORDER: SportIconKey[] = [
+  'track', 'badminton', 'tennis', 'dance', 'kinball', 'soccer', 'skating', 'other',
+]
+const SPORT_LABELS: Record<SportIconKey, string> = {
+  track: '陸上・かけっこ',
+  badminton: 'バドミントン',
+  tennis: 'テニス',
+  dance: 'ダンス・チア',
+  kinball: 'キンボール',
+  soccer: 'フットボール',
+  skating: 'スケート',
+  other: 'その他',
+}
+
+/** other-classes.ts の category 文字列を種目キーに寄せる */
+function sportOfOther(id: string, category: string): SportIconKey {
+  if (id === 'ice-skating') return 'skating'
+  switch (category) {
+    case 'バドミントン': return 'badminton'
+    case 'テニス': return 'tennis'
+    case 'バレエ・ダンス・チア': return 'dance'
+    case 'キンボールスポーツ': return 'kinball'
+    case 'サッカー・フットボール': return 'soccer'
+    default: return 'other'
+  }
+}
+
 type FinderClass = {
   id: string
   name: string
+  sport: SportIconKey
   day: string
   time: string
   age: string
@@ -81,6 +111,7 @@ const ALL_CLASSES: FinderClass[] = [
   ...trackClasses.map(c => ({
     id: c.id,
     name: c.name,
+    sport: 'track' as SportIconKey,
     day: c.day,
     time: c.time,
     age: c.age,
@@ -92,6 +123,7 @@ const ALL_CLASSES: FinderClass[] = [
   ...otherClasses.map(c => ({
     id: c.id,
     name: c.name,
+    sport: sportOfOther(c.id, c.category),
     day: c.day,
     time: c.time,
     age: c.age,
@@ -102,15 +134,19 @@ const ALL_CLASSES: FinderClass[] = [
   })),
 ]
 
+// 実際に教室が存在する種目だけをチップに出す
+const SPORT_OPTIONS = SPORT_ORDER.filter(s => ALL_CLASSES.some(c => c.sport === s))
 const AREA_OPTIONS = [...new Set(venues.map(v => v.area))]
 
 export default function ClassFinder() {
+  const [sport, setSport] = useState<SportIconKey | null>(null)
   const [age, setAge] = useState<AgeBucket | null>(null)
   const [day, setDay] = useState<string | null>(null)
   const [area, setArea] = useState<string | null>(null)
 
   const results = useMemo(() => {
     return ALL_CLASSES.filter(c => {
+      if (sport && c.sport !== sport) return false
       if (age) {
         // 対応表に無い age は絞り込みの対象外＝常に表示する（取りこぼし防止）
         const buckets = AGE_BUCKETS[c.age]
@@ -126,9 +162,9 @@ export default function ClassFinder() {
       }
       return true
     })
-  }, [age, day, area])
+  }, [sport, age, day, area])
 
-  const hasFilter = Boolean(age || day || area)
+  const hasFilter = Boolean(sport || age || day || area)
 
   function chip(active: boolean) {
     return `px-3.5 py-2 rounded-full text-sm font-bold border-2 transition-all ${
@@ -143,10 +179,28 @@ export default function ClassFinder() {
       <p className="section-label">教室をさがす</p>
       <h2 className="section-title mb-2">条件から30秒でさがす</h2>
       <p className="text-sm text-gray-500 mb-6">
-        年齢・曜日・エリアを選ぶと、通える教室がすぐ分かります。（選ばなくてもOK）
+        種目・年齢・曜日・エリアを選ぶと、通える教室がすぐ分かります。（選ばなくてもOK）
       </p>
 
       <div className="bg-warm-50 rounded-2xl p-5 space-y-4">
+        <div>
+          <div className="text-xs font-bold text-brand-navy mb-2">どの種目にしますか？</div>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={() => setSport(null)} className={chip(sport === null)}>すべて</button>
+            {SPORT_OPTIONS.map(s => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => setSport(sport === s ? null : s)}
+                className={`${chip(sport === s)} inline-flex items-center gap-1.5`}
+              >
+                <SportIcon name={s} className="w-4 h-4" />
+                {SPORT_LABELS[s]}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div>
           <div className="text-xs font-bold text-brand-navy mb-2">だれが通いますか？</div>
           <div className="flex flex-wrap gap-2">
@@ -193,7 +247,7 @@ export default function ClassFinder() {
           {hasFilter && (
             <button
               type="button"
-              onClick={() => { setAge(null); setDay(null); setArea(null) }}
+              onClick={() => { setSport(null); setAge(null); setDay(null); setArea(null) }}
               className="text-xs text-gray-600 font-bold hover:text-brand-orange"
             >
               条件をクリア
@@ -227,9 +281,14 @@ export default function ClassFinder() {
                   className="group flex flex-col bg-white rounded-2xl p-4 border-2 border-warm-200 hover:border-brand-orange hover:shadow-md transition-all"
                 >
                   <div className="flex items-start justify-between gap-2 mb-1.5">
-                    <h3 className="font-bold text-sm text-brand-navy leading-snug group-hover:text-brand-orange transition-colors">
-                      {c.name}
-                    </h3>
+                    <div className="flex items-start gap-2 min-w-0">
+                      <span className="text-brand-orange flex-shrink-0 mt-0.5">
+                        <SportIcon name={c.sport} className="w-5 h-5" />
+                      </span>
+                      <h3 className="font-bold text-sm text-brand-navy leading-snug group-hover:text-brand-orange transition-colors">
+                        {c.name}
+                      </h3>
+                    </div>
                     {v && (
                       <span className="text-[11px] bg-brand-navy text-white font-bold px-2 py-0.5 rounded flex-shrink-0 mt-0.5">
                         {v.area}
