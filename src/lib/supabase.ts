@@ -40,6 +40,28 @@ export async function submitApplication(formData: Record<string, unknown>) {
   if (!res.ok) throw new Error('Supabase応答エラー: ' + res.status)
 }
 
+/**
+ * トップページのお問い合わせフォーム。
+ *
+ * 以前は mailto: でメールアプリを開いていたが、Gmail等をブラウザで使っている人には
+ * 何も起きないうえ、送信の成否に関係なく完了画面を出していたため、
+ * 届いていない問い合わせがあった可能性がある。体験申込と同じく applications に直接入れる。
+ *
+ * type='contact' は管理システム側に既存の種別。status は anon の RLS が pending を強制する。
+ */
+export async function submitContact(formData: Record<string, unknown>) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/applications`, {
+    method: 'POST',
+    headers: { ...headers, 'Prefer': 'return=minimal' },
+    body: JSON.stringify({
+      type: 'contact',
+      status: 'pending',
+      form_data: formData,
+    }),
+  })
+  if (!res.ok) throw new Error('Supabase応答エラー: ' + res.status)
+}
+
 const EMAIL_API_URL = 'https://startus-system.startus.workers.dev/api/taiken/send-email'
 
 export async function sendEmail(data: Record<string, string>) {

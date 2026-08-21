@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { trackEvent } from '@/lib/gtag'
+import { submitContact } from '@/lib/supabase'
+import { venuesWithClasses, getVenueClasses } from '@/lib/classes-data'
 import type { NewsItem } from '@/lib/news'
 
 // ============================================================
@@ -743,70 +745,103 @@ function FaqSection() {
 // Venue Section
 // ============================================================
 function VenueSection() {
-  const venues = [
-    { name: '金沢市営陸上競技場', area: '中心部', access: '金沢市弥生3丁目5-1' },
-    { name: '中村町小学校', area: '中村町', access: '金沢市中村町（事務局そば）' },
-    { name: '西部緑地公園陸上競技場', area: '西部', access: '金沢市袋畠町南136' },
-    { name: '稲置学園総合運動場', area: '東部', access: '金沢市御所町2-46' },
-    { name: '健民スポレクプラザ', area: '泉野', access: '金沢市西泉6丁目（屋内・雨天OK）' },
-    { name: 'あめるんパーク', area: '駅西', access: '金沢市駅西新町23-1（屋内人工芝）' },
-    { name: '金沢市総合体育館', area: '中心部', access: '金沢市泉野出町3-8-1（ダンス系スタジオ）' },
-    { name: '高尾台中学校', area: '高尾台', access: 'バドミントン・キンボール会場' },
-  ]
+  // 以前はこのセクション内にベタ書きの会場配列を持っていて、
+  // 会場ページ(/venue/[id])へのリンクが1本も無く、場所は「電話かLINEで聞いてください」だった。
+  // classes-data のマスタを使い、地図と会場ページに直接つなぐ。
+  const list = venuesWithClasses()
 
   return (
     <section id="venue" className="px-5 py-12 bg-warm-50">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <p className="section-label">会場案内</p>
         <h2 className="section-title mb-2">事務局・教室会場</h2>
-        <p className="text-sm text-gray-500 mb-6">市内各所で開催中。お近くの会場をお選びください。</p>
+        <p className="text-sm text-gray-500 mb-6">
+          市内{list.length}会場で開催中。会場名をタップすると、その会場の教室・曜日・時間・月会費が見られます。
+        </p>
 
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          {/* Main office */}
-          <div className="bg-white rounded-2xl p-6 border-2 border-brand-orange/20">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-2.5 h-2.5 rounded-full bg-brand-orange flex-shrink-0" />
-              <span className="font-bold text-brand-navy">事務局（VIDA金沢2階）</span>
-            </div>
-            <div className="space-y-2 text-sm text-gray-600">
-              <p className="leading-relaxed">〒921-8022<br />金沢市中村町26-43 VIDA金沢2階</p>
-              <p>
-                TEL:&nbsp;
-                <a href="tel:0762873789" className="text-brand-orange font-bold hover:underline">076-287-3789</a>
-                &nbsp;/ FAX: 076-287-3789
-              </p>
-              <p>
-                Email:&nbsp;
-                <a href="mailto:startus@startus-kanazawa.org" className="text-brand-orange hover:underline">startus@startus-kanazawa.org</a>
-              </p>
-              <p className="text-xs text-gray-400">受付時間: 10:00〜16:00（平日）<br />不在時は留守電にメッセージをどうぞ</p>
-            </div>
-          </div>
-
-          {/* Venue list */}
-          <div className="bg-white rounded-2xl p-6 border border-warm-200">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-400 flex-shrink-0" />
-              <span className="font-bold text-brand-navy">主な教室会場</span>
-            </div>
-            <div className="space-y-3">
-              {venues.map(({ name, area, access }) => (
-                <div key={name} className="flex items-start gap-2">
-                  <span className="text-[10px] bg-brand-navy text-white font-bold px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5">{area}</span>
-                  <div>
-                    <div className="text-xs font-bold text-brand-navy">{name}</div>
-                    <div className="text-[10px] text-gray-400">{access}</div>
-                  </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+          {list.map(v => {
+            const classes = getVenueClasses(v.id)
+            const days = [...new Set(classes.map(c => c.day))].join('・')
+            return (
+              <Link
+                key={v.id}
+                href={`/venue/${v.id}`}
+                className="group flex flex-col bg-white rounded-2xl p-5 border-2 border-warm-200 hover:border-brand-orange hover:shadow-md transition-all"
+              >
+                <div className="flex items-start gap-2 mb-2">
+                  <span className="text-[11px] bg-brand-navy text-white font-bold px-2 py-0.5 rounded flex-shrink-0 mt-0.5">
+                    {v.area}
+                  </span>
+                  <h3 className="font-display font-bold text-sm text-brand-navy leading-snug group-hover:text-brand-orange transition-colors">
+                    {v.name}
+                  </h3>
                 </div>
-              ))}
-            </div>
-          </div>
+
+                <p className="text-xs text-gray-500 leading-relaxed mb-3">{v.address}</p>
+
+                <div className="mt-auto pt-3 border-t border-warm-200 flex items-center justify-between gap-2">
+                  <span className="text-xs text-gray-600">
+                    <span className="font-bold text-brand-navy">{classes.length}教室</span>
+                    {days && <span className="text-gray-500">／{days}曜</span>}
+                  </span>
+                  <span className="text-xs text-brand-orange font-bold whitespace-nowrap">教室を見る →</span>
+                </div>
+              </Link>
+            )
+          })}
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-700">
-          <span className="font-bold">アクセス詳細について：</span>
-          各会場への詳しいアクセス方法は、お電話またはLINEにてお知らせします。
-          体験申込後に担当者よりご案内いたします。
+        {/* 事務局 */}
+        <div className="bg-white rounded-2xl p-6 border-2 border-brand-orange/20">
+          <div className="md:flex md:items-start md:justify-between md:gap-8">
+            <div className="mb-5 md:mb-0">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-brand-orange flex-shrink-0" />
+                <span className="font-bold text-brand-navy">事務局（VIDA金沢2階）</span>
+              </div>
+              <div className="space-y-1.5 text-sm text-gray-600">
+                <p className="leading-relaxed">〒921-8022 金沢市中村町26-43 VIDA金沢2階</p>
+                <p>
+                  TEL:&nbsp;
+                  <a href="tel:0762873789" className="text-brand-orange font-bold hover:underline">076-287-3789</a>
+                  <span className="text-gray-500">&nbsp;/ FAX: 076-287-3789</span>
+                </p>
+                <p>
+                  Email:&nbsp;
+                  <a href="mailto:startus@startus-kanazawa.org" className="text-brand-orange hover:underline break-all">
+                    startus@startus-kanazawa.org
+                  </a>
+                </p>
+                <p className="text-xs text-gray-500 pt-1">
+                  受付時間: 平日 10:00〜16:00／不在時は留守電にメッセージをどうぞ
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 md:w-56 md:flex-shrink-0">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=36.5609,136.6420"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brand-navy text-white font-display font-bold text-sm rounded-full hover:bg-brand-navy-light transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
+                  <path d="M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="10" r="2.5" />
+                </svg>
+                事務局の地図を開く
+              </a>
+              <a
+                href="https://lin.ee/BQKtTDq"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 border-2 border-[#06C755] text-[#06C755] font-display font-bold text-sm rounded-full hover:bg-[#06C755] hover:text-white transition-colors"
+              >
+                LINEで場所を聞く
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -821,17 +856,19 @@ function ContactSection() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [body, setBody] = useState('')
-  const [sent, setSent] = useState(false)
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const subject = encodeURIComponent('お問い合わせ（STARTUSウェブサイトより）')
-    const bodyText = encodeURIComponent(
-      `お名前: ${name}\nメール: ${email}\nお電話: ${phone}\n\nお問い合わせ内容:\n${body}`
-    )
-    trackEvent('contact_form_submit')
-    window.location.href = `mailto:startus@startus-kanazawa.org?subject=${subject}&body=${bodyText}`
-    setSent(true)
+    setState('sending')
+    try {
+      await submitContact({ name, email, phone, body, source: 'home_contact_form' })
+      trackEvent('contact_form_submit')
+      setState('sent')
+    } catch {
+      // 保存に失敗したら黙って成功を装わず、LINE・メールの代替導線を出す
+      setState('error')
+    }
   }
 
   return (
@@ -841,67 +878,77 @@ function ContactSection() {
       <p className="text-sm text-gray-500 mb-8">ご不明な点はどんな小さなことでもお気軽にどうぞ。</p>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Contact info */}
+        {/* 連絡手段は「返信が早い順」に並べる。電話は平日10-16時しか繋がらないため最後 */}
         <div className="space-y-4">
-          <div className="bg-warm-50 rounded-2xl p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-brand-orange/10 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div>
-                <div className="text-xs text-gray-400">お電話</div>
-                <a href="tel:0762873789" className="font-display font-bold text-xl text-brand-navy hover:text-brand-orange transition-colors">
-                  076-287-3789
-                </a>
-              </div>
+          <a
+            href="https://lin.ee/BQKtTDq"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 bg-warm-50 rounded-2xl p-5 hover:shadow-md transition-shadow"
+          >
+            <div className="w-11 h-11 rounded-full bg-[#06C755] flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
+              </svg>
             </div>
-            <p className="text-xs text-gray-400">受付時間: 10:00〜16:00（平日）<br />不在時は留守電にメッセージをどうぞ</p>
-          </div>
+            <div>
+              <div className="text-xs text-gray-500">LINE公式アカウント</div>
+              <div className="font-bold text-brand-navy">友だち追加はこちら</div>
+              <div className="text-xs text-gray-500 mt-0.5">24時間受付・いちばん返信が早い方法です</div>
+            </div>
+          </a>
 
-          <div className="bg-warm-50 rounded-2xl p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-[#06C755]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-[#06C755]" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
-                </svg>
-              </div>
-              <div>
-                <div className="text-xs text-gray-400">LINE公式アカウント</div>
-                <a href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener noreferrer" className="font-bold text-brand-navy text-sm hover:text-brand-orange transition-colors">
-                  友だち追加はこちら
-                </a>
-              </div>
+          <a
+            href="mailto:startus@startus-kanazawa.org"
+            className="flex items-center gap-4 bg-warm-50 rounded-2xl p-5 hover:shadow-md transition-shadow"
+          >
+            <div className="w-11 h-11 rounded-full bg-brand-navy flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-            <p className="text-xs text-gray-400">営業時間内に順次ご返信します</p>
-          </div>
+            <div className="min-w-0">
+              <div className="text-xs text-gray-500">メール</div>
+              <div className="font-bold text-brand-navy break-all">startus@startus-kanazawa.org</div>
+              <div className="text-xs text-gray-500 mt-0.5">24時間受付</div>
+            </div>
+          </a>
 
-          <div className="bg-warm-50 rounded-2xl p-5">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-brand-navy/10 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-brand-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div>
-                <div className="text-xs text-gray-400">メール</div>
-                <a href="mailto:startus@startus-kanazawa.org" className="font-bold text-brand-navy text-sm hover:text-brand-orange transition-colors break-all">
-                  startus@startus-kanazawa.org
-                </a>
-              </div>
+          <a
+            href="tel:0762873789"
+            className="flex items-center gap-4 bg-warm-50 rounded-2xl p-5 hover:shadow-md transition-shadow"
+          >
+            <div className="w-11 h-11 rounded-full bg-brand-orange/10 flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
+                <path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a1 1 0 01-1 1A16 16 0 014 5a1 1 0 011-1z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-          </div>
+            <div>
+              <div className="text-xs text-gray-500">お電話</div>
+              <div className="font-display font-bold text-lg text-brand-navy">076-287-3789</div>
+              <div className="text-xs text-gray-500 mt-0.5">平日 10:00〜16:00／不在時は留守電へどうぞ</div>
+            </div>
+          </a>
         </div>
 
-        {/* Contact form */}
+        {/* メールフォーム。以前は mailto: でメールアプリを開くだけで、
+            送信の成否に関わらず完了画面を出していた（＝届かない問い合わせがあった）。
+            体験申込と同じく applications に直接保存する */}
         <div className="bg-warm-50 rounded-2xl p-6">
           <h3 className="font-bold text-brand-navy mb-4">メールフォーム</h3>
-          {sent ? (
+          {state === 'sent' ? (
             <div className="text-center py-8">
-              <div className="text-4xl mb-3">✅</div>
-              <p className="font-bold text-brand-navy">メールアプリが開きました</p>
-              <p className="text-xs text-gray-400 mt-1">送信後、担当者よりご連絡いたします</p>
+              <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
+                <svg className="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <p className="font-bold text-brand-navy">送信しました</p>
+              <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                3営業日以内に事務局よりご連絡いたします。<br />
+                お急ぎの場合は公式LINEへどうぞ。
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -910,10 +957,11 @@ function ContactSection() {
                 <input
                   type="text"
                   required
+                  autoComplete="name"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="山田 太郎"
-                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-orange bg-white"
+                  className="w-full border border-warm-200 rounded-lg px-3 py-2.5 text-base focus:outline-none focus:border-brand-orange bg-white"
                 />
               </div>
               <div>
@@ -921,20 +969,24 @@ function ContactSection() {
                 <input
                   type="email"
                   required
+                  autoComplete="email"
+                  inputMode="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="example@email.com"
-                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-orange bg-white"
+                  className="w-full border border-warm-200 rounded-lg px-3 py-2.5 text-base focus:outline-none focus:border-brand-orange bg-white"
                 />
               </div>
               <div>
                 <label className="text-xs font-bold text-brand-navy block mb-1">電話番号</label>
                 <input
                   type="tel"
+                  autoComplete="tel"
+                  inputMode="tel"
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
                   placeholder="076-xxx-xxxx"
-                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-orange bg-white"
+                  className="w-full border border-warm-200 rounded-lg px-3 py-2.5 text-base focus:outline-none focus:border-brand-orange bg-white"
                 />
               </div>
               <div>
@@ -945,13 +997,24 @@ function ContactSection() {
                   value={body}
                   onChange={e => setBody(e.target.value)}
                   placeholder="ご質問・ご相談内容をご記入ください"
-                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-orange bg-white resize-none"
+                  className="w-full border border-warm-200 rounded-lg px-3 py-2.5 text-base focus:outline-none focus:border-brand-orange bg-white resize-none"
                 />
               </div>
-              <button type="submit" className="btn-primary w-full !text-sm">
-                メールで送信する
+
+              {state === 'error' && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-xs text-red-700 leading-relaxed">
+                  送信に失敗しました。お手数ですが{' '}
+                  <a href="https://lin.ee/BQKtTDq" target="_blank" rel="noopener noreferrer" className="font-bold underline">公式LINE</a>
+                  {' '}または{' '}
+                  <a href="mailto:startus@startus-kanazawa.org" className="font-bold underline">メール</a>
+                  {' '}でご連絡ください。
+                </div>
+              )}
+
+              <button type="submit" disabled={state === 'sending'} className="btn-primary w-full !text-sm disabled:opacity-60">
+                {state === 'sending' ? '送信中…' : '送信する'}
               </button>
-              <p className="text-[10px] text-gray-400 text-center">送信後、メールアプリが開きます</p>
+              <p className="text-xs text-gray-500 text-center">3営業日以内に事務局よりご連絡いたします</p>
             </form>
           )}
         </div>
