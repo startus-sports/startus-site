@@ -55,14 +55,27 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
   useEffect(() => {
     fetchClassrooms()
       .then((data: Classroom[]) => {
-        setClasses(data.map(d => ({
+        const list = data.map(d => ({
           name: d.name,
           category: d.category,
           sort: d.display_order,
           id: d.calendar_tag || d.name,
           // trial_open が false の教室はキャンセル待ち扱い（未設定は受付可）
           trialOpen: d.trial_open !== false,
-        })))
+        }))
+        setClasses(list)
+
+        // トップページの教室ファインダーなどから ?class_tag= 付きで来たときは
+        // その教室を最初から選んでおく（教室名は全角/半角カッコの表記ゆれが
+        // あるので、必ず calendar_tag で突き合わせる）
+        const tag = new URLSearchParams(window.location.search).get('class_tag')
+        if (tag) {
+          const hit = list.find(c => c.id === tag)
+          if (hit) {
+            setSelectedClassName(hit.name)
+            setSelectedClassId(hit.id)
+          }
+        }
       })
       .catch(err => console.error('教室リスト取得エラー:', err))
       .finally(() => setClassLoading(false))
@@ -190,7 +203,10 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
           question1: question,
         }),
       ])
-      trackEvent('taiken_form_submit', { class_name: selectedClassName || '未選択' })
+      trackEvent('taiken_form_submit', {
+        class_name: selectedClassName || '未選択',
+        from: new URLSearchParams(window.location.search).get('from') || 'direct',
+      })
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {

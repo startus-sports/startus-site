@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { trackEvent } from '@/lib/gtag'
+import type { TrialOpenMap } from '@/lib/availability'
 import { submitContact } from '@/lib/supabase'
 import { venuesWithClasses, getVenueClasses } from '@/lib/classes-data'
 import SportIcon, { type SportIconKey } from '@/components/SportIcon'
@@ -42,7 +43,11 @@ function Header() {
               {item.label}
             </a>
           ))}
-          <Link href="/taiken" className="btn-primary !py-2 !px-5 !text-sm">
+          <Link
+            href="/taiken"
+            onClick={() => trackEvent('cta_click', { location: 'header_desktop' })}
+            className="btn-primary !py-2 !px-5 !text-sm"
+          >
             無料体験
           </Link>
         </nav>
@@ -50,7 +55,11 @@ function Header() {
         {/* スマホではヘッダーがロゴとハンバーガーだけで、
             スクロール中に申込ボタンが画面上から消えていた */}
         <div className="flex md:hidden items-center gap-2">
-          <Link href="/taiken" className="bg-brand-orange text-white text-xs font-bold px-3.5 py-2 rounded-full">
+          <Link
+            href="/taiken"
+            onClick={() => trackEvent('cta_click', { location: 'header_mobile' })}
+            className="bg-brand-orange text-white text-xs font-bold px-3.5 py-2 rounded-full"
+          >
             体験申込
           </Link>
           <button
@@ -83,7 +92,11 @@ function Header() {
               {item.label}
             </a>
           ))}
-          <Link href="/taiken" className="btn-primary w-full text-center" onClick={() => setMenuOpen(false)}>
+          <Link
+            href="/taiken"
+            className="btn-primary w-full text-center"
+            onClick={() => { trackEvent('cta_click', { location: 'header_menu' }); setMenuOpen(false) }}
+          >
             無料体験に申し込む
           </Link>
         </div>
@@ -135,7 +148,11 @@ function Hero() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <Link href="/taiken" className="btn-primary text-base px-10 py-4">
+              <Link
+                href="/taiken"
+                onClick={() => trackEvent('cta_click', { location: 'hero' })}
+                className="btn-primary text-base px-10 py-4"
+              >
                 無料体験に申し込む
               </Link>
               <a href="#classes" className="inline-flex items-center justify-center px-10 py-4 border-2 border-white/30 text-white font-display font-bold text-base rounded-full hover:bg-white/10 transition-all">
@@ -403,6 +420,7 @@ function ClassesSection() {
             <Link
               key={id}
               href={href}
+              onClick={() => trackEvent('category_card_click', { category: id })}
               className="group flex flex-col bg-white rounded-2xl p-5 border-2 border-brand-orange/30 hover:border-brand-orange hover:shadow-md transition-all"
             >
               <div className="flex items-start justify-between gap-2 mb-3">
@@ -451,6 +469,7 @@ function ClassesSection() {
             href="https://lin.ee/BQKtTDq"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent('line_click', { location: 'classes' })}
             className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#06C755] text-white font-display font-bold text-sm rounded-full hover:opacity-90 transition-opacity shadow-md"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -524,7 +543,11 @@ function EnrollmentFlow() {
       <div className="mt-6 bg-gradient-to-r from-brand-orange-light to-amber-50 border border-brand-orange/20 rounded-2xl p-5 text-center">
         <p className="font-bold text-brand-navy mb-1">体験当日の入会で入会金(¥5,500)が無料！</p>
         <p className="text-xs text-gray-500">+ STARTUSオリジナルTシャツプレゼント</p>
-        <Link href="/taiken" className="btn-primary mt-4 !text-sm">
+        <Link
+          href="/taiken"
+          onClick={() => trackEvent('cta_click', { location: 'flow' })}
+          className="btn-primary mt-4 !text-sm"
+        >
           体験レッスンに申し込む
         </Link>
       </div>
@@ -790,6 +813,7 @@ function VenueSection() {
               <Link
                 key={v.id}
                 href={`/venue/${v.id}`}
+                onClick={() => trackEvent('venue_card_click', { venue: v.id })}
                 className="group flex flex-col bg-white rounded-2xl p-5 border-2 border-warm-200 hover:border-brand-orange hover:shadow-md transition-all"
               >
                 <div className="flex items-start gap-2 mb-2">
@@ -907,6 +931,7 @@ function ContactSection() {
             href="https://lin.ee/BQKtTDq"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent('line_click', { location: 'contact' })}
             className="flex items-center gap-4 bg-warm-50 rounded-2xl p-5 hover:shadow-md transition-shadow"
           >
             <div className="w-11 h-11 rounded-full bg-[#06C755] flex items-center justify-center flex-shrink-0">
@@ -1122,7 +1147,7 @@ function Footer() {
 // ============================================================
 // Main HomeLP
 // ============================================================
-export default function HomeLP({ news }: { news: NewsItem[] }) {
+export default function HomeLP({ news, trialOpen }: { news: NewsItem[]; trialOpen?: TrialOpenMap }) {
   return (
     <main>
       <Header />
@@ -1132,7 +1157,7 @@ export default function HomeLP({ news }: { news: NewsItem[] }) {
       <Hero />
 
       {/* 初見の人が知りたい順: どの教室か → 評判 → いくら → どう入るか → 誰が教えるか → どこで */}
-      <ClassFinder />
+      <ClassFinder trialOpen={trialOpen} />
       <ClassesSection />
       <ParentVoices className="bg-warm-50" />
       <FeeSection />

@@ -26,6 +26,17 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: 'https://startus-kanazawa.org',
     siteName: 'STARTUS sports academy',
+    // OGP画像が無いとLINE・Facebook・Meta広告でサムネイルが出ず、
+    // ただのテキストリンクになってしまう。
+    // 画像は scripts/og/ のテンプレートを headless Chrome で
+    // レンダリングして public/og/ に置いた静的ファイル。
+    images: [{ url: '/og/default.jpg', width: 1200, height: 630, alt: 'STARTUS sports academy' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'STARTUS sports academy | かなざわ総合スポーツクラブ',
+    description: '金沢で約30のスポーツ教室を運営。かけっこから陸上・バドミントン・チアまで、専門コーチが一人ひとりに寄り添います。無料体験受付中。',
+    images: ['/og/default.jpg'],
   },
 }
 

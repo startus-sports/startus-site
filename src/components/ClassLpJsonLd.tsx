@@ -1,4 +1,5 @@
 import { trackClasses, venues } from '@/lib/classes-data'
+import { fetchTrialOpenMap, isTrialOpen } from '@/lib/availability'
 
 const SITE = 'https://startus-kanazawa.org'
 
@@ -9,9 +10,14 @@ const SITE = 'https://startus-kanazawa.org'
  * 教室情報を直せば構造化データも自動で追従する。
  * LP側のHTMLが既に ld+json を持っている場合は二重になるため出力しない。
  */
-export default function ClassLpJsonLd({ slug }: { slug: string }) {
+export default async function ClassLpJsonLd({ slug }: { slug: string }) {
   const cls = trackClasses.find(c => c.lpHref === `/${slug}`)
   if (!cls) return null
+
+  // 以前は説明文に「満員」という文字が含まれるかで判定していたため、
+  // 説明文が古いままだと Google に売り切れを伝え続けてしまっていた
+  const trialOpen = await fetchTrialOpenMap()
+  const open = isTrialOpen(trialOpen, cls.id)
 
   const venue = venues.find(v => v.id === cls.venueId)
 
@@ -40,9 +46,9 @@ export default function ClassLpJsonLd({ slug }: { slug: string }) {
       priceCurrency: 'JPY',
       category: '月会費',
       url: `${SITE}/taiken`,
-      availability: cls.description.includes('満員')
-        ? 'https://schema.org/LimitedAvailability'
-        : 'https://schema.org/InStock',
+      availability: open
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/LimitedAvailability',
     },
     hasCourseInstance: {
       '@type': 'CourseInstance',

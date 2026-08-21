@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { trackEvent } from '@/lib/gtag'
 
 /**
  * 画面下に追従する体験申込CTA。
@@ -19,6 +22,7 @@ export default function StickyCTA({ from }: { from?: string }) {
         </div>
         <Link
           href={from ? `/taiken?from=${from}` : '/taiken'}
+          onClick={() => trackEvent('cta_click', { location: 'sticky' })}
           className="btn-primary !py-2.5 !px-6 !text-sm whitespace-nowrap flex-shrink-0"
         >
           体験申込

@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: '金沢の陸上教室・かけっこ教室',
   description: '金沢市内5会場で週6日開催。かけっこから陸上競技まで、曜日・会場を選べます。月額¥3,300〜。無料体験受付中。',
   openGraph: {
+    images: [{ url: '/og/rikujo.jpg', width: 1200, height: 630, alt: '金沢の陸上・かけっこ教室' }],
     title: '金沢の陸上教室・かけっこ教室 | STARTUS',
     description: '金沢市内5会場で週6日開催。16教室から曜日・会場を選べる陸上教室。月額¥3,300〜。無料体験受付中。',
     url: 'https://startus-kanazawa.org/rikujo',

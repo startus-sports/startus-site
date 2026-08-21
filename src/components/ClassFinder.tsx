@@ -1,11 +1,13 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { trackClasses, venues } from '@/lib/classes-data'
 import { otherClasses } from '@/lib/other-classes'
 import { classCategories } from '@/lib/class-categories'
 import SportIcon, { type SportIconKey } from '@/components/SportIcon'
+import { isTrialOpen, CALENDAR_TAGS, type TrialOpenMap } from '@/lib/availability'
+import { trackEvent } from '@/lib/gtag'
 
 /**
  * 「なにを・だれが・いつ・どこで」で教室を絞り込むファインダー。
@@ -136,13 +138,29 @@ const ALL_CLASSES: FinderClass[] = [
 
 // 実際に教室が存在する種目だけをチップに出す
 const SPORT_OPTIONS = SPORT_ORDER.filter(s => ALL_CLASSES.some(c => c.sport === s))
-const AREA_OPTIONS = [...new Set(venues.map(v => v.area))]
+const AREA_OPTIONS: string[] = [...new Set(venues.map(v => String(v.area)))]
 
-export default function ClassFinder() {
+export default function ClassFinder({ trialOpen }: { trialOpen?: TrialOpenMap }) {
   const [sport, setSport] = useState<SportIconKey | null>(null)
   const [age, setAge] = useState<AgeBucket | null>(null)
   const [day, setDay] = useState<string | null>(null)
   const [area, setArea] = useState<string | null>(null)
+  const [ready, setReady] = useState(false)
+
+  // URLの条件を復元する。useSearchParams はページ全体をCSRに落としてしまうので
+  // マウント後に location から直接読む
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search)
+    const s = q.get('sport')
+    const a = q.get('age')
+    const d = q.get('day')
+    const ar = q.get('area')
+    if (s && SPORT_OPTIONS.includes(s as SportIconKey)) setSport(s as SportIconKey)
+    if (a && AGE_OPTIONS.some(o => o.id === a)) setAge(a as AgeBucket)
+    if (d && (DAY_OPTIONS as readonly string[]).includes(d)) setDay(d)
+    if (ar && AREA_OPTIONS.includes(ar)) setArea(ar)
+    setReady(true)
+  }, [])
 
   const results = useMemo(() => {
     return ALL_CLASSES.filter(c => {
@@ -166,6 +184,36 @@ export default function ClassFinder() {
 
   const hasFilter = Boolean(sport || age || day || area)
 
+  // 条件をURLに残して共有できるようにしつつ、GA4に送って需要を可視化する。
+  // 「未就学×土曜で0件」が積み上がれば、それは新しい教室の需要シグナルになる
+  useEffect(() => {
+    if (!ready) return
+    const q = new URLSearchParams()
+    if (sport) q.set('sport', sport)
+    if (age) q.set('age', age)
+    if (day) q.set('day', day)
+    if (area) q.set('area', area)
+    const qs = q.toString()
+    window.history.replaceState(null, '', qs ? `?${qs}#finder` : window.location.pathname)
+
+    if (!hasFilter) return
+    trackEvent('class_finder_filter', {
+      sport: sport ?? 'all',
+      age: age ?? 'all',
+      day: day ?? 'all',
+      area: area ?? 'all',
+      result_count: String(results.length),
+    })
+    if (results.length === 0) {
+      trackEvent('class_finder_no_result', {
+        sport: sport ?? 'all',
+        age: age ?? 'all',
+        day: day ?? 'all',
+        area: area ?? 'all',
+      })
+    }
+  }, [ready, sport, age, day, area, hasFilter, results.length])
+
   function chip(active: boolean) {
     return `px-3.5 py-2 rounded-full text-sm font-bold border-2 transition-all ${
       active
@@ -175,7 +223,7 @@ export default function ClassFinder() {
   }
 
   return (
-    <section className="px-5 py-12 max-w-6xl mx-auto">
+    <section id="finder" className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">教室をさがす</p>
       <h2 className="section-title mb-2">条件から30秒でさがす</h2>
       <p className="text-sm text-gray-500 mb-6">
@@ -274,12 +322,15 @@ export default function ClassFinder() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {results.map(c => {
               const v = venues.find(v => v.id === c.venueId)
+              const open = isTrialOpen(trialOpen, c.id)
               return (
-                <Link
+                // カード全体を詳細リンクにしつつ、体験申込ボタンだけ前面に出す
+                <div
                   key={c.id}
-                  href={c.href}
-                  className="group flex flex-col bg-white rounded-2xl p-4 border-2 border-warm-200 hover:border-brand-orange hover:shadow-md transition-all"
+                  className="group relative flex flex-col bg-white rounded-2xl p-4 border-2 border-warm-200 hover:border-brand-orange hover:shadow-md transition-all"
                 >
+                  <Link href={c.href} className="absolute inset-0 z-0 rounded-2xl" aria-label={`${c.name}の詳細を見る`} />
+
                   <div className="flex items-start justify-between gap-2 mb-1.5">
                     <div className="flex items-start gap-2 min-w-0">
                       <span className="text-brand-orange flex-shrink-0 mt-0.5">
@@ -298,11 +349,28 @@ export default function ClassFinder() {
                   <p className="text-xs text-gray-600 mb-0.5">{c.day}曜 {c.time}</p>
                   <p className="text-xs text-gray-600 mb-0.5">対象 {c.age}</p>
                   <p className="text-xs text-gray-600">{c.venue}</p>
-                  <div className="mt-auto pt-2.5 flex items-center justify-between gap-2">
+
+                  {!open && (
+                    <p className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1 self-start">
+                      満員・キャンセル待ち
+                    </p>
+                  )}
+
+                  <div className="mt-auto pt-3 flex items-center justify-between gap-2">
                     <span className="text-xs font-bold text-brand-navy">月額 ¥{c.price.toLocaleString()}</span>
-                    <span className="text-xs text-brand-orange font-bold whitespace-nowrap">詳しく見る →</span>
+                    <Link
+                      href={
+                        CALENDAR_TAGS[c.id]
+                          ? `/taiken?from=finder&class_tag=${CALENDAR_TAGS[c.id]}`
+                          : '/taiken?from=finder'
+                      }
+                      onClick={() => trackEvent('finder_taiken_click', { class_name: c.name })}
+                      className="relative z-10 bg-brand-orange text-white text-xs font-bold px-3.5 py-2 rounded-full hover:bg-brand-orange-hover transition-colors whitespace-nowrap"
+                    >
+                      {open ? '体験申込' : 'キャンセル待ち'}
+                    </Link>
                   </div>
-                </Link>
+                </div>
               )
             })}
           </div>

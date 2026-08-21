@@ -1,5 +1,6 @@
 import HomeLP from './HomeLP'
 import { fetchNews } from '@/lib/news'
+import { fetchTrialOpenMap } from '@/lib/availability'
 import { venues } from '@/lib/classes-data'
 
 const SITE = 'https://startus-kanazawa.org'
@@ -40,6 +41,7 @@ const organizationJsonLd = {
 
 export default async function Home() {
   const news = await fetchNews()
+  const trialOpen = await fetchTrialOpenMap()
 
   return (
     <>
@@ -47,7 +49,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
-      <HomeLP news={news} />
+      <HomeLP news={news} trialOpen={trialOpen} />
     </>
   )
 }

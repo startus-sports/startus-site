@@ -1,0 +1,51 @@
+<!doctype html>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{width:1200px;height:630px;overflow:hidden;
+       font-family:"Noto Sans JP","M PLUS Rounded 1c",sans-serif;
+       background:linear-gradient(135deg,#1B2A4A 0%,#2A3F6A 100%);
+       color:#fff;position:relative}
+  .blob{position:absolute;border-radius:50%;background:#E8740C}
+  .b1{width:520px;height:520px;top:-160px;right:-140px;opacity:.10}
+  .b2{width:340px;height:340px;bottom:-130px;left:-90px;opacity:.07}
+  .b3{width:600px;height:600px;top:120px;right:60px;background:#fff;opacity:.02}
+  .wrap{position:relative;padding:70px 78px;height:100%;display:flex;flex-direction:column}
+  .brand{display:flex;align-items:baseline;gap:14px;margin-bottom:38px}
+  .logo{font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;font-size:44px;color:#E8740C;letter-spacing:.02em}
+  .org{font-size:19px;color:rgba(255,255,255,.72)}
+  h1{font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;font-size:66px;line-height:1.32;
+     letter-spacing:.01em;margin-bottom:26px}
+  h1 .hl{color:#FFB05C}
+  p.lead{font-size:26px;line-height:1.7;color:rgba(255,255,255,.85);max-width:940px}
+  .facts{margin-top:auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .fact{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.16);
+        border-radius:999px;padding:13px 26px;font-size:23px;font-weight:700}
+  .cta{background:#E8740C;border-radius:999px;padding:15px 34px;font-size:24px;font-weight:800;
+       font-family:"M PLUS Rounded 1c",sans-serif}
+  .url{position:absolute;right:78px;top:80px;font-size:20px;color:rgba(255,255,255,.55)}
+</style>
+<body>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="wrap">
+    <div class="brand">
+      <span class="logo">STARTUS</span>
+      <span class="org">NPO法人 かなざわ総合スポーツクラブ</span>
+    </div>
+    <h1 id="title"></h1>
+    <p class="lead" id="lead"></p>
+    <div class="facts" id="facts"></div>
+    <div class="url">startus-kanazawa.org</div>
+  </div>
+<script>
+  const p = new URLSearchParams(location.search);
+  document.getElementById('title').innerHTML = p.get('t') || '';
+  document.getElementById('lead').textContent = p.get('d') || '';
+  const facts = (p.get('f') || '').split('|').filter(Boolean);
+  const cta = p.get('c');
+  document.getElementById('facts').innerHTML =
+    facts.map(f => `<span class="fact">${f}</span>`).join('') +
+    (cta ? `<span class="cta">${cta}</span>` : '');
+</script>
+</body>

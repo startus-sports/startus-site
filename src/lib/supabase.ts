@@ -21,7 +21,9 @@ export type Classroom = {
 export async function fetchClassrooms(): Promise<Classroom[]> {
   const res = await fetch(
     `${SUPABASE_URL}/rest/v1/public_classrooms?select=name,category,display_order,calendar_tag,trial_open&order=display_order.asc`,
-    { headers }
+    // サーバ側（受付状況の表示）では1時間キャッシュする。
+    // ブラウザからの呼び出し（体験申込フォーム）ではこの指定は無視され常に最新
+    { headers, next: { revalidate: 3600 } }
   )
   if (!res.ok) throw new Error('教室リストの取得に失敗しました')
   return res.json()

@@ -32,6 +32,13 @@ export async function generateMetadata(
       title: `${cat.heading} | STARTUS sports academy`,
       description: cat.description,
       url: `${SITE}/class/${cat.slug}`,
+      images: [{ url: `/og/class-${cat.slug}.jpg`, width: 1200, height: 630, alt: cat.heading }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: cat.heading,
+      description: cat.description,
+      images: [`/og/class-${cat.slug}.jpg`],
     },
   }
 }

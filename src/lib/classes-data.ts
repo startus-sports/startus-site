@@ -73,7 +73,7 @@ export const trackClasses: ClassData[] = [
     price: 6600,
     instructor: '金沢星稜大学陸上競技部、スタータススタッフ',
     instructorTitle: '星稜大学陸上部の現役大学生が直接指導',
-    description: '金沢星稜大学陸上部の大学生が楽しく指導！アプローチ（年長〜小2）からホップ・ステップ・ジャンプまで、年齢とレベルに合わせたクラス編成。※現在満員のため体験受付を一時停止中（キャンセル待ち登録を受付中）。',
+    description: '金沢星稜大学陸上部の大学生が楽しく指導！アプローチ（年長〜小2）からホップ・ステップ・ジャンプまで、年齢とレベルに合わせたクラス編成。',
     level: 'intermediate',
     levelLabel: '発展',
     levelStars: 3,
