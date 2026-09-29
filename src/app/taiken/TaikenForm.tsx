@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { fetchClassrooms, submitApplication, sendEmail, type Classroom } from '@/lib/supabase'
+import { fetchClassrooms, sendEmail, type Classroom } from '@/lib/supabase'
 import { trackEvent } from '@/lib/gtag'
+import { getAttribution } from '@/lib/attribution'
 import CalendarPicker from './CalendarPicker'
 
 type ClassItem = { name: string; category: string; sort: number; id: string; trialOpen: boolean }
@@ -101,6 +102,7 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
     setSelectedClassName(cls.name)
     setSelectedClassId(cls.id)
     setKiboubi('')
+    trackEvent('taiken_class_select', { class_tag: cls.id, category: cls.category, status: cls.trialOpen ? 'open' : 'waitlist' })
   }
 
   function handleCategorySelect(cat: string) {
@@ -130,10 +132,12 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
     const now = Date.now()
     if (submitCountRef.current >= 3) {
       setSubmitError('送信回数の上限に達しました。ページを再読み込みしてください。')
+      trackEvent('taiken_form_error', { reason: 'submit_limit' })
       return
     }
     if (now - lastSubmitRef.current < 30000) {
       setSubmitError('連続送信はできません。しばらくお待ちください。')
+      trackEvent('taiken_form_error', { reason: 'too_frequent' })
       return
     }
 
@@ -141,24 +145,28 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
     const elapsed = now - loadTimeRef.current
     if (elapsed < 3000 || elapsed > 1800000) {
       setSubmitError('セッションが無効です。ページを再読み込みしてください。')
+      trackEvent('taiken_form_error', { reason: elapsed < 3000 ? 'too_fast' : 'session_expired' })
       return
     }
 
     // Kana validation
     if ((kanaSei && !kanaPattern.test(kanaSei)) || (kanaMei && !kanaPattern.test(kanaMei))) {
       setSubmitError('フリガナはカタカナで入力してください。')
+      trackEvent('taiken_form_error', { reason: 'kana' })
       return
     }
 
     // Date validation
     if (!kibouUnknown && !kiboubi) {
       setSubmitError('カレンダーから体験希望日を選択するか、「希望日が未定」にチェックを入れてください。')
+      trackEvent('taiken_form_error', { reason: 'date' })
       return
     }
 
     // Route validation
     if (routes.length === 0) {
       setSubmitError('ご存じになった経路を1つ以上選択してください。')
+      trackEvent('taiken_form_error', { reason: 'route' })
       return
     }
 
@@ -168,63 +176,60 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
 
     const fullName = `${nameSei}\u3000${nameMei}`.trim()
     const fullKana = `${kanaSei}\u3000${kanaMei}`.trim()
-    const gender = sex.replace('性', '')
     const routeStr = routes.join(', ')
     const dateValue = kibouUnknown ? '不明' : kiboubi
 
+    const from = new URLSearchParams(window.location.search).get('from') || 'direct'
+    const attribution = getAttribution()
+
     try {
-      await Promise.all([
-        submitApplication({
-          name: fullName,
-          furigana: fullKana,
-          gender,
-          age,
-          grade,
-          school,
-          guardian_name: guardian,
-          phone: tel,
-          email,
-          desired_date: dateValue,
-          desired_classes: selectedClassName ? [selectedClassName] : [],
-          omoi,
-          route: routeStr,
-          route_detail: routeDetail,
-          referrer_name: referrerName,
-          referrer_class: referrerClass,
-          note: question,
-        }),
-        sendEmail({
-          input2: selectedClassName,
-          name_sei: nameSei,
-          name_mei: nameMei,
-          name1: fullName,
-          kana_sei: kanaSei,
-          kana_mei: kanaMei,
-          name2: fullKana,
-          sex1: sex,
-          age1: age,
-          year1: grade,
-          school1: school,
-          name3: guardian,
-          tel1: tel,
-          email1: email,
-          kiboubi1: dateValue,
-          omoi1: omoi,
-          route: routeStr,
-          text1: routeDetail,
-          referrer_name: referrerName,
-          referrer_class: referrerClass,
-          question1: question,
-        }),
-      ])
+      // 申込の保存は Worker（startus-system /api/taiken/send-email）が一本で行う。
+      // 教室名→calendar_tag の変換・キャンセル待ちの判定・流入元の記録もそこで済む。
+      // 以前はここからも applications に直接保存していて、1回の申込で2行
+      // （片方は教室が日本語名のまま・流入元なし）入っていた。
+      await sendEmail({
+        input2: selectedClassName,
+        class_tag: selectedClassId,
+        name_sei: nameSei,
+        name_mei: nameMei,
+        name1: fullName,
+        kana_sei: kanaSei,
+        kana_mei: kanaMei,
+        name2: fullKana,
+        sex1: sex,
+        age1: age,
+        year1: grade,
+        school1: school,
+        name3: guardian,
+        tel1: tel,
+        email1: email,
+        kiboubi1: dateValue,
+        omoi1: omoi,
+        route: routeStr,
+        text1: routeDetail,
+        referrer_name: referrerName,
+        referrer_class: referrerClass,
+        question1: question,
+        attribution,
+      })
       trackEvent('taiken_form_submit', {
         class_name: selectedClassName || '未選択',
-        from: new URLSearchParams(window.location.search).get('from') || 'direct',
+        class_tag: selectedClassId || '',
+        from,
+        src: attribution?.src || '',
+      })
+      // GA4 の推奨イベント。キーイベント（申込数の主指標）にするのはこちら
+      trackEvent('generate_lead', {
+        form: 'taiken',
+        class_tag: selectedClassId || '',
+        from,
+        src: attribution?.src || '',
       })
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
       console.error('送信エラー:', err)
+      trackEvent('taiken_submit_error', { reason: 'send_failed' })
       setSubmitError('送信に失敗しました。時間をおいて再度お試しください。')
     } finally {
       setSubmitting(false)
@@ -279,7 +284,7 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
     <form onSubmit={handleSubmit} className="space-y-8">
 
       {/* ===== 1. 教室選択 ===== */}
-      <section>
+      <section id="taiken-step1">
         <h3 className="text-sm font-bold text-brand-navy border-b-2 border-warm-200 pb-1 mb-3">
           1. 参加希望の教室 {reqBadge}
         </h3>
@@ -353,7 +358,7 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
       </section>
 
       {/* ===== 2. 参加者情報 ===== */}
-      <section>
+      <section id="taiken-step2">
         <h3 className="text-sm font-bold text-brand-navy border-b-2 border-warm-200 pb-1 mb-3">
           2. 参加者ご本人について
         </h3>
@@ -416,7 +421,7 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
       </section>
 
       {/* ===== 3. 連絡先 ===== */}
-      <section>
+      <section id="taiken-step3">
         <h3 className="text-sm font-bold text-brand-navy border-b-2 border-warm-200 pb-1 mb-3">
           3. ご連絡先 {reqBadge}
         </h3>
@@ -433,7 +438,7 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
       </section>
 
       {/* ===== 4. アンケート ===== */}
-      <section>
+      <section id="taiken-step4">
         <h3 className="text-sm font-bold text-brand-navy border-b-2 border-warm-200 pb-1 mb-3">
           4. アンケート・その他
         </h3>
@@ -444,7 +449,10 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
           <input type="checkbox" checked={kibouUnknown}
             onChange={e => {
               setKibouUnknown(e.target.checked)
-              if (e.target.checked) setKiboubi('')
+              if (e.target.checked) {
+                setKiboubi('')
+                trackEvent('taiken_date_select', { class_tag: selectedClassId || '', status: 'unknown' })
+              }
             }}
             className="w-4 h-4 accent-brand-orange" />
           希望日が未定（不明）の場合はチェック
@@ -454,7 +462,10 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
           classId={selectedClassId}
           className={selectedClassName}
           value={kiboubi}
-          onChange={setKiboubi}
+          onChange={v => {
+            setKiboubi(v)
+            if (v) trackEvent('taiken_date_select', { class_tag: selectedClassId || '', status: 'selected' })
+          }}
           disabled={kibouUnknown}
         />
 

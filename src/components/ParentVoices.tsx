@@ -8,7 +8,7 @@ import { testimonials } from '@/lib/classes-data'
  */
 export default function ParentVoices({ className = '' }: { className?: string }) {
   return (
-    <section className={`px-5 py-12 ${className}`}>
+    <section id="voices" className={`px-5 py-12 ${className}`}>
       <div className="max-w-6xl mx-auto">
         <p className="section-label">保護者の声</p>
         <h2 className="section-title mb-6">「通わせてよかった」</h2>

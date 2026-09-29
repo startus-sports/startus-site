@@ -329,7 +329,12 @@ export default function ClassFinder({ trialOpen }: { trialOpen?: TrialOpenMap })
                   key={c.id}
                   className="group relative flex flex-col bg-white rounded-2xl p-4 border-2 border-warm-200 hover:border-brand-orange hover:shadow-md transition-all"
                 >
-                  <Link href={c.href} className="absolute inset-0 z-0 rounded-2xl" aria-label={`${c.name}の詳細を見る`} />
+                  <Link
+                    href={c.href}
+                    onClick={() => trackEvent('finder_detail_click', { class_name: c.name, class_tag: CALENDAR_TAGS[c.id] || '' })}
+                    className="absolute inset-0 z-0 rounded-2xl"
+                    aria-label={`${c.name}の詳細を見る`}
+                  />
 
                   <div className="flex items-start justify-between gap-2 mb-1.5">
                     <div className="flex items-start gap-2 min-w-0">
@@ -364,7 +369,7 @@ export default function ClassFinder({ trialOpen }: { trialOpen?: TrialOpenMap })
                           ? `/taiken?from=finder&class_tag=${CALENDAR_TAGS[c.id]}`
                           : '/taiken?from=finder'
                       }
-                      onClick={() => trackEvent('finder_taiken_click', { class_name: c.name })}
+                      onClick={() => trackEvent('finder_taiken_click', { class_name: c.name, class_tag: CALENDAR_TAGS[c.id] || '' })}
                       className="relative z-10 bg-brand-orange text-white text-xs font-bold px-3.5 py-2 rounded-full hover:bg-brand-orange-hover transition-colors whitespace-nowrap"
                     >
                       {open ? '体験申込' : 'キャンセル待ち'}

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { trackEvent } from '@/lib/gtag'
+import { getAttribution } from '@/lib/attribution'
 import type { TrialOpenMap } from '@/lib/availability'
 import { submitContact } from '@/lib/supabase'
 import { venuesWithClasses, getVenueClasses } from '@/lib/classes-data'
@@ -110,7 +111,7 @@ function Header() {
 // ============================================================
 function Hero() {
   return (
-    <section className="relative bg-gradient-to-br from-brand-navy to-brand-navy-light overflow-hidden">
+    <section id="hero" className="relative bg-gradient-to-br from-brand-navy to-brand-navy-light overflow-hidden">
       <div className="absolute top-[-40px] right-[-40px] w-64 h-64 rounded-full bg-brand-orange opacity-[0.08]" />
       <div className="absolute bottom-[-60px] left-[-30px] w-48 h-48 rounded-full bg-brand-orange opacity-[0.05]" />
       <div className="absolute top-1/2 right-8 -translate-y-1/2 w-80 h-80 rounded-full bg-white opacity-[0.02]" />
@@ -210,7 +211,7 @@ function NewsSection({ news }: { news: NewsItem[] }) {
   }
 
   return (
-    <section className="px-5 py-12 max-w-6xl mx-auto">
+    <section id="news" className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">最新情報</p>
       <h2 className="section-title mb-6">お知らせ</h2>
 
@@ -279,7 +280,7 @@ function SnsSection() {
   ]
 
   return (
-    <section className="px-5 py-12 bg-warm-50">
+    <section id="sns" className="px-5 py-12 bg-warm-50">
       <div className="max-w-6xl mx-auto">
         <p className="section-label">フォローする</p>
         <h2 className="section-title mb-2">SNS・公式アカウント</h2>
@@ -469,7 +470,6 @@ function ClassesSection() {
             href="https://lin.ee/BQKtTDq"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackEvent('line_click', { location: 'classes' })}
             className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#06C755] text-white font-display font-bold text-sm rounded-full hover:opacity-90 transition-opacity shadow-md"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -560,7 +560,7 @@ function EnrollmentFlow() {
 // ============================================================
 function FeeSection() {
   return (
-    <section className="px-5 py-12 bg-warm-50">
+    <section id="price" className="px-5 py-12 bg-warm-50">
       <div className="max-w-6xl mx-auto">
         <p className="section-label">料金</p>
         <h2 className="section-title mb-2">わかりやすい月額制</h2>
@@ -705,7 +705,7 @@ function InstructorSection() {
   ]
 
   return (
-    <section className="px-5 py-12 bg-warm-50">
+    <section id="instructors" className="px-5 py-12 bg-warm-50">
       <div className="max-w-6xl mx-auto">
         <p className="section-label">指導者紹介</p>
         <h2 className="section-title mb-2">専門の指導者が在籍</h2>
@@ -759,7 +759,7 @@ function FaqSection() {
   ]
 
   return (
-    <section className="px-5 py-12 max-w-6xl mx-auto">
+    <section id="faq" className="px-5 py-12 max-w-6xl mx-auto">
       <p className="section-label">よくある質問</p>
       <h2 className="section-title mb-6">Q&A</h2>
       <div className="grid md:grid-cols-2 gap-3">
@@ -909,7 +909,7 @@ function ContactSection() {
     e.preventDefault()
     setState('sending')
     try {
-      await submitContact({ name, email, phone, body, source: 'home_contact_form' })
+      await submitContact({ name, email, phone, body, source: 'home_contact_form', attribution: getAttribution() })
       trackEvent('contact_form_submit')
       setState('sent')
     } catch {
@@ -931,7 +931,6 @@ function ContactSection() {
             href="https://lin.ee/BQKtTDq"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackEvent('line_click', { location: 'contact' })}
             className="flex items-center gap-4 bg-warm-50 rounded-2xl p-5 hover:shadow-md transition-shadow"
           >
             <div className="w-11 h-11 rounded-full bg-[#06C755] flex items-center justify-center flex-shrink-0">

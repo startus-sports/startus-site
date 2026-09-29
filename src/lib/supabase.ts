@@ -29,18 +29,10 @@ export async function fetchClassrooms(): Promise<Classroom[]> {
   return res.json()
 }
 
-export async function submitApplication(formData: Record<string, unknown>) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/applications`, {
-    method: 'POST',
-    headers: { ...headers, 'Prefer': 'return=minimal' },
-    body: JSON.stringify({
-      type: 'trial',
-      status: 'pending',
-      form_data: formData,
-    }),
-  })
-  if (!res.ok) throw new Error('Supabase応答エラー: ' + res.status)
-}
+// 体験申込はここから applications に直接保存しない。保存は sendEmail() の先の Worker
+// （/api/taiken/send-email）が一本で行い、教室名→calendar_tag の変換・キャンセル待ち判定・
+// 流入元（form_data.attribution）の記録もそこで済む。以前は両方で保存していて、
+// 1回の申込で2行（片方は教室が日本語名のまま）入っていた。
 
 /**
  * トップページのお問い合わせフォーム。
@@ -66,7 +58,7 @@ export async function submitContact(formData: Record<string, unknown>) {
 
 const EMAIL_API_URL = 'https://startus-system.startus.workers.dev/api/taiken/send-email'
 
-export async function sendEmail(data: Record<string, string>) {
+export async function sendEmail(data: Record<string, unknown>) {
   const res = await fetch(EMAIL_API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
