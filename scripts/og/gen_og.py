@@ -19,7 +19,7 @@ CARDS = [
     ('default',
      '金沢で、<span class="hl">スポーツを始めよう</span>。',
      'かけっこ・陸上・バドミントン・チアなど約30教室。',
-     '市内11会場|週6日開催|月額¥3,300〜', '無料体験受付中'),
+     '市内11会場|週6日開催|月額¥4,100〜', '無料体験受付中'),
 
     ('rikujo',
      '金沢の<span class="hl">陸上・かけっこ教室</span>',
@@ -70,6 +70,10 @@ def render(name, title, lead, facts, cta):
     print(f'{name:20} {os.path.getsize(jpg):>8,} bytes (jpg)')
 
 
+# 引数でカード名を指定するとその画像だけ作り直す（例: python gen_og.py default）
+import sys
+ONLY = set(sys.argv[1:])
 for c in CARDS:
-    render(*c)
+    if not ONLY or c[0] in ONLY:
+        render(*c)
 print('\n出力先:', OUT_DIR)

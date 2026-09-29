@@ -336,7 +336,7 @@ function ClassesSection() {
       tagColor: 'bg-brand-orange/10 text-brand-orange',
       desc: 'かけっこ塾・ジュニア陸上・マラソン塾・インクルーシブ陸上など16教室。市内5会場で週6日開催。',
       classes: ['かけっこ塾（年長〜中学生・水/月）', 'ジュニア陸上（小1〜中学）', '走り塾 初中級（小5〜中学生・2026年8月開講）', 'るぶげる親子陸上塾', 'インクルーシブ陸上・大人のマラソン塾'],
-      price: '月額 ¥3,300〜¥9,900',
+      price: '月額 ¥4,400〜¥9,900',
       href: '/rikujo',
     },
     {
@@ -380,7 +380,7 @@ function ClassesSection() {
       tagColor: 'bg-cyan-50 text-cyan-700',
       desc: '障がいの有無・年齢を問わず参加できるフットボール教室。屋内人工芝のあめるんパークで毎週開催。スポット参加もOK。',
       classes: ['ソーシャルフットボール（木 17:00〜18:00・あめるんパーク）'],
-      price: '月額 ¥3,300（スポット ¥1,500/回）',
+      price: '月額 ¥4,400（スポット ¥1,500/回）',
       href: '/socialfootball',
     },
     {
@@ -510,7 +510,7 @@ function EnrollmentFlow() {
       num: '4',
       title: 'レッスン開始',
       desc: '翌月から正式会員としてスタート。振替制度もあります。',
-      note: '月額¥3,300〜',
+      note: '月額¥4,100〜',
     },
   ]
 
@@ -564,14 +564,14 @@ function FeeSection() {
       <div className="max-w-6xl mx-auto">
         <p className="section-label">料金</p>
         <h2 className="section-title mb-2">わかりやすい月額制</h2>
-        <p className="text-sm text-gray-500 mb-6">月額¥3,300〜。兄弟割引あり（2人目は月会費20%OFF・3人目以降は半額）。</p>
+        <p className="text-sm text-gray-500 mb-6">月額¥4,100〜。兄弟割引あり（2人目は月会費20%OFF・3人目以降は半額）。</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           {[
             { label: '一般教室', price: '¥6,600', sub: '陸上・バドミントン等' },
             { label: '親子・特別', price: '¥9,900', sub: '親子参加の陸上教室' },
-            { label: 'インクルーシブ', price: '¥3,300', sub: '障がいの有無を問わず' },
-            { label: 'マラソン等', price: '¥3,300', sub: '中学生〜大人対象' },
+            { label: 'インクルーシブ', price: '¥4,400', sub: '障がいの有無を問わず' },
+            { label: '大人のマラソン塾', price: '¥4,400', sub: '中学生〜大人対象' },
           ].map(({ label, price, sub }) => (
             <div
               key={label}

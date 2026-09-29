@@ -181,7 +181,7 @@ export const otherClasses: OtherClassData[] = [
     day: '木',
     time: '17:00〜19:00',
     age: '小学生以上（障がいの有無を問わず参加できます）',
-    price: 3300,
+    price: 4400,
     instructor: '別宗 利哉 他',
     priceNote: 'スポット参加は1,500円／回',
   },

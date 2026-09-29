@@ -817,14 +817,14 @@ function PriceSection() {
     <section id="price" className="px-5 py-10 max-w-3xl mx-auto">
       <p className="section-label">料金</p>
       <h2 className="section-title mb-2">わかりやすい月額制</h2>
-      <p className="text-sm text-gray-500 mb-6">月額¥3,300〜。手頃な価格で専門的な指導が受けられます。</p>
+      <p className="text-sm text-gray-500 mb-6">月額¥4,400〜。手頃な価格で専門的な指導が受けられます。</p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
           { label: '基本教室', price: '¥6,600', note: '/月', sub: 'かけっこ塾・泉・西部・中村町・スポレク' },
           { label: 'るぶげる親子', price: '¥9,900', note: '/月', sub: '親子で参加の陸上教室' },
-          { label: 'インクルーシブ', price: '¥3,300', note: '/月', sub: '障がいの有無を問わず' },
-          { label: '大人のマラソン', price: '¥3,300', note: '/月', sub: '中学生〜大人対象' },
+          { label: 'インクルーシブ', price: '¥4,400', note: '/月', sub: '障がいの有無を問わず' },
+          { label: '大人のマラソン', price: '¥4,400', note: '/月', sub: '中学生〜大人対象' },
         ].map(({ label, price, note, sub }) => (
           <div key={label} className="bg-warm-50 rounded-xl p-4 text-center">
             <div className="text-[10px] text-gray-400 mb-1">{label}</div>
