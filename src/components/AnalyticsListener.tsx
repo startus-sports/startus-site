@@ -8,15 +8,16 @@ import { captureAttribution } from '@/lib/attribution'
 // サイト全体の「どこが押されたか」「どこまで読まれたか」を GA4 に送る。
 // ボタンごとに計測コードを書かなくても、教室紹介ページ（HTML本文）の中のリンクまで拾える。
 //
-//   電話・メール・LINE・体験申込ページ・入会フォームへのリンク
-//     → tel_click / mail_click / line_click / taiken_link_click / nyukai_link_click
+//   電話・メール・LINE・体験申込ページ・入会フォーム・会場ページへのリンク
+//     → tel_click / mail_click / line_click / taiken_link_click / nyukai_link_click / venue_link_click
 //       （location = 押された場所。data-ga-location → 親の section の id → header/footer の順で決める）
 //   ページを 25% / 50% / 75% までスクロール → scroll_depth（90% は GA4 標準の scroll）
 //   id 付きの <section> が画面の中央を通過 → section_view（どのセクションまで読まれているか）
 //
 // 送るのは種類と場所だけで、氏名などの個人情報は送らない。
-// 既存の cta_click / finder_taiken_click は残してあり、体験申込ページへのクリックは
+// finder_taiken_click（教室検索の体験申込ボタン）は残してあり、体験申込ページへのクリックは
 // taiken_link_click が全ページ共通の指標になる（二重に数えているのではなく別の切り口）。
+// トップの cta_click は 2026-10 のリデザインで廃止し、taiken_link_click の location に一本化した。
 // 個別に計測済みで重ねたくないリンクには data-ga-skip を付ける。
 
 const LINE_HOSTS = /(^|\.)(lin\.ee|line\.me)$/
@@ -60,6 +61,10 @@ function classifyLink(a: HTMLAnchorElement): { event: string; params: Record<str
   }
   if (path.includes('入会フォーム') || (isForms && path.startsWith('/nyukai'))) {
     return { event: 'nyukai_link_click', params: {} }
+  }
+  // 会場ページ（/venue/<id>）へのリンク。トップの会場一覧・地図や教室ページから
+  if (isSelf && path.startsWith('/venue/')) {
+    return { event: 'venue_link_click', params: { venue: path.slice('/venue/'.length).replace(/\/$/, '') } }
   }
   return null
 }

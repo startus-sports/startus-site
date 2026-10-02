@@ -18,6 +18,25 @@ const config: Config = {
           100: '#F8F6F3',
           200: '#F0EDE8',
         },
+        // トップページ（2026-10 リデザイン）の配色。星のマスコットの2色に合わせている。
+        // 白文字を載せる小さなボタンは orange ではなく deep を使う（orange だとコントラスト不足）
+        star: {
+          orange: '#eb6600',
+          deep: '#c24e00',
+          ink: '#b84a00',
+          navy: '#17324a',
+          night: '#0f2336',
+          sub: '#4a5a6a',
+          cream: '#fff4e6',
+          peach: '#fff0e0',
+          sand: '#ffe2c4',
+          apricot: '#ffd2a8',
+          yellow: '#ffd257',
+          mint: '#eaf6e6',
+          green: '#2f7a3e',
+          line: '#06c755',
+          'line-text': '#047a3a',
+        },
       },
       fontFamily: {
         display: ['"M PLUS Rounded 1c"', 'sans-serif'],
