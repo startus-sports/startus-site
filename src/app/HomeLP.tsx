@@ -461,6 +461,13 @@ const AREA_PINS: Record<string, { x: number; y: number }> = {
   南部: { x: 58, y: 78 },
 }
 
+/**
+ * 地図で会場名ラベルをピンの左／下に出す会場（それ以外は右）。近い会場どうし
+ * （市営陸上と市総合・米泉小、扇台小と高尾台中、星稜大と稲置学園、スポレクと米泉小）で重ならないように
+ */
+const LABEL_LEFT = new Set(['ougidai', 'seiryo', 'sporec', 'yonaizumi'])
+const LABEL_BOTTOM = new Set(['shiei', 'inoki'])
+
 function Venue() {
   const list = venuesWithClasses()
   const areas = [...new Set(list.map(v => String(v.area)))]
@@ -474,8 +481,9 @@ function Venue() {
     const classes = getVenueClasses(v.id)
     const days = ALL_DAYS.filter(d => classes.some(c => c.day.split('・').includes(d))).join('・')
     return {
-      id: v.id, name: v.name, area: String(v.area), address: v.address, lat: v.lat, lng: v.lng,
-      count: classes.length, days,
+      id: v.id, name: v.name, shortName: v.shortName, side: LABEL_BOTTOM.has(v.id) ? 'bottom' : LABEL_LEFT.has(v.id) ? 'left' : 'right',
+      area: String(v.area), address: v.address, lat: v.lat, lng: v.lng, days,
+      classes: classes.map(c => ({ name: c.name, day: c.day, time: c.time })),
       note: v.id === 'nakamura' ? '事務局（VIDA金沢2階）もこの近くです' : undefined,
     }
   })
@@ -536,7 +544,7 @@ function Venue() {
               )
             })}
           </VenueMap>
-          <p className="mt-1.5 text-xs text-star-sub">ピンの数字はその会場の教室数。ピンを押すと会場の情報が出ます。</p>
+          <p className="mt-1.5 text-xs text-star-sub">ピンの数字はその会場の教室数。ピンを押すと、教室名と曜日・時間が出ます。</p>
 
           {/* スマホ: 会場の一覧は畳んでおく */}
           <details className="lg:hidden group mt-2">
@@ -547,9 +555,15 @@ function Venue() {
               {areas.flatMap(a => a.venues.map(v => (
                 <li key={v.id}>
                   <Link href={`/venue/${v.id}`} className="flex items-center gap-2 py-3">
-                    <span className="text-[11px] font-bold text-white bg-star-navy rounded px-1.5 py-px shrink-0">{a.area}</span>
-                    <span className="text-sm font-bold grow">{v.name}</span>
-                    <span className="text-xs text-star-sub shrink-0">{getVenueClasses(v.id).length}教室</span>
+                    <span className="grow min-w-0">
+                      <span className="flex items-center gap-2">
+                        <span className="text-[11px] font-bold text-white bg-star-navy rounded px-1.5 py-px shrink-0">{a.area}</span>
+                        <span className="text-sm font-bold">{v.name}</span>
+                      </span>
+                      <span className="mt-1 block text-xs leading-relaxed text-star-sub">
+                        {getVenueClasses(v.id).map(c => `${c.name}（${c.day}）`).join('・')}
+                      </span>
+                    </span>
                     <ChevronIcon className="w-4 h-4 text-star-ink shrink-0" />
                   </Link>
                 </li>
