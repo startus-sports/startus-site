@@ -7,6 +7,7 @@ import type { NewsItem } from '@/lib/news'
 import ClassFinder from '@/components/ClassFinder'
 import TopHeader from '@/components/top/TopHeader'
 import ContactPanel from '@/components/top/ContactPanel'
+import VenueMap, { type MapVenue } from '@/components/top/VenueMap'
 import {
   ArrowIcon, ChevronIcon, FacebookIcon, InstagramIcon, LineIcon, MapPin, PersonIcon, PhoneIcon, PinIcon, StarIcon,
 } from '@/components/top/icons'
@@ -469,6 +470,15 @@ function Venue() {
     })
     .sort((a, b) => b.count - a.count)
   const top = areas[0]?.area
+  const mapVenues: MapVenue[] = list.map(v => {
+    const classes = getVenueClasses(v.id)
+    const days = ALL_DAYS.filter(d => classes.some(c => c.day.split('・').includes(d))).join('・')
+    return {
+      id: v.id, name: v.name, area: String(v.area), address: v.address, lat: v.lat, lng: v.lng,
+      count: classes.length, days,
+      note: v.id === 'nakamura' ? '事務局（VIDA金沢2階）もこの近くです' : undefined,
+    }
+  })
 
   return (
     <section id="venue" className="bg-white">
@@ -499,7 +509,8 @@ function Venue() {
         </div>
 
         <div className="mt-3.5 lg:mt-0">
-          <div className="relative h-[320px] lg:h-[400px] rounded-[20px] bg-[#eef5ee] border-2 border-[#d6e8d6] overflow-hidden" role="img" aria-label="エリアごとの教室数のイメージ地図">
+          {/* Google マップ。読み込むまで（読み込めないとき）はイラストの地図を出しておく */}
+          <VenueMap venues={mapVenues}>
             <svg viewBox="0 0 350 320" preserveAspectRatio="none" className="absolute inset-0 w-full h-full" aria-hidden="true">
               <path d="M352 212 C 300 200, 270 170, 232 176 S 170 150, 140 116 S 70 70, -4 58" fill="none" stroke="#a9d3ee" strokeWidth="12" strokeLinecap="round" />
               <path d="M352 86 C 318 92, 296 70, 262 78 S 214 64, 196 40 S 170 8, 150 -6" fill="none" stroke="#a9d3ee" strokeWidth="9" strokeLinecap="round" />
@@ -524,7 +535,8 @@ function Venue() {
                 </div>
               )
             })}
-          </div>
+          </VenueMap>
+          <p className="mt-1.5 text-xs text-star-sub">ピンの数字はその会場の教室数。ピンを押すと会場の情報が出ます。</p>
 
           {/* スマホ: 会場の一覧は畳んでおく */}
           <details className="lg:hidden group mt-2">

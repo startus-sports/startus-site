@@ -8,8 +8,8 @@ import { captureAttribution } from '@/lib/attribution'
 // サイト全体の「どこが押されたか」「どこまで読まれたか」を GA4 に送る。
 // ボタンごとに計測コードを書かなくても、教室紹介ページ（HTML本文）の中のリンクまで拾える。
 //
-//   電話・メール・LINE・体験申込ページ・入会フォーム・会場ページへのリンク
-//     → tel_click / mail_click / line_click / taiken_link_click / nyukai_link_click / venue_link_click
+//   電話・メール・LINE・体験申込ページ・入会フォーム・会場ページ・Googleマップへのリンク
+//     → tel_click / mail_click / line_click / taiken_link_click / nyukai_link_click / venue_link_click / map_link_click
 //       （location = 押された場所。data-ga-location → 親の section の id → header/footer の順で決める）
 //   ページを 25% / 50% / 75% までスクロール → scroll_depth（90% は GA4 標準の scroll）
 //   id 付きの <section> が画面の中央を通過 → section_view（どのセクションまで読まれているか）
@@ -44,6 +44,10 @@ function classifyLink(a: HTMLAnchorElement): { event: string; params: Record<str
     return null
   }
   if (LINE_HOSTS.test(url.hostname)) return { event: 'line_click', params: {} }
+  // Google マップ（道順・地図を開く）。会場まで行こうとしている人の数になる
+  if (/(^|\.)google\.[a-z.]+$/.test(url.hostname) && url.pathname.startsWith('/maps')) {
+    return { event: 'map_link_click', params: {} }
+  }
 
   let path = url.pathname
   try {
