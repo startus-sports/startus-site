@@ -11,39 +11,34 @@ type ClassItem = { name: string; category: string; sort: number; id: string; tri
 // ボット対策（Cloudflare Turnstile）2026-10-12。
 // 親フォームは入力のたびに再描画されるので、ウィジェットは memo した独立部品に閉じ込める。
 // （親の再描画で Turnstile が差し込んだ iframe が消える React の定番の競合を避ける）
+const TS_CALLBACK = '__tsCbTaiken'
 const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: string) => void }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const widgetId = useRef<string | null>(null)
   useEffect(() => {
-    type TS = { render: (el: HTMLElement, opts: Record<string, unknown>) => string }
-    // 公式の明示描画パターン: スクリプトを ?onload=CB&render=explicit で読み込み、
-    // 準備完了時に呼ばれる window[CB] の中で render する（初期化前の render を避ける）。
-    const CB = '__tsOnloadTaiken'
-    const doRender = () => {
-      const w = (window as unknown as { turnstile?: TS }).turnstile
-      if (!w || !ref.current || widgetId.current) return
-      widgetId.current = w.render(ref.current, {
-        sitekey: '0x4AAAAAAFUUPRUq5jz1QxZ8',
-        language: 'ja',
-        callback: (t: string) => onToken(t),
-        'error-callback': () => onToken(''),
-        'expired-callback': () => onToken(''),
-      })
-    }
-    ;(window as unknown as Record<string, unknown>)[CB] = doRender
-    if ((window as unknown as { turnstile?: TS }).turnstile) {
-      // 既に読み込み済み（SPA内の再訪）なら直接描画
-      doRender()
-    } else if (!document.querySelector('script[data-ts-taiken]')) {
+    // 暗黙描画（Worker 側の公開フォームと同じ方式）: class="cf-turnstile" の div を
+    // api.js が自動スキャンして描画し、data-callback で指定した window 関数にトークンを渡す。
+    // 明示描画(turnstile.render)だと、このサイトではチャレンジは走るのに見える枠(iframe)が
+    // 差し込まれなかったため、確実な暗黙描画に統一する。
+    ;(window as unknown as Record<string, unknown>)[TS_CALLBACK] = (t: string) => onToken(t)
+    if (!document.querySelector('script[data-ts-taiken]')) {
       const s = document.createElement('script')
-      s.src = `https://challenges.cloudflare.com/turnstile/v0/api.js?onload=${CB}&render=explicit`
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
       s.async = true
       s.defer = true
       s.setAttribute('data-ts-taiken', '1')
       document.head.appendChild(s)
     }
+    return () => {
+      try { delete (window as unknown as Record<string, unknown>)[TS_CALLBACK] } catch { /* noop */ }
+    }
   }, [onToken])
-  return <div ref={ref} className="my-3" />
+  return (
+    <div
+      className="cf-turnstile my-3"
+      data-sitekey="0x4AAAAAAFUUPRUq5jz1QxZ8"
+      data-language="ja"
+      data-callback={TS_CALLBACK}
+    />
+  )
 })
 
 function toKatakana(str: string) {
