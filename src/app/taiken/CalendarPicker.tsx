@@ -180,7 +180,12 @@ export default function CalendarPicker({ classId, className, value, onChange, di
             <div
               key={d}
               onClick={() => {
-                if (dayEvents.length > 0 && !disabled) setDetailDate(dateKey)
+                if (dayEvents.length === 0 || disabled) return
+                setDetailDate(dateKey)
+                // kssc のフォーム（Worker 版）と同じ: その日の体験OKが1件だけなら、
+                // 日付を押した時点で選択する。複数あるときだけ下の一覧から選んでもらう。
+                const okEvents = dayEvents.filter(e => e.status === 'OK')
+                if (okEvents.length === 1) onChange(okEvents[0].dateStr)
               }}
               className={`py-1.5 flex flex-col items-center gap-0.5 ${
                 dayEvents.length > 0 ? 'cursor-pointer' : ''

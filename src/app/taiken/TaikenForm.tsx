@@ -1,12 +1,41 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, memo } from 'react'
 import { fetchClassrooms, sendEmail, type Classroom } from '@/lib/supabase'
 import { trackEvent } from '@/lib/gtag'
 import { getAttribution } from '@/lib/attribution'
 import CalendarPicker from './CalendarPicker'
 
 type ClassItem = { name: string; category: string; sort: number; id: string; trialOpen: boolean }
+
+// ボット対策（Cloudflare Turnstile）2026-10-12。
+// Worker 側の公開フォームと同じ「暗黙描画」: class="cf-turnstile" の div を api.js が自動で描画し、
+// data-callback に指定した window 関数へトークンを渡す。親フォームは入力のたびに再描画されるので、
+// memo した独立部品に閉じ込めて、親の再描画で Turnstile の枠が消えないようにする。
+const TS_CALLBACK = '__tsCbTaiken'
+const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: string) => void }) {
+  useEffect(() => {
+    const w = window as unknown as Record<string, unknown>
+    w[TS_CALLBACK] = (t: string) => onToken(t)
+    if (!document.querySelector('script[data-ts-taiken]')) {
+      const s = document.createElement('script')
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+      s.async = true
+      s.defer = true
+      s.setAttribute('data-ts-taiken', '1')
+      document.head.appendChild(s)
+    }
+    return () => { delete w[TS_CALLBACK] }
+  }, [onToken])
+  return (
+    <div
+      className="cf-turnstile my-3"
+      data-sitekey="0x4AAAAAAFUUPRUq5jz1QxZ8"
+      data-language="ja"
+      data-callback={TS_CALLBACK}
+    />
+  )
+})
 
 function toKatakana(str: string) {
   return str.replace(/[\u3041-\u3096]/g, ch =>
@@ -53,6 +82,9 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
   const submitCountRef = useRef(0)
   const lastSubmitRef = useRef(0)
   const loadTimeRef = useRef(Date.now())
+
+  // ボット対策（Turnstile）のトークン。ウィジェット本体は TurnstileBox（memo）
+  const [tsToken, setTsToken] = useState('')
 
   // --- Load classrooms ---
   useEffect(() => {
@@ -211,6 +243,7 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
         referrer_class: referrerClass,
         question1: question,
         attribution,
+        turnstile_token: tsToken,
       })
       trackEvent('taiken_form_submit', {
         class_name: selectedClassName || '未選択',
@@ -540,6 +573,9 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
           {submitError}
         </div>
       )}
+
+      {/* ===== ボット対策（Cloudflare Turnstile） ===== */}
+      <TurnstileBox onToken={setTsToken} />
 
       {/* ===== 送信ボタン ===== */}
       <button
