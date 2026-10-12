@@ -15,20 +15,24 @@ const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: stri
   const ref = useRef<HTMLDivElement>(null)
   const widgetId = useRef<string | null>(null)
   useEffect(() => {
-    type TS = { render: (el: HTMLElement, opts: Record<string, unknown>) => string }
+    type TS = { ready: (cb: () => void) => void; render: (el: HTMLElement, opts: Record<string, unknown>) => string }
     const getTS = () => (window as unknown as { turnstile?: TS }).turnstile
-    const render = () => {
+    // turnstile.ready() の中で render する（初期化完了前に render すると枠だけできて iframe が出ない）
+    const doRender = () => {
       const w = getTS()
       if (!w || !ref.current || widgetId.current) return
-      widgetId.current = w.render(ref.current, {
-        sitekey: '0x4AAAAAAFUUPRUq5jz1QxZ8',
-        language: 'ja',
-        callback: (t: string) => onToken(t),
-        'error-callback': () => onToken(''),
-        'expired-callback': () => onToken(''),
+      w.ready(() => {
+        if (!ref.current || widgetId.current) return
+        widgetId.current = w.render(ref.current, {
+          sitekey: '0x4AAAAAAFUUPRUq5jz1QxZ8',
+          language: 'ja',
+          callback: (t: string) => onToken(t),
+          'error-callback': () => onToken(''),
+          'expired-callback': () => onToken(''),
+        })
       })
     }
-    if (getTS()) { render(); return }
+    if (getTS()) { doRender(); return }
     const existing = document.querySelector<HTMLScriptElement>('script[src*="challenges.cloudflare.com/turnstile"]')
     const s = existing ?? document.createElement('script')
     if (!existing) {
@@ -37,8 +41,8 @@ const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: stri
       s.defer = true
       document.head.appendChild(s)
     }
-    s.addEventListener('load', render)
-    return () => s.removeEventListener('load', render)
+    s.addEventListener('load', doRender)
+    return () => s.removeEventListener('load', doRender)
   }, [onToken])
   return <div ref={ref} className="my-3" />
 })
