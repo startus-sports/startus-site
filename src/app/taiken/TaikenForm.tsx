@@ -1,45 +1,12 @@
 'use client'
 
-import { useState, useEffect, useRef, memo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { fetchClassrooms, sendEmail, type Classroom } from '@/lib/supabase'
 import { trackEvent } from '@/lib/gtag'
 import { getAttribution } from '@/lib/attribution'
 import CalendarPicker from './CalendarPicker'
 
 type ClassItem = { name: string; category: string; sort: number; id: string; trialOpen: boolean }
-
-// ボット対策（Cloudflare Turnstile）2026-10-12。
-// 親フォームは入力のたびに再描画されるので、ウィジェットは memo した独立部品に閉じ込める。
-// （親の再描画で Turnstile が差し込んだ iframe が消える React の定番の競合を避ける）
-const TS_CALLBACK = '__tsCbTaiken'
-const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: string) => void }) {
-  useEffect(() => {
-    // 暗黙描画（Worker 側の公開フォームと同じ方式）: class="cf-turnstile" の div を
-    // api.js が自動スキャンして描画し、data-callback で指定した window 関数にトークンを渡す。
-    // 明示描画(turnstile.render)だと、このサイトではチャレンジは走るのに見える枠(iframe)が
-    // 差し込まれなかったため、確実な暗黙描画に統一する。
-    ;(window as unknown as Record<string, unknown>)[TS_CALLBACK] = (t: string) => onToken(t)
-    if (!document.querySelector('script[data-ts-taiken]')) {
-      const s = document.createElement('script')
-      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
-      s.async = true
-      s.defer = true
-      s.setAttribute('data-ts-taiken', '1')
-      document.head.appendChild(s)
-    }
-    return () => {
-      try { delete (window as unknown as Record<string, unknown>)[TS_CALLBACK] } catch { /* noop */ }
-    }
-  }, [onToken])
-  return (
-    <div
-      className="cf-turnstile my-3"
-      data-sitekey="0x4AAAAAAFUUPRUq5jz1QxZ8"
-      data-language="ja"
-      data-callback={TS_CALLBACK}
-    />
-  )
-})
 
 function toKatakana(str: string) {
   return str.replace(/[\u3041-\u3096]/g, ch =>
@@ -86,9 +53,6 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
   const submitCountRef = useRef(0)
   const lastSubmitRef = useRef(0)
   const loadTimeRef = useRef(Date.now())
-
-  // ボット対策（Turnstile）のトークン。ウィジェット本体は TurnstileBox（memo）に分離
-  const [tsToken, setTsToken] = useState('')
 
   // --- Load classrooms ---
   useEffect(() => {
@@ -206,13 +170,6 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
       return
     }
 
-    // ボット対策（Turnstile）。未完了なら送信しない
-    if (!tsToken) {
-      setSubmitError('「私はロボットではありません」の確認を完了してください。少し待ってからもう一度お試しください。')
-      trackEvent('taiken_form_error', { reason: 'turnstile' })
-      return
-    }
-
     lastSubmitRef.current = now
     submitCountRef.current++
     setSubmitting(true)
@@ -254,7 +211,6 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
         referrer_class: referrerClass,
         question1: question,
         attribution,
-        turnstile_token: tsToken,
       })
       trackEvent('taiken_form_submit', {
         class_name: selectedClassName || '未選択',
@@ -584,9 +540,6 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
           {submitError}
         </div>
       )}
-
-      {/* ===== ボット対策（Cloudflare Turnstile） ===== */}
-      <TurnstileBox onToken={setTsToken} />
 
       {/* ===== 送信ボタン ===== */}
       <button
