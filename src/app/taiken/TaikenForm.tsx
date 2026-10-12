@@ -1,12 +1,47 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, memo } from 'react'
 import { fetchClassrooms, sendEmail, type Classroom } from '@/lib/supabase'
 import { trackEvent } from '@/lib/gtag'
 import { getAttribution } from '@/lib/attribution'
 import CalendarPicker from './CalendarPicker'
 
 type ClassItem = { name: string; category: string; sort: number; id: string; trialOpen: boolean }
+
+// ボット対策（Cloudflare Turnstile）2026-10-12。
+// 親フォームは入力のたびに再描画されるので、ウィジェットは memo した独立部品に閉じ込める。
+// （親の再描画で Turnstile が差し込んだ iframe が消える React の定番の競合を避ける）
+const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: string) => void }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const widgetId = useRef<string | null>(null)
+  useEffect(() => {
+    type TS = { render: (el: HTMLElement, opts: Record<string, unknown>) => string }
+    const getTS = () => (window as unknown as { turnstile?: TS }).turnstile
+    const render = () => {
+      const w = getTS()
+      if (!w || !ref.current || widgetId.current) return
+      widgetId.current = w.render(ref.current, {
+        sitekey: '0x4AAAAAAFUUPRUq5jz1QxZ8',
+        language: 'ja',
+        callback: (t: string) => onToken(t),
+        'error-callback': () => onToken(''),
+        'expired-callback': () => onToken(''),
+      })
+    }
+    if (getTS()) { render(); return }
+    const existing = document.querySelector<HTMLScriptElement>('script[src*="challenges.cloudflare.com/turnstile"]')
+    const s = existing ?? document.createElement('script')
+    if (!existing) {
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+      s.async = true
+      s.defer = true
+      document.head.appendChild(s)
+    }
+    s.addEventListener('load', render)
+    return () => s.removeEventListener('load', render)
+  }, [onToken])
+  return <div ref={ref} className="my-3" />
+})
 
 function toKatakana(str: string) {
   return str.replace(/[\u3041-\u3096]/g, ch =>
@@ -54,37 +89,8 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
   const lastSubmitRef = useRef(0)
   const loadTimeRef = useRef(Date.now())
 
-  // --- ボット対策（Cloudflare Turnstile）2026-10-12 ---
-  // Worker の /api/taiken/send-email がトークンを必須にしているため、ここでも付ける。
-  const tsRef = useRef<HTMLDivElement>(null)
-  const tsWidgetId = useRef<string | null>(null)
+  // ボット対策（Turnstile）のトークン。ウィジェット本体は TurnstileBox（memo）に分離
   const [tsToken, setTsToken] = useState('')
-  useEffect(() => {
-    type TS = { render: (el: HTMLElement, opts: Record<string, unknown>) => string }
-    const getTS = () => (window as unknown as { turnstile?: TS }).turnstile
-    const render = () => {
-      const w = getTS()
-      if (!w || !tsRef.current || tsWidgetId.current) return
-      tsWidgetId.current = w.render(tsRef.current, {
-        sitekey: '0x4AAAAAAFUUPRUq5jz1QxZ8',
-        language: 'ja',
-        callback: (t: string) => setTsToken(t),
-        'error-callback': () => setTsToken(''),
-        'expired-callback': () => setTsToken(''),
-      })
-    }
-    if (getTS()) { render(); return }
-    const existing = document.querySelector<HTMLScriptElement>('script[src*="challenges.cloudflare.com/turnstile"]')
-    const s = existing ?? document.createElement('script')
-    if (!existing) {
-      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
-      s.async = true
-      s.defer = true
-      document.head.appendChild(s)
-    }
-    s.addEventListener('load', render)
-    return () => s.removeEventListener('load', render)
-  }, [])
 
   // --- Load classrooms ---
   useEffect(() => {
@@ -582,7 +588,7 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
       )}
 
       {/* ===== ボット対策（Cloudflare Turnstile） ===== */}
-      <div ref={tsRef} className="my-3" />
+      <TurnstileBox onToken={setTsToken} />
 
       {/* ===== 送信ボタン ===== */}
       <button
