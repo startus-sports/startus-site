@@ -12,11 +12,20 @@ type ClassItem = { name: string; category: string; sort: number; id: string; tri
 // Worker 側の公開フォームと同じ「暗黙描画」: class="cf-turnstile" の div を api.js が自動で描画し、
 // data-callback に指定した window 関数へトークンを渡す。親フォームは入力のたびに再描画されるので、
 // memo した独立部品に閉じ込めて、親の再描画で Turnstile の枠が消えないようにする。
+// トークンは1回使い切りで約5分で切れる。切れたら '' に戻し（ウィジェットが自動で取り直す）、
+// 送信に失敗したら resetTurnstile() で取り直す。
 const TS_CALLBACK = '__tsCbTaiken'
+const TS_EXPIRED = '__tsExpTaiken'
+function resetTurnstile() {
+  try {
+    (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset()
+  } catch { /* 読み込み前なら何もしない */ }
+}
 const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: string) => void }) {
   useEffect(() => {
     const w = window as unknown as Record<string, unknown>
     w[TS_CALLBACK] = (t: string) => onToken(t)
+    w[TS_EXPIRED] = () => onToken('')
     if (!document.querySelector('script[data-ts-taiken]')) {
       const s = document.createElement('script')
       s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
@@ -25,7 +34,7 @@ const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: stri
       s.setAttribute('data-ts-taiken', '1')
       document.head.appendChild(s)
     }
-    return () => { delete w[TS_CALLBACK] }
+    return () => { delete w[TS_CALLBACK]; delete w[TS_EXPIRED] }
   }, [onToken])
   return (
     <div
@@ -33,6 +42,7 @@ const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: stri
       data-sitekey="0x4AAAAAAFUUPRUq5jz1QxZ8"
       data-language="ja"
       data-callback={TS_CALLBACK}
+      data-expired-callback={TS_EXPIRED}
     />
   )
 })
@@ -202,6 +212,13 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
       return
     }
 
+    // ボット対策: 送信口（Worker）はトークン無しを 403 で弾くので、確認が済むまで送らない
+    if (!tsToken) {
+      setSubmitError('送信ボタンの上の「私はロボットではありません」の確認が終わってから送信してください。')
+      trackEvent('taiken_form_error', { reason: 'turnstile' })
+      return
+    }
+
     lastSubmitRef.current = now
     submitCountRef.current++
     setSubmitting(true)
@@ -264,6 +281,9 @@ export default function TaikenForm({ rikujoOnly = false }: { rikujoOnly?: boolea
       console.error('送信エラー:', err)
       trackEvent('taiken_submit_error', { reason: 'send_failed' })
       setSubmitError('送信に失敗しました。時間をおいて再度お試しください。')
+      // 使ったトークンはもう通らないので、ロボット確認を取り直す
+      setTsToken('')
+      resetTurnstile()
     } finally {
       setSubmitting(false)
     }
