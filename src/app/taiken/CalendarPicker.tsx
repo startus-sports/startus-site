@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { fetchCalendarDates, type CalendarEvent } from '@/lib/supabase'
 
 type ParsedEvent = CalendarEvent & {
@@ -28,12 +28,20 @@ export default function CalendarPicker({ classId, className, value, onChange, di
   const [error, setError] = useState('')
   const [detailDate, setDetailDate] = useState('')
 
+  // 親から渡る onChange は ref で持ち、読み直しの条件に入れない（2026-10-12）。
+  // 依存に入れていたため、親が再描画のたびに新しい onChange（インライン関数）を渡すと
+  // 日程を読み直して選んだ日付が '' にリセットされていた。日付を選ぶ・チェックを押す・
+  // 入力するだけで発生。2026-09-30 の GA4 計測追加で onChange がインライン関数になってから。
+  // 読み直すのは教室(classId/className)が変わったときだけでよい。
+  const onChangeRef = useRef(onChange)
+  useEffect(() => { onChangeRef.current = onChange }, [onChange])
+
   const load = useCallback(async () => {
     if (!classId || !className) return
     setLoading(true)
     setError('')
     setEvents([])
-    onChange('')
+    onChangeRef.current('')
     setDetailDate('')
 
     try {
@@ -69,7 +77,7 @@ export default function CalendarPicker({ classId, className, value, onChange, di
     } finally {
       setLoading(false)
     }
-  }, [classId, className, onChange])
+  }, [classId, className])
 
   useEffect(() => { load() }, [load])
 
