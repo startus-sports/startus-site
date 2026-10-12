@@ -15,34 +15,33 @@ const TurnstileBox = memo(function TurnstileBox({ onToken }: { onToken: (t: stri
   const ref = useRef<HTMLDivElement>(null)
   const widgetId = useRef<string | null>(null)
   useEffect(() => {
-    type TS = { ready: (cb: () => void) => void; render: (el: HTMLElement, opts: Record<string, unknown>) => string }
-    const getTS = () => (window as unknown as { turnstile?: TS }).turnstile
-    // turnstile.ready() の中で render する（初期化完了前に render すると枠だけできて iframe が出ない）
+    type TS = { render: (el: HTMLElement, opts: Record<string, unknown>) => string }
+    // 公式の明示描画パターン: スクリプトを ?onload=CB&render=explicit で読み込み、
+    // 準備完了時に呼ばれる window[CB] の中で render する（初期化前の render を避ける）。
+    const CB = '__tsOnloadTaiken'
     const doRender = () => {
-      const w = getTS()
+      const w = (window as unknown as { turnstile?: TS }).turnstile
       if (!w || !ref.current || widgetId.current) return
-      w.ready(() => {
-        if (!ref.current || widgetId.current) return
-        widgetId.current = w.render(ref.current, {
-          sitekey: '0x4AAAAAAFUUPRUq5jz1QxZ8',
-          language: 'ja',
-          callback: (t: string) => onToken(t),
-          'error-callback': () => onToken(''),
-          'expired-callback': () => onToken(''),
-        })
+      widgetId.current = w.render(ref.current, {
+        sitekey: '0x4AAAAAAFUUPRUq5jz1QxZ8',
+        language: 'ja',
+        callback: (t: string) => onToken(t),
+        'error-callback': () => onToken(''),
+        'expired-callback': () => onToken(''),
       })
     }
-    if (getTS()) { doRender(); return }
-    const existing = document.querySelector<HTMLScriptElement>('script[src*="challenges.cloudflare.com/turnstile"]')
-    const s = existing ?? document.createElement('script')
-    if (!existing) {
-      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+    ;(window as unknown as Record<string, unknown>)[CB] = doRender
+    if ((window as unknown as { turnstile?: TS }).turnstile) {
+      // 既に読み込み済み（SPA内の再訪）なら直接描画
+      doRender()
+    } else if (!document.querySelector('script[data-ts-taiken]')) {
+      const s = document.createElement('script')
+      s.src = `https://challenges.cloudflare.com/turnstile/v0/api.js?onload=${CB}&render=explicit`
       s.async = true
       s.defer = true
+      s.setAttribute('data-ts-taiken', '1')
       document.head.appendChild(s)
     }
-    s.addEventListener('load', doRender)
-    return () => s.removeEventListener('load', doRender)
   }, [onToken])
   return <div ref={ref} className="my-3" />
 })
