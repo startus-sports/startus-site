@@ -1,6 +1,6 @@
 // 流入元（どのリンク・どこから来たか）を、管理システムの公開フォームと同じ規則で記録する。
 // 規則を揃えているのは、管理画面「統計 → 流入元」で手動タグ（?src=）と自動推定が
-// 同じ行にまとまるようにするため。元の実装: startus sistem #1/public/taiken/index.html の
+// 同じ行にまとまるようにするため。元の実装: startus-system/public/taiken/index.html の
 // stxCaptureAttribution()。表記を変えるときは両方を直すこと。
 //
 //   src      : ?src=（配布リンク作成ツールが付ける「配布先-補足」）/ ?utm_source= / LINE公式ボタン経由（?line_uid=）

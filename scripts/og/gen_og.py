@@ -10,8 +10,8 @@ import os, subprocess, urllib.parse, time
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 SCRATCH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(SCRATCH, 'og_template.html').replace('\\', '/')
-OUT_DIR = (r"c:\Users\hisas\OneDrive - 特定非営利活動法人かなざわ総合スポーツクラブ"
-           r"\2 AI-document-onedrive\startus-site\startus-site\public\og")
+# リポの public/og（置き場所が変わっても動くよう、このファイルの場所から決める）
+OUT_DIR = os.path.normpath(os.path.join(SCRATCH, '..', '..', 'public', 'og'))
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # name, title(HTMLタグ可), lead, facts(| 区切り), cta
