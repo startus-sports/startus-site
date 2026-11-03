@@ -30,6 +30,9 @@
   "observability": {
     "enabled": true
   },
+  "routes": [
+    { "pattern": "startus-kanazawa.org", "custom_domain": true }
+  ],
   "workers_dev": true,
   "preview_urls": false
 }
