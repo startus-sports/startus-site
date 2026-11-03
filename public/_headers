@@ -1,0 +1,3 @@
+# Cloudflare Workers の静的ファイル（画像など）にも noindex を付ける（ページは next.config.ts の headers() で付く）
+/*
+  X-Robots-Tag: noindex

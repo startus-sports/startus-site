@@ -1,0 +1,35 @@
+// HP（startus-kanazawa.org）の Cloudflare Worker（Vercel からの移行先・管理システムのリポの docs/Cloudflare移行計画.md）
+//
+// ★ name は "startus-site"。startus-system・startus-admin など他の Worker の名前にしないこと（後勝ちで上書きされる）
+// 出し方: npm run deploy（opennextjs-cloudflare build → deploy）
+// 公開用の NEXT_PUBLIC_* はビルドのときに .env.production.local（git に入れない）から読む
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "startus-site",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+    // public/google….html（Search Console の確認ファイル）を .html のまま 200 で返す（既定だと拡張子なしへ 307）
+    "html_handling": "none"
+  },
+  // ISR の作り直し（memory-queue）が自分自身を呼ぶため
+  "services": [
+    { "binding": "WORKER_SELF_REFERENCE", "service": "startus-site" }
+  ],
+  // ISR の結果の置き場
+  "kv_namespaces": [
+    { "binding": "NEXT_INC_CACHE_KV", "id": "7613f43e38d64d0d9b7a5bb20f5fcc46" }
+  ],
+  // next/image の縮小・形式変換（Cloudflare Images）
+  "images": {
+    "binding": "IMAGES"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "workers_dev": true,
+  "preview_urls": false
+}
