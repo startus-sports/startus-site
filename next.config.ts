@@ -7,10 +7,12 @@ const nextConfig: NextConfig = {
   // 限定公開（2026-09-30〜）: 検索エンジンに載せず、URLを知っている人だけが見られる状態にする。
   // 全ページに noindex を付ける（ページ側の robots 設定より優先される）。
   // robots.txt は allow のまま残すこと。クロールを禁止すると noindex が読まれず検索に残る。
-  // 公開を再開するときはこの headers() を丸ごと消し、Search Console の削除リクエストも取り消す。
+  // 公開を再開するときは下の X-Robots-Tag の行を消し、Search Console の削除リクエストも取り消す（HSTS の行は残す）。
   async headers() {
     return [
       { source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex' }] },
+      // Vercel が付けていたのと同じ（Cloudflare では自分で付ける。画像などは public/_headers）
+      { source: '/:path*', headers: [{ key: 'Strict-Transport-Security', value: 'max-age=63072000' }] },
     ]
   },
 
